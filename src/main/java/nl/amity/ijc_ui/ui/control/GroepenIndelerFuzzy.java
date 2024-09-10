@@ -84,7 +84,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 		// Groovy
 		if (IJCController.c().sorteerOpRating(groep.getNiveau(), periode, ronde)) {
 			// Sorteer keizergroep op rating voor indeling indien ronde = 2,3,4,5 of 6
-			groep.sorteerRating();
+			groep.sorteerRating(false);
 		}		
 		logger.log(Level.INFO, "Bepalen wedstrijden voor groep " + wedstrijdgroep.getNaam() + " periode " + periode
 				+ " ronde " + ronde + " id " + wedstrijdgroep.getNiveau() + " doorschuivers " + doorschuivers);

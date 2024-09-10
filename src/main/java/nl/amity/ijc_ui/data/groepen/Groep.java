@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import nl.amity.ijc_ui.ui.control.IJCController;
 
@@ -38,6 +40,9 @@ public class Groep {
     private ArrayList<Speler> spelers;
     private Sortering sortering;
 
+    private final static Logger logger = Logger.getLogger(IJCController.class.getName());
+
+    
     /**
      * Default constructor.
      * Creer lege spelerslijst
@@ -324,8 +329,10 @@ public class Groep {
      * Sorteer de spelers in deze groep op punten. Bij hetzelfde aantal
      * punten wordt gesorteerd op rating
      */
-    public void sorteerPunten() {
-    	sortering = sortering != Sortering.PUNTEN_ASC? Sortering.PUNTEN_ASC : Sortering.PUNTEN_DESC;
+    public void sorteerPunten(Boolean toggle) {
+		logger.log(Level.INFO, "sortering = " + sortering);
+    	if (toggle) sortering = sortering != Sortering.PUNTEN_ASC? Sortering.PUNTEN_ASC : Sortering.PUNTEN_DESC;
+		logger.log(Level.INFO, "sortering = " + sortering);
     	Collections.sort(spelers, new Comparator<Speler>() {
     	    @Override
     	    public int compare(Speler o1, Speler o2) {
@@ -347,8 +354,8 @@ public class Groep {
     /**
      * Sorteer de spelers in deze groep op rating
      */
-    public void sorteerRating() {
-    	sortering = sortering != Sortering.RATING_ASC ? Sortering.RATING_ASC : Sortering.RATING_DESC;
+    public void sorteerRating(Boolean toggle) {
+    	if (toggle) sortering = sortering != Sortering.RATING_ASC ? Sortering.RATING_ASC : Sortering.RATING_DESC;
     	Collections.sort(spelers, new Comparator<Speler>() {
     	    @Override
     	    public int compare(Speler o1, Speler o2) {
@@ -359,16 +366,6 @@ public class Groep {
     	    	}
     	    }
     	});
-    }
-
-    /**
-     * Sorteer op rating en specifeer of dit ASC of DESC moet zijn
-     * @param s
-     */
-    public void sorteerRating(boolean asc) {
-    	// inverteer rating en roep standaard sorteer routine aan
-    	// inverteren is nodig omdat de algemene sorteer routine dit ook doet.
-    	sortering = asc ? Sortering.RATING_DESC : Sortering.RATING_ASC;
     }
 
     /**

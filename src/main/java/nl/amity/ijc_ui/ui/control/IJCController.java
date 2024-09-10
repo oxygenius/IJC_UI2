@@ -13,6 +13,9 @@
  */
 package nl.amity.ijc_ui.ui.control;
 
+import java.awt.Dialog;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +40,7 @@ import java.util.logging.Logger;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.security.auth.DestroyFailedException;
+import javax.swing.JFrame;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -65,6 +69,9 @@ import nl.amity.ijc_ui.io.OutputUitslagen;
 import nl.amity.ijc_ui.neural.Voorspeller;
 import nl.amity.ijc_ui.ui.util.Utils;
 import nl.amity.ijc_ui.ui.view.Bevesting;
+import nl.amity.ijc_ui.ui.view.ExternDialog;
+import nl.amity.ijc_ui.ui.view.LesTekstDialoog;
+import nl.amity.ijc_ui.ui.view.UitslagDialoog;
 
 /**
  * Main controller class voor afhandeling van de groepen en wedstrijden
@@ -85,6 +92,9 @@ public class IJCController {
 
     private String laatsteExport;
 
+    private String txtLes;
+    private String pw = "";
+    
     protected IJCController() throws GeneralSecurityException, CertificateException, IOException {
     	try {
     		ks = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -242,7 +252,7 @@ public class IJCController {
 					status.groepen = new GroepenReader().leesGroepenJSON(bestandsnaam);
 					// check for old groepen in status.
 					for (int i=c.aantalGroepen; i<11 ; i++) {
-						status.groepen.removeGroep(status.groepen.getGroepById(i));
+						status.groepen.removeGroep(status.groepen.getGroepByNiveau(i));
 					}
 				} else {
 					return;
@@ -266,6 +276,7 @@ public class IJCController {
 			if (status.groepen.getRonde() == 1)
 				resetAanwezigheidspunt();
 			setAutomatisch(true);
+
 			maakGroepsindeling();
 			maakWedstrijden();
 		}
@@ -276,7 +287,7 @@ public class IJCController {
 	 */
 	private void resetAanwezigheidspunt() {
     	logger.log(Level.INFO, "Eerste ronde van een periode; reset aanwezigheidspunt");
-		for (Groep groep : status.groepen.getGroepen()) {
+		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 			for (Speler s : groep.getSpelers()) {
 				s.setAanwezig(false);
 			}
@@ -311,6 +322,7 @@ public class IJCController {
 		    	logger.log(Level.INFO, "Fix Wedstrijdgroepen!");
 				fix_groepen(status.wedstrijdgroepen, c.aantalGroepen);			
 			}
+			status.groepen.sorteerGroepen();
 		}
     	logger.log(Level.INFO, "Statusbestand ingelezen");
     	logger.log(Level.INFO, "aantal entries APIConfig = " + c.externalAPIConfigs.apiconfigs.size());
@@ -320,7 +332,7 @@ public class IJCController {
 	public void fix_groepen(Groepen s_groepen, int c_groepenaantal) {
 		if (s_groepen.getAantalGroepen() < c_groepenaantal) {
 			logger.log(Level.INFO, "More Groups is Config then in Status!");
-			for (Groep g : s_groepen.getGroepen())
+			for (Groep g : s_groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC))
 				g.setNaam(c.groepsnamen[g.getNiveau()]);
 			for (int i=s_groepen.getAantalGroepen(); i<=c_groepenaantal;i++) {
 				s_groepen.addGroep(new Groep(i));						
@@ -331,16 +343,16 @@ public class IJCController {
 			//Waarschuwing en bevestiging voor verwijderen groepen uit Status.
 			//Zorg dat de te verwijderen groep leeg wordt gemaakt!
 			Groepen g_del = new Groepen();
-			for (Groep g : s_groepen.getGroepen()) {
+			for (Groep g : s_groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 				if (g.getNiveau() >= c_groepenaantal) {
-					logger.log(Level.INFO, "Players from Groups (" + g.getNaam() + ") will be moved to lower group (" + s_groepen.getGroepById(g.getNiveau()-1) + ")");
-					IJCController.terugschuiven(g,s_groepen.getGroepById(g.getNiveau()-1));
+					logger.log(Level.INFO, "Players from Groups (" + g.getNaam() + ") will be moved to lower group (" + s_groepen.getGroepByNiveau(g.getNiveau()-1) + ")");
+					IJCController.terugschuiven(g,s_groepen.getGroepByNiveau(g.getNiveau()-1));
 					g_del.addGroep(g);
 				}
 			}
 			logger.log(Level.INFO, "All players moved!");
 			try {
-				for (Groep g : g_del.getGroepen()) {
+				for (Groep g : g_del.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 					s_groepen.removeGroep(g);
 				}
 				logger.log(Level.INFO, "One or more Groups deleted!");
@@ -361,7 +373,7 @@ public class IJCController {
     }
 
     public Groep getGroepByID(int id) {
-        return status.groepen.getGroepById(id);
+        return status.groepen.getGroepByNiveau(id);
     }
 
     public int getAantalGroepen() {
@@ -373,12 +385,12 @@ public class IJCController {
     }
 
     public Groep getWedstrijdGroepByID(int id) {
-        return status.wedstrijdgroepen.getGroepById(id);
+        return status.wedstrijdgroepen.getGroepByNiveau(id);
     }
 
     public Groep getResultaatGroepByID(int id) {
     	if (status.resultaatVerwerkt != null) {
-    		return status.resultaatVerwerkt.getGroepById(id);
+    		return status.resultaatVerwerkt.getGroepByNiveau(id);
     	} else {
     		return null;
     	}
@@ -526,7 +538,7 @@ public class IJCController {
      */
     public void addSpeler(int groepID, Speler sp, int locatie) {
     	logger.log(Level.INFO, "Voeg speler " + sp.getInitialen() + " toe aan groep " + groepID + ", locatie " + locatie);
-        Groep gr = status.groepen.getGroepById(groepID);
+        Groep gr = status.groepen.getGroepByNiveau(groepID);
         if (locatie > 0) {
         	gr.addSpeler(sp, locatie);
         } else {
@@ -539,7 +551,7 @@ public class IJCController {
 
     public void verwijderSpeler(int groepID, Speler sp, int locatie) {
     	logger.log(Level.INFO, "Verwijder speler " + sp.getInitialen() + " uit groep " + groepID + ", locatie " + locatie);
-        Groep gr = status.groepen.getGroepById(groepID);
+        Groep gr = status.groepen.getGroepByNiveau(groepID);
         gr.removeSpeler(sp, locatie);
         if (status.automatisch) {
             maakGroepsindeling();
@@ -548,7 +560,7 @@ public class IJCController {
 
     public void verwijderWedstrijdSpeler(int groepID, Speler sp, int locatie) {
     	logger.log(Level.INFO, "Verwijder speler " + sp.getInitialen() + " uit wedstrijdgroep " + groepID + ", locatie " + locatie);
-        Groep gr = status.wedstrijdgroepen.getGroepById(groepID);
+        Groep gr = status.wedstrijdgroepen.getGroepByNiveau(groepID);
         gr.removeSpeler(sp, locatie);
         gr.renumber();
         if (status.automatisch) {
@@ -640,7 +652,7 @@ public class IJCController {
 		// Check for wrong KNSBnumbers; this is vital!!!
 		logger.log(Level.INFO, "Checking for wrong KNSBnumbers");
 		try {
-			for (Groep g: status.groepen.getGroepen()) {
+			for (Groep g: status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 				logger.log(Level.INFO, "Checking groep " + g.getNaam(g.getNiveau()) + "(" + g.getNiveau() + ") ");
 				for (Speler s: g.getSpelers()) {
 					logger.log(Level.INFO, "Checking speler " + s.getNaam());
@@ -788,7 +800,7 @@ public class IJCController {
      */
     public Speler getSpelerOpNaam(String naam) {
     	if (status.groepen != null) {
-    		for (Groep groep : status.groepen.getGroepen()) {
+    		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
     			for (Speler speler : groep.getSpelers()) {
     				if (speler.getNaam().equals(naam)) {
     					return speler;
@@ -806,7 +818,7 @@ public class IJCController {
      */
     public Speler getSpelerOpInitialen(String naam) {
     	if (status.groepen != null) {
-    		for (Groep groep : status.groepen.getGroepen()) {
+    		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
     			for (Speler speler : groep.getSpelers()) {
     				if (speler.getInitialen().equals(naam)) {
     					return speler;
@@ -844,13 +856,13 @@ public class IJCController {
 	        // Als nieuwe periode, aanwezigheidspunten resetten en sorteren op rating
 			if (ronde == 1) {
 				resetAanwezigheidspunt();
-				for (Groep groep : status.groepen.getGroepen()) {
+				for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 					// sorteer aflopend op rating
 					groep.sorteerRating(false);
 				}
 			}
 			// Iedereen aanwezig zetten
-			for (Groep groep : status.groepen.getGroepen()) {
+			for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 				for (Speler s : groep.getSpelers()) {
 					s.setAanwezig(true);
 				}
@@ -887,8 +899,8 @@ public class IJCController {
      * @param locatie huidige locatie in huidige groep
      */
 	public void spelerNaarHogereGroep(int groepID, Speler speler, int locatie) {
-		Groep huidigeGroep = status.wedstrijdgroepen.getGroepById(groepID);
-		Groep hogereGroep = status.wedstrijdgroepen.getGroepById(groepID+1);
+		Groep huidigeGroep = status.wedstrijdgroepen.getGroepByNiveau(groepID);
+		Groep hogereGroep = status.wedstrijdgroepen.getGroepByNiveau(groepID+1);
 		if (huidigeGroep == null || hogereGroep == null) return;
 		logger.log(Level.INFO, "Verplaats " + speler.getNaam() + " van " + huidigeGroep.getNaam() + " naar " + hogereGroep.getNaam());
 		hogereGroep.addSpelerHoudNiveau(speler);
@@ -904,8 +916,8 @@ public class IJCController {
      * @param locatie huidige locatie in huidige groep
      */
 	public void spelerNaarLagereGroep(int groepID, Speler speler, int locatie) {
-		Groep huidigeGroep = status.wedstrijdgroepen.getGroepById(groepID);
-		Groep lagereGroep = status.wedstrijdgroepen.getGroepById(groepID-1);
+		Groep huidigeGroep = status.wedstrijdgroepen.getGroepByNiveau(groepID);
+		Groep lagereGroep = status.wedstrijdgroepen.getGroepByNiveau(groepID-1);
 		if (huidigeGroep == null || lagereGroep == null) return;
 		logger.log(Level.INFO, "Verplaats " + speler.getNaam() + " van " + huidigeGroep.getNaam() + " naar " + lagereGroep.getNaam());
 		lagereGroep.addSpeler(speler, 0); //vooraan plaatsen
@@ -926,10 +938,10 @@ public class IJCController {
 	 * Sorteer in aanwezigheidsgroep op rating
 	 * @param groepID
 	 */
-	public void sorteerGroepOpRating(int groepID) {
-		Groep groep = status.groepen.getGroepById(groepID);
+	public void sorteerGroepOpRating(int groepID, Boolean toggle) {
+		Groep groep = status.groepen.getGroepByNiveau(groepID);
 		if (groep != null) {
-			groep.sorteerRating();
+			groep.sorteerRating(toggle);
 			groep.renumber();
 		}
 	}
@@ -938,10 +950,10 @@ public class IJCController {
 	 * Sorteer in aanwezigheidsgroep op Punten
 	 * @param groepID
 	 */
-	public void sorteerGroepOpPunten(int groepID) {
-		Groep groep = status.groepen.getGroepById(groepID);
+	public void sorteerGroepOpPunten(int groepID, Boolean toggle) {
+		Groep groep = status.groepen.getGroepByNiveau(groepID);
 		if (groep != null) {
-			groep.sorteerRating();
+			groep.sorteerPunten(toggle);
 			groep.renumber();
 		}
 	}
@@ -980,18 +992,36 @@ public class IJCController {
 		logger.log(Level.INFO, "Vorige periode : " + vorigeperiode);
 		logger.log(Level.INFO, "Vorige rondde : " + vorigeronde);
 		for (APIConfig config : c.externalAPIConfigs.apiconfigs){
+			//try {
 			try {
-					c.externalAPIs.export(config.getURL(), config.getPagePath(), config.getUserName(), new String(this.getPassword(config.getId().toString(),  c.salt)), config.getLoginPath(), config.getTemplate(),vorigeperiode, vorigeronde);
-					// oud
-					// c.externalAPIs.export(c.plone52URL, c.plone52Path, c.plone52UserName, new String(this.getPassword("Plone52Password", c.salt)), vorigeperiode, vorigeronde); 
-			} catch (GeneralSecurityException e) {
+		        pw = new String(this.getPassword(config.getId().toString(),  c.salt));
+			} catch (GeneralSecurityException e2) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (DestroyFailedException e) {
+				e2.printStackTrace();
+			} catch (DestroyFailedException e2) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e2.printStackTrace();
 			}
-		}
+        
+					// Edit template tekst
+					txtLes = config.getTemplate();
+					// Edit template tekst
+					String txtLes = config.getTemplate();
+					logger.log(Level.INFO, "Template = " + txtLes);
+//					Window parentWindow = SwingUtilities.getWindowAncestor(this.getClass());
+					LesTekstDialoog lt  = new LesTekstDialoog("Edit template voor Lestekst");
+					lt.setLesTekst(txtLes);
+					lt.setVisible(true);
+					txtLes = lt.getLesTekst();
+					Boolean cancel = lt.getCanceled();
+					if (!cancel) {
+						logger.log(Level.INFO, "Aangepaste txtLes : " + txtLes);				
+						c.externalAPIs.export(config.getURL(), config.getPagePath(), config.getUserName(), pw, config.getLoginPath(), txtLes, vorigeperiode, vorigeronde);
+					} else {
+						logger.log(Level.INFO, "Canceled. No exported!");				
+					}
+//					logger.log(Level.INFO, "Export API fictief done");
+						}
 	}
 
 	
@@ -1030,8 +1060,8 @@ public class IJCController {
 	 * @param spelerID speler ID
 	 */
 	public void doorschuiven(int groepID, int spelerID) {
-		Groep huidigeGroep = status.groepen.getGroepById(groepID);
-		Groep hogereGroep = status.groepen.getGroepById(groepID+1);
+		Groep huidigeGroep = status.groepen.getGroepByNiveau(groepID);
+		Groep hogereGroep = status.groepen.getGroepByNiveau(groepID+1);
 		if (huidigeGroep != null && hogereGroep != null) {
 			Speler s = huidigeGroep.getSpelerByID(spelerID+1);
 			huidigeGroep.removeSpeler(s, spelerID);
@@ -1050,8 +1080,8 @@ public class IJCController {
 	 * @param spelerID speler ID
 	 */
 	public void terugschuiven(int groepID, int spelerID) {
-		Groep huidigeGroep = status.groepen.getGroepById(groepID);
-		Groep lagereGroep = status.groepen.getGroepById(groepID-1);
+		Groep huidigeGroep = status.groepen.getGroepByNiveau(groepID);
+		Groep lagereGroep = status.groepen.getGroepByNiveau(groepID-1);
 		if (huidigeGroep != null && lagereGroep != null) {
 			Speler s = huidigeGroep.getSpelerByID(spelerID+1);
 			huidigeGroep.removeSpeler(s, spelerID);
@@ -1123,7 +1153,7 @@ public class IJCController {
 	}
 
 	public void wisZwartWitVoorkeur() {
-		for (Groep groep : status.groepen.getGroepen()) {
+		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 			for (Speler speler : groep.getSpelers()) {
 				speler.setWitvoorkeur(0);
 			}
@@ -1132,7 +1162,7 @@ public class IJCController {
 
 	public ArrayList<Speler> getNietKNSBLeden() {
 		ArrayList<Speler> lijst = new ArrayList<>(); 
-		for (Groep groep : status.groepen.getGroepen()) {
+		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 			for (Speler speler : groep.getSpelers()) {
 				if (!speler.isKNSBLid()) {
 					lijst.add(speler);

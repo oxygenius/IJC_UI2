@@ -216,7 +216,7 @@ public class Configuratie {
 	 * Geef footer doorschuivers
 	 */
 
-	public String exportDoorschuiversStop = "Spelers no 3 en 4 schuiven alleen door als de groep even wordt";
+	public String exportDoorschuiversStop = "De aanwezigheid van speler en de poging om alle speelgroepen een even aantal speler te geven bepaalt uiteindelijk wie doorschuift!";
 
 	/**
 	 * Geef aan of de KEI stand geexporteerd moet worden.

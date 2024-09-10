@@ -202,13 +202,15 @@ public class APIs {
 				    }
 					logger.log(Level.INFO, "Login for external api : " + api.getType() + api.getVersionMin() + " succesful. Token retrieved!");
 					logger.log(Level.INFO, "Token :" + plone52Token.getToken());
-					try {
-						response = Plone52.createpage(plone52Token, url, pagepath, template, periode, ronde);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					if (plone52Token.getToken()!=null) {
+						try {
+							response = Plone52.createpage(plone52Token, url, pagepath, template, periode, ronde);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						logger.log(Level.INFO, "Response van Plone52 request is : " + response);
 					}
-			    	logger.log(Level.INFO, "Response van Plone52 request is : " + response);
 			    }					
 			}	
 		}		

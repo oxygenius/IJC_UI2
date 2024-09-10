@@ -61,6 +61,7 @@ import javax.swing.table.TableColumn;
 
 import nl.amity.ijc_ui.Configuratie;
 import nl.amity.ijc_ui.SpelerDBImport;
+import nl.amity.ijc_ui.data.external.api.APIConfig;
 import nl.amity.ijc_ui.data.groepen.Groep;
 import nl.amity.ijc_ui.data.groepen.Groepen;
 import nl.amity.ijc_ui.data.groepen.Speler;
@@ -103,7 +104,7 @@ public class Hoofdscherm extends JFrame {
 	private static final long serialVersionUID = -2154845989579570030L;
 	private final static Logger logger = Logger.getLogger(Hoofdscherm.class.getName());
 
-	private String appVersion = "2.0.0.2";
+	private String appVersion = "2.0.0.3";
 	private JPanel hoofdPanel;
 	private JTabbedPane tabs;
 	private JPanel[] panels;
@@ -171,7 +172,7 @@ public class Hoofdscherm extends JFrame {
 		 */
 		int i =0;
 		//Groepen groepen = controller.sorteeropNiveau();
-		for (Groep g : controller.getStatus().groepen.getGroepen()) {
+		for (Groep g : controller.getStatus().groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 			panels[i] = makePanel();
 		    fillGroupPanel(panels[i], i);
 		    tabs.addTab(g.getNaam(), null, panels[i],"Gegevens van " + g.getNaam()+ " (" + g.getNiveau() + ")");
@@ -616,6 +617,17 @@ public class Hoofdscherm extends JFrame {
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				for (APIConfig config : IJCController.c().externalAPIConfigs.apiconfigs){
+					// Edit template tekst
+///					String txtLes = config.getTemplate();
+///					logger.log(Level.INFO, "Template = " + txtLes);
+//					Window parentWindow = SwingUtilities.getWindowAncestor(this.getClass());
+///					LesTekstDialoog lt  = new LesTekstDialoog("Edit template voor Lestekst");
+///					lt.setLesTekst(txtLes);
+///					lt.setVisible(true);
+///					txtLes = lt.getLesTekst();
+///					logger.log(Level.INFO, "Aangepaste txtLes : " + txtLes);				
+				}				
 				controller.exporteerNaarExternalAPI();
 				hoofdPanel.repaint();
 			}
@@ -816,13 +828,22 @@ public class Hoofdscherm extends JFrame {
 		        	repaint();
 		        	break;
 		        case 4:
-		        	logger.log(Level.INFO, "Sorteer op rating in de groep");
-		        	controller.sorteerGroepOpRating(groepID);
+		        	logger.log(Level.INFO, "Sorteer op rating (toggle) in de groep");
+		        	controller.sorteerGroepOpRating(groepID, true);
+		        	if (controller.isAutomatisch()) {
+			        	// Opnieuw indelen op basis van nieuwe volgorde
+		        		controller.maakGroepsindeling();
+		        	}
 		        	break;
 		        case 5:
-		        	logger.log(Level.INFO, "Sorteer op punte in de groep");
-		        	controller.sorteerGroepOpPunten(groepID);
+		        	logger.log(Level.INFO, "Sorteer op punten (toggle) in de groep");
+		        	controller.sorteerGroepOpPunten(groepID, true);
+		        	if (controller.isAutomatisch()) {
+			        	// Opnieuw indelen op basis van nieuwe volgorde
+		        		controller.maakGroepsindeling();
+		        	}
 		        	break;
+		        	
 		        }
 		    }
 		});
@@ -1262,7 +1283,7 @@ public class Hoofdscherm extends JFrame {
 			}
 			catch (Exception ex) {
 				logger.log(Level.INFO, "Exception: " +  ex.getMessage());
-				Utils.stacktrace(ex);
+				//Utils.stacktrace(ex);
 			}
 			try {
 				controller.volgendeRonde();

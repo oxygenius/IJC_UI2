@@ -280,7 +280,7 @@ public class ConfigurationDialog extends JDialog {
 		panel.add(new JLabel("Aantal doorschuivers"));
 		tfGrDoorschuivers = new JTextField(config.grAantalDoorschuivers, 30);
 		tfGrDoorschuivers.setCaretPosition(0);
-		tfGrDoorschuivers.setToolTipText("Groovy functie: x=periode, y=ronde, resultaat 0 is geen doorschuivers");
+		tfGrDoorschuivers.setToolTipText("Groovy functie: x=groep (vanaf 0), y=periode (vanaf 1), z=ronde (vanaf 1), resultaat 0 is geen doorschuivers");
 		panel.add(tfGrDoorschuivers);
 		// private String grSorteerOpRating = "if ((x == 6) && (z > 1) && (z <
 		panel.add(new JLabel("Sorteer op rating voor indelen"));

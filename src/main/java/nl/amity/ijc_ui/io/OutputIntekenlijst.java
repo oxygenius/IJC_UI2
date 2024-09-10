@@ -54,7 +54,7 @@ public class OutputIntekenlijst implements GroepenExportInterface {
 			for (int i = 0; i < groepen.getAantalGroepen(); ++i) {
 				if (i >= 1)
 					run.addBreak();
-				Groep groep = groepen.getGroepById(i);
+				Groep groep = groepen.getGroepByNiveau(i);
 				result = "Stand na " + groepen.getRonde() + "e ronde, " + groepen.getPeriode();
 				result += "e periode                " + groep.getNaam() + " (" + groep.getSpelers().size() + ")\n";
 				run.setText(result);
@@ -76,7 +76,7 @@ public class OutputIntekenlijst implements GroepenExportInterface {
 					if (i - 1 >= 0) {
 						run.setText(IJCController.c().exportDoorschuiversStart + "\n");
 						run.addBreak();
-						Groep lager = groepen.getGroepById(i - 1);
+						Groep lager = groepen.getGroepByNiveau(i - 1);
 						if (ndoor > 1) {
 							for (int j = 0; j < ndoor; j++) {
 								Speler s = lager.getSpelerByID(j + 1);

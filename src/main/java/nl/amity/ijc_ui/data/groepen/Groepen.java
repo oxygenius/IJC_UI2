@@ -20,9 +20,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import nl.amity.ijc_ui.data.groepen.Groepen.Sortering;
 import nl.amity.ijc_ui.ui.control.IJCController;
+import nl.amity.ijc_ui.ui.util.Utils;
+import nl.amity.ijc_ui.ui.view.Hoofdscherm;
 
 /**
  * Bevat een verzameling groepen, een per niveau.
@@ -33,7 +37,7 @@ import nl.amity.ijc_ui.ui.control.IJCController;
  */
 public class Groepen {
 
-	enum Sortering {NIVEAU_ASC, NIVEAU_DESC};
+	public enum Sortering {NIVEAU_ASC, NIVEAU_DESC};
 
     private ArrayList<Groep> groepen;
     private int periode;
@@ -41,6 +45,8 @@ public class Groepen {
     private Sortering sortering;
 
     private static String ls = System.lineSeparator();
+
+	private final static Logger logger = Logger.getLogger(Hoofdscherm.class.getName());
 
     public Groepen() {
         groepen = new ArrayList<>();
@@ -62,7 +68,7 @@ public class Groepen {
     	}
     }
 
-    public Groep getGroepById(int id) {
+    public Groep getGroepByNiveau(int id) {
         for (Groep g : groepen) {
             if (g.getNiveau() == id) {
                 return g;
@@ -71,8 +77,8 @@ public class Groepen {
         return null;
     }
 
-    public ArrayList<Groep>getGroepen() {
-    	sorteerNiveau();
+    public ArrayList<Groep>getGroepen(Sortering sortering) {
+    	sorteerNiveau(sortering);
         return groepen;
     }
 
@@ -106,8 +112,17 @@ public class Groepen {
     }
     public String toPrintableString(boolean lang) {
         String result = "";
+        //TODO Place reversed order in configuration! 
+        Boolean reversed = true;
+        //Boolean reversed = false;
+        int rev = 0 ;
+        if (reversed) rev = groepen.size() - 1;
+        int index;
+		logger.log(Level.INFO, "rev = " + rev);
         for (int i = 0; i < groepen.size(); ++i) {
-        	Groep groep = groepen.get(i);
+        	if (reversed) index = (rev-i); else index=(rev+i); 
+    		logger.log(Level.INFO, "index = " + index);        	
+        	Groep groep = groepen.get(index);
         	//Stand na 3e ronde , 1e periode               Keizergroep (16)
             //pos naam                           ini   zw rating  gespeeld tegen  punt
             //------------------------------------------------------------------------
@@ -119,9 +134,12 @@ public class Groepen {
             result += groep.toPrintableString(lang) + ls;
 
 			if (IJCController.c().exportDoorschuivers) {
+				// Bepaal doorschuivers
 				int ndoor = IJCController.c().bepaalAantalDoorschuiversVolgendeRonde(groep.getNiveau(), periode, ronde);
-				if (i + 1 < groepen.size()) {
-					Groep lager = groepen.get(i + 1);
+				//if (rev - (i + 1) < groepen.size()) {
+				//if (rev - (i + 1) > 0) {
+				if (index > 0) {
+					Groep lager = groepen.get(index-1);
 					if (ndoor > 1) {
 						result += IJCController.c().exportDoorschuiversStart + ls;
 						for (int j = 0; j < ndoor; j++) {
@@ -130,7 +148,8 @@ public class Groepen {
 								result += s.toPrintableString(lang, true) + ls;
 							}
 						}
-						result += IJCController.c().exportDoorschuiversStop + ls + ls;
+						String str = Utils.multiLine(IJCController.c().exportDoorschuiversStop,80);
+						result += str + ls + ls;
 					} else {
 						// Bij één doorschuiver, alleen doorschuiven als kampioen
 						Speler s1 = lager.getSpelerByID(1);
@@ -159,7 +178,7 @@ public class Groepen {
      */
     public void sorteerGroepen() {
         for (Groep g : groepen) {
-        	g.sorteerPunten();
+        	g.sorteerPunten(false);
             g.renumber();
         }
 
@@ -231,11 +250,11 @@ public class Groepen {
      }
     
     /**
-     * Sorteer de spelers in deze groep op punten. Bij hetzelfde aantal
-     * punten wordt gesorteerd op rating
+     * Sorteer de groepen op niveau. Zet hiermee de groepen op logische volgorde.
+     * Dit kan Aflopend op Oplopen
      */
-    public void sorteerNiveau() {
-    	sortering = Sortering.NIVEAU_ASC;
+    public void sorteerNiveau(Sortering sortering) {
+    	//sortering = Sortering.NIVEAU_ASC;
     	Collections.sort(groepen, new Comparator<Groep>() {
     	    @Override
     	    public int compare(Groep o1, Groep o2) {

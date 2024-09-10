@@ -70,7 +70,7 @@ public class SpelerDBImport {
 
 			// Lees spelers
 			int nieuweSpelers = 0;
-			for (Groep groep : status.resultaatVerwerkt.getGroepen()) {
+			for (Groep groep : status.resultaatVerwerkt.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 				for (Speler gs : groep.getSpelers()) {
 					DBSpeler dbSpeler = spelerDB.getSpelerByName(gs.getNaam());
 					if (dbSpeler == null) {
@@ -153,7 +153,7 @@ public class SpelerDBImport {
 		spelerDB.store(ronde);
 		// Lees spelers
 		int nieuweSpelers = 0;
-		for (Groep groep : groepen.getGroepen()) {
+		for (Groep groep : groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 			for (Speler gs : groep.getSpelers()) {
 				DBSpeler dbSpeler = spelerDB.getSpelerByKNSB(gs.getKNSBnummer());
 				if (dbSpeler == null) {

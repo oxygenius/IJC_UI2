@@ -22,6 +22,9 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
@@ -77,15 +80,17 @@ public class Plone52 {
 		JSONObject jsonOb1 = new JSONObject(); 
 		jsonOb1.put("login", username);
 		jsonOb1.put("password", password);
-		/*
-		 * HttpClient send2client = HttpClient.newHttpClient(); HttpRequest Req2client =
-		 * HttpRequest.newBuilder() .uri(URI.create("https://" + url + "/" + loginpath))
-		 * .header("Accept", "application/json") .header("Content-Type",
-		 * "application/json")
-		 * .POST(HttpRequest.BodyPublishers.ofString(jsonOb1.toString())) .build();
-		 * HttpResponse<String> response = send2client.send(Req2client,
-		 * HttpResponse.BodyHandlers.ofString()); httpsbody += response.body();
-		 */		logger.log(Level.INFO, "httpsbody is '" + httpsbody + "'");
+		// logger.log(Level.WARNING, "Temporarily disbled!!!");
+		
+		  HttpClient send2client = HttpClient.newHttpClient(); HttpRequest Req2client =
+		  HttpRequest.newBuilder() .uri(URI.create("https://" + url + "/" + loginpath))
+		  .header("Accept", "application/json") .header("Content-Type",
+		  "application/json")
+		  .POST(HttpRequest.BodyPublishers.ofString(jsonOb1.toString())) .build();
+		  HttpResponse<String> response = send2client.send(Req2client,
+		  HttpResponse.BodyHandlers.ofString()); httpsbody += response.body();
+		 
+		logger.log(Level.INFO, "httpsbody is '" + httpsbody + "'");
 		token = gson.fromJson(httpsbody, Token.class);
 		return token;
 	}
@@ -105,7 +110,7 @@ public class Plone52 {
 		String httpsbody = "";
 		int httpsresponse = 0;
 		//String token = "";
-//		HttpClient httpClient = HttpClient.newHttpClient();
+		HttpClient httpClient = HttpClient.newHttpClient();
 		String bestandsnaam = "R" + periode + "-" + ronde + "Uitslag.txt";
 		String dirName = "R" + periode + "-" + ronde;
 		String txtUitslag[] = Utils.leesBestand(dirName + File.separator + bestandsnaam);
@@ -121,12 +126,15 @@ public class Plone52 {
 			ZonedDateTime zdt = ft.toInstant().atZone(zone.toZoneId());
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMMM yyyy");
 			s = zdt.format(dtf);
+			//logger.log(Level.INFO, "Datum is " + s.toString());
+
 		} catch (IOException e1) {
 			s = new SimpleDateFormat("dd MMMM yyyy").format(Calendar.getInstance().getTime());
+			//logger.log(Level.INFO, "Datum is " + s.toString());
 		}
 		// temporary
 		String documentTitle = "Clubavond " + s;
-		String txtles = "Het was weer een leuke les met hoge opkomst.\nTrainer Lodewijk had weer een mooie les voorbereid.\n";
+		//Old:String txtles = "Het was weer een leuke les met hoge opkomst.\nTrainer Lodewijk had weer een mooie les voorbereid.\n";
 
 		bestandsnaam = "R" + periode + "-" + ronde + "Stand.txt";
 		String txtStand[] = Utils.leesBestand(dirName + File.separator + bestandsnaam);
@@ -149,19 +157,19 @@ public class Plone52 {
 		jsonOb1.put("text", jsonOb2);		
 		//
 		System.out.println("JSON : " + jsonOb1.toString(2));
-//		HttpRequest request = HttpRequest.newBuilder()
-//				.uri(URI.create("https://" + url + "/" + path))
-//				.header("Accept", "application/json")
-//				.header("Content-Type", "application/json")
-//				.header("Authorization", "Bearer " + token.getToken())
-//				.POST(HttpRequest.BodyPublishers.ofString(jsonOb1.toString()))
-//				.build();			  
-//		try {
-//			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//			httpsbody += response.body();
-//		} catch (IOException | InterruptedException e) {
-//			e.printStackTrace();
-//		}
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create("https://" + url + "/" + path))
+				.header("Accept", "application/json")
+				.header("Content-Type", "application/json")
+				.header("Authorization", "Bearer " + token.getToken())
+				.POST(HttpRequest.BodyPublishers.ofString(jsonOb1.toString()))
+				.build();			  
+		try {
+			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+			httpsbody += response.body();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
 		/*
 		 * if (httpsresponse / 100 != 2 ) {
 		 * System.out.println("StatusCode :" + httpsresponse);
@@ -173,29 +181,32 @@ public class Plone52 {
 	        
 		System.out.println("Document created with title : " + id.toString());
 		httpsbody = "";
-//		request = HttpRequest.newBuilder()
-//				.uri(URI.create("https://" + url + "/" + path + "/" + id.toString() + "/@workflow/publish"))
-//				.header("Accept", "application/json")
-//				.header("Content-Type", "application/json")
-//				.header("Authorization", "Bearer " + token.getToken())
-//				.POST(HttpRequest.BodyPublishers.ofString("{}"))
-//				.build();			  
-//		try {
-//			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//			httpsresponse = response.statusCode();
-//			httpsbody += response.body();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		if (httpsresponse / 100 != 2 ) {
+		request = HttpRequest.newBuilder()
+				.uri(URI.create("https://" + url + "/" + path + "/" + id.toString() + "/@workflow/publish"))
+				.header("Accept", "application/json")
+				.header("Content-Type", "application/json")
+				.header("Authorization", "Bearer " + token.getToken())
+				.POST(HttpRequest.BodyPublishers.ofString("{}"))
+				.build();			  
+		try {
+			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+			httpsresponse = response.statusCode();
+			httpsbody += response.body();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (httpsresponse / 100 != 2 ) {
 //			System.out.println("StatusCode :" + httpsresponse);
 //			System.out.println("URI :" + httpsbody);
-//			return Integer.toString(httpsresponse);
-//		} else {
+			logger.log(Level.INFO, "StatusCode :" + httpsresponse);
+			logger.log(Level.INFO, "URI :" + httpsbody);
+			return Integer.toString(httpsresponse);
+		} else {
 //			System.out.println("Document published!");
-//			return "OK";
-//		}
-		return "TEMP";
+		logger.log(Level.INFO, "Document published!");
+			return "OK";
+		}
+//		return "TEMP";
 	}
 	
 	// Delete user from Plone52!!!
@@ -204,16 +215,16 @@ public class Plone52 {
 			throw new NullPointerException();
 		}
 		int httpsresponse = 0;
-//		HttpClient httpClient = HttpClient.newHttpClient();
-//		HttpRequest request = HttpRequest.newBuilder()
-//				.uri(URI.create("https://www.svdestelling.nl/@users/" + username))
-//				.header("Accept", "application/json")
-//				.header("Content-Type", "application/json")
-//				.header("Authorization", "Bearer " + token.getToken())
-//				.DELETE()
-//				.build();			  
-//		HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//		httpsresponse = response.statusCode();
+		HttpClient httpClient = HttpClient.newHttpClient();
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create("https://www.svdestelling.nl/@users/" + username))
+				.header("Accept", "application/json")
+				.header("Content-Type", "application/json")
+				.header("Authorization", "Bearer " + token.getToken())
+				.DELETE()
+				.build();			  
+		HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+		httpsresponse = response.statusCode();
 		return httpsresponse;
 	}
 
@@ -223,16 +234,16 @@ public class Plone52 {
 			throw new NullPointerException();
 		}
 		String httpsbody = "";
-//		HttpClient httpClient = HttpClient.newHttpClient();
-//		HttpRequest request = HttpRequest.newBuilder()
-//				.uri(URI.create("https://www.svdestelling.nl/@users"))
-//				.header("Accept", "application/json")
-//				.header("Content-Type", "application/json")
-//				.header("Authorization", "Bearer " + token.getToken())
-//				.GET()
-//				.build();			  
-//		HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//		httpsbody = response.body();
+		HttpClient httpClient = HttpClient.newHttpClient();
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create("https://www.svdestelling.nl/@users"))
+				.header("Accept", "application/json")
+				.header("Content-Type", "application/json")
+				.header("Authorization", "Bearer " + token.getToken())
+				.GET()
+				.build();			  
+		HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+		httpsbody = response.body();
 		return httpsbody;
 	}
 

@@ -404,7 +404,7 @@ public class Speler implements Cloneable {
     public String toPrintableString(boolean lang, boolean noids) {
     	String result = "";
     	if (noids) {
-    		result += "   " + toPrintableStringShortt();
+    		result += "    " + toPrintableStringShortt();
     	} else {    	
     		result += toPrintableStringShort();
     	}

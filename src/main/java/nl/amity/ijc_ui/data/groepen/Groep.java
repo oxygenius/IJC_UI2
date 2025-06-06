@@ -49,6 +49,7 @@ public class Groep {
      */
     public Groep() {
     	spelers = new ArrayList<>();
+    	sortering = Sortering.PUNTEN_DESC;
     }
 
     /**
@@ -328,8 +329,11 @@ public class Groep {
     /**
      * Sorteer de spelers in deze groep op punten. Bij hetzelfde aantal
      * punten wordt gesorteerd op rating
+     * @param toggle toggle sortering
+     * @param descending don't mind sortering just do descending
+     * 
      */
-    public void sorteerPunten(Boolean toggle) {
+    public void sorteerPunten(Boolean toggle, Boolean descending) {
 		logger.log(Level.INFO, "sortering = " + sortering);
     	if (toggle) sortering = sortering != Sortering.PUNTEN_ASC? Sortering.PUNTEN_ASC : Sortering.PUNTEN_DESC;
 		logger.log(Level.INFO, "sortering = " + sortering);
@@ -346,7 +350,8 @@ public class Groep {
     	    		}
 					result = r2 - r1;
     	    	}
-    	    	return (sortering == Sortering.PUNTEN_ASC) ? result : -result;
+    	    	if (!descending && sortering == Sortering.PUNTEN_DESC) result=-result;
+    	    	return result;
     	    }
     	});
     }

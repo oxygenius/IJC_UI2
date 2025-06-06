@@ -50,6 +50,7 @@ import nl.amity.ijc_ui.data.external.api.APIConfig;
 import nl.amity.ijc_ui.data.external.api.Plone52;
 import nl.amity.ijc_ui.data.groepen.Groep;
 import nl.amity.ijc_ui.data.groepen.Groepen;
+import nl.amity.ijc_ui.data.groepen.Groepen.Sortering;
 import nl.amity.ijc_ui.data.groepen.Speler;
 import nl.amity.ijc_ui.data.wedstrijden.Groepswedstrijden;
 import nl.amity.ijc_ui.data.wedstrijden.Serie;
@@ -89,7 +90,7 @@ public class IJCController {
 	private KeyStore ks = null;
 	// TO DO
     // In first time startup. Create a unique keystore password
-	private char[] keyStorePassword = "".toCharArray();
+	private char[] keyStorePassword = "m2fhwuiyegnfwgofijeghuiwhpfijeuovy4iojhkl43ngkls".toCharArray();
 	private String ksfilename = "keystore.ks";
 
     private String laatsteExport;
@@ -320,11 +321,13 @@ public class IJCController {
 		    	logger.log(Level.INFO, "Fix Groepen!");
 				fix_groepen(status.groepen, c.aantalGroepen)		;
 			}
-			if (status.wedstrijdgroepen.getAantalGroepen() != c.aantalGroepen) {
-		    	logger.log(Level.INFO, "Fix Wedstrijdgroepen!");
-				fix_groepen(status.wedstrijdgroepen, c.aantalGroepen);			
+			if (status.wedstrijdgroepen!=null) {
+				if (status.wedstrijdgroepen.getAantalGroepen() != c.aantalGroepen) {
+					logger.log(Level.INFO, "Fix Wedstrijdgroepen!");
+					fix_groepen(status.wedstrijdgroepen, c.aantalGroepen);
+				}
 			}
-			status.groepen.sorteerGroepen();
+			status.groepen.sorteerGroepen(true);
 		}
     	logger.log(Level.INFO, "Statusbestand ingelezen");
     	logger.log(Level.INFO, "aantal entries APIConfig = " + c.externalAPIConfigs.apiconfigs.size());
@@ -577,7 +580,7 @@ public class IJCController {
     	logger.log(Level.INFO, "Verwerk uitslagen");
     	Uitslagverwerker uv = new Uitslagverwerker();
     	status.resultaatVerwerkt =  uv.verwerkUitslag(status.groepen, status.wedstrijden, status.externGespeeld);
-    	status.resultaatVerwerkt.sorteerGroepen();
+    	status.resultaatVerwerkt.sorteerGroepen(true);
     	System.out.println(status.resultaatVerwerkt.toPrintableString());
     	logger.log(Level.INFO, "en sla uitslagen en status op");
     	new OutputStanden().export(status.resultaatVerwerkt);
@@ -951,20 +954,25 @@ public class IJCController {
 	/**
 	 * Sorteer in aanwezigheidsgroep op Punten
 	 * @param groepID
+	 * #param toggle toggle sorting order
 	 */
 	public void sorteerGroepOpPunten(int groepID, Boolean toggle) {
 		Groep groep = status.groepen.getGroepByNiveau(groepID);
 		if (groep != null) {
-			groep.sorteerPunten(toggle);
+			groep.sorteerPunten(toggle,false);
 			groep.renumber();
-		}
+	        if (status.automatisch) {
+	            maakGroepsindeling();
+	        }
+	    }
 	}
 	
 	/** Sorteer in groepen op niveau
 	 * @param 
 	 */
 	public void sorteeropNiveau() {
-		status.groepen.sorteerGroepen();;
+//		status.groepen.sorteerGroepen();
+		status.groepen.sorteerNiveau(Sortering.NIVEAU_DESC);
 	}
 
 	/**

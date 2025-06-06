@@ -44,7 +44,7 @@ public class OutputStanden implements GroepenExportInterface {
 				String dirName = "R" + uitslag.getPeriode() + "-" + uitslag.getRonde();
 				new File(dirName).mkdirs();
 				FileWriter writer = new FileWriter(dirName + File.separator + bestandsnaam + "-long.txt");
-				writer.write(uitslag.toPrintableString(true));
+				writer.write(uitslag.toPrintableString(true)); // Long
 				writer.write(ls + "Stand aangemaakt met " + IJCController.c().appTitle + " voor " + IJCController.c().verenigingNaam + ls);
 				writer.close();
 				IJCController.getInstance().setLaatsteExport(dirName + File.separator + bestandsnaam + "-long.txt");
@@ -56,7 +56,7 @@ public class OutputStanden implements GroepenExportInterface {
 				new File(dirName).mkdirs();
 
 				FileWriter writer = new FileWriter(dirName + File.separator + bestandsnaam + ".txt");
-				writer.write(uitslag.toPrintableString(false));
+				writer.write(uitslag.toPrintableString(false)); // Short
 				writer.write(ls + "Stand aangemaakt met " + IJCController.c().appTitle + " voor " + IJCController.c().verenigingNaam + ls);
 				writer.close();
 				IJCController.getInstance().setLaatsteExport(dirName + File.separator + bestandsnaam + ".txt");

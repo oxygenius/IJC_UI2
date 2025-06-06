@@ -123,6 +123,8 @@ public class Groepen {
         	if (reversed) index = (rev-i); else index=(rev+i); 
     		logger.log(Level.INFO, "index = " + index);        	
         	Groep groep = groepen.get(index);
+        	groep.sorteerPunten(false,true);
+        	groep.renumber();
         	//Stand na 3e ronde , 1e periode               Keizergroep (16)
             //pos naam                           ini   zw rating  gespeeld tegen  punt
             //------------------------------------------------------------------------
@@ -140,6 +142,8 @@ public class Groepen {
 				//if (rev - (i + 1) > 0) {
 				if (index > 0) {
 					Groep lager = groepen.get(index-1);
+					lager.sorteerPunten(false,true);
+					lager.renumber();
 					if (ndoor > 1) {
 						result += IJCController.c().exportDoorschuiversStart + ls;
 						for (int j = 0; j < ndoor; j++) {
@@ -176,9 +180,10 @@ public class Groepen {
     /**
      * Sorteer alle groepen op punten
      */
-    public void sorteerGroepen() {
+    public void sorteerGroepen(boolean sorteerdefault) {
         for (Groep g : groepen) {
-        	g.sorteerPunten(false);
+        	if (sorteerdefault) g.sorteerPunten(false,true);
+        	else g.sorteerPunten(false,false);
             g.renumber();
         }
 
@@ -251,7 +256,7 @@ public class Groepen {
     
     /**
      * Sorteer de groepen op niveau. Zet hiermee de groepen op logische volgorde.
-     * Dit kan Aflopend op Oplopen
+     * Dit kan Aflopend of Oplopend
      */
     public void sorteerNiveau(Sortering sortering) {
     	//sortering = Sortering.NIVEAU_ASC;

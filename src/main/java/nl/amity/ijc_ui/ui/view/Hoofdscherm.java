@@ -60,7 +60,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import nl.amity.ijc_ui.Configuratie;
-import nl.amity.ijc_ui.SpelerDBImport;
+//import nl.amity.ijc_ui.SpelerDBImport;
 import nl.amity.ijc_ui.data.external.api.APIConfig;
 import nl.amity.ijc_ui.data.groepen.Groep;
 import nl.amity.ijc_ui.data.groepen.Groepen;
@@ -104,7 +104,7 @@ public class Hoofdscherm extends JFrame {
 	private static final long serialVersionUID = -2154845989579570030L;
 	private final static Logger logger = Logger.getLogger(Hoofdscherm.class.getName());
 
-	private String appVersion = "2.0.0.3";
+	private String appVersion = "2.0.1.0";
 	private JPanel hoofdPanel;
 	private JTabbedPane tabs;
 	private JPanel[] panels;
@@ -350,10 +350,18 @@ public class Hoofdscherm extends JFrame {
 	 * Update textfield met ZW balans voor spelen ronde
 	 */
 	public void updateZWbalansvoor(int index) {
-		String bal = String.format(Locale.US, "%.0f", controller.getWedstrijdGroepByID(index).getZWbalansvoor());
-		String ZWbalansText = "ZW Balans voor deze ronde is " + bal;
-		jTFZWbalansvoor[index].setText(ZWbalansText);
-		this.repaint();
+		try {
+			String bal = String.format(Locale.US, "%.0f", controller.getWedstrijdGroepByID(index).getZWbalansvoor());
+			String ZWbalansText = "ZW Balans voor deze ronde is " + bal;
+			jTFZWbalansvoor[index].setText(ZWbalansText);
+			this.repaint();
+		}
+		catch (NullPointerException npex) {
+			logger.log(Level.WARNING, "Nullpointer Exception in update ZWbalansvoor.");
+		}
+		catch (Exception ex) {
+			logger.log(Level.WARNING, "Other Exception in update ZWbalansvoor.");			
+		}
 	}
 
 	/**
@@ -366,9 +374,17 @@ public class Hoofdscherm extends JFrame {
 	}
 
 	public void updateZWbalansna(int index) {
+		try {
 		String bal = String.format(Locale.US, "%.0f", controller.getWedstrijdGroepByID(index).getZWbalansna());
 		String ZWbalansText = "ZW Balans na deze ronde is " + bal + "";
 		jTFZWbalansna[index].setText(ZWbalansText);
+		}
+		catch (NullPointerException npex) {
+			logger.log(Level.WARNING, "Nullpointer Exception in update ZWbalansna.");
+		}
+		catch (Exception ex) {
+			logger.log(Level.WARNING, "Other Exception in update ZWbalansna.");			
+		}
 	}
 
 	public void updateZWbalansna() {
@@ -833,6 +849,7 @@ public class Hoofdscherm extends JFrame {
 		        	if (controller.isAutomatisch()) {
 			        	// Opnieuw indelen op basis van nieuwe volgorde
 		        		controller.maakGroepsindeling();
+		        		repaint();
 		        	}
 		        	break;
 		        case 5:
@@ -841,6 +858,7 @@ public class Hoofdscherm extends JFrame {
 		        	if (controller.isAutomatisch()) {
 			        	// Opnieuw indelen op basis van nieuwe volgorde
 		        		controller.maakGroepsindeling();
+		        		repaint();
 		        	}
 		        	break;
 		        	
@@ -1277,14 +1295,14 @@ public class Hoofdscherm extends JFrame {
 	public void actieVolgendeRonde() {
 		Status s = controller.getStatus();
 		if (s.resultaatVerwerkt != null) {
-			try {
-				SpelerDBImport dbi = new SpelerDBImport();
-				dbi.importStatusObjectWithDBSession(s);
-			}
-			catch (Exception ex) {
-				logger.log(Level.INFO, "Exception: " +  ex.getMessage());
-				//Utils.stacktrace(ex);
-			}
+//			try {
+//				SpelerDBImport dbi = new SpelerDBImport();
+//				dbi.importStatusObjectWithDBSession(s);
+//			}
+//			catch (Exception ex) {
+//				logger.log(Level.INFO, "Exception: " +  ex.getMessage());
+//				//Utils.stacktrace(ex);
+//			}
 			try {
 				controller.volgendeRonde();
 				updateAutomatisch(true);

@@ -117,7 +117,7 @@ public class SpelerDBImport {
 		} catch (Exception ex) {
 			// Could not read status
 			ex.printStackTrace();
-            Utils.stacktrace(ex);
+            //Utils.stacktrace(ex);
 
 		}
 	}

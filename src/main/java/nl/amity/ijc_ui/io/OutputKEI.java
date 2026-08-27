@@ -58,7 +58,8 @@ public class OutputKEI implements GroepenExportInterface {
 
 			// Vind spelers met KEI punten
 			ArrayList<Speler> keispelers = new ArrayList<>();
-			for (Groep groep : groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//			for (Groep groep : groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+			for (Groep groep : groepen.getGroepen()) {
 				for (Speler speler : groep.getSpelers()) {
 					if ((speler.getKeikansen() > 0)) {
 						keispelers.add(speler);

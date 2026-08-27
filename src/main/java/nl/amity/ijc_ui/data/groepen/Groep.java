@@ -32,14 +32,18 @@ import nl.amity.ijc_ui.ui.control.IJCController;
  */
 public class Groep {
 
-	enum Sortering {RATING_ASC, RATING_DESC, PUNTEN_ASC, PUNTEN_DESC};
-
+	/*
+	 * enum Sortering {RATING_ASC, RATING_DESC, PUNTEN_ASC, PUNTEN_DESC};
+	 */
+	
     private int niveau;
     private double ZWbalansvoor;
     private double ZWbalansna;
     private ArrayList<Speler> spelers;
-    private Sortering sortering;
-
+	/*
+	 * private Sortering sortering;
+	 */
+    
     private final static Logger logger = Logger.getLogger(IJCController.class.getName());
 
     
@@ -49,7 +53,7 @@ public class Groep {
      */
     public Groep() {
     	spelers = new ArrayList<>();
-    	sortering = Sortering.PUNTEN_DESC;
+		/* sortering = Sortering.PUNTEN_DESC; */
     }
 
     /**
@@ -326,6 +330,11 @@ public class Groep {
     	return result;
     }
 
+    
+    public void sorteerPunten(Boolean toggle, Boolean descending) {
+ 
+	}
+    
     /**
      * Sorteer de spelers in deze groep op punten. Bij hetzelfde aantal
      * punten wordt gesorteerd op rating
@@ -333,46 +342,40 @@ public class Groep {
      * @param descending don't mind sortering just do descending
      * 
      */
-    public void sorteerPunten(Boolean toggle, Boolean descending) {
-		logger.log(Level.INFO, "sortering = " + sortering);
-    	if (toggle) sortering = sortering != Sortering.PUNTEN_ASC? Sortering.PUNTEN_ASC : Sortering.PUNTEN_DESC;
-		logger.log(Level.INFO, "sortering = " + sortering);
-    	Collections.sort(spelers, new Comparator<Speler>() {
-    	    @Override
-    	    public int compare(Speler o1, Speler o2) {
-    	    	int result = o2.getPunten() - o1.getPunten();
-    	    	if (result == 0) {
-    	    		int r1 = o1.getRating();
-    	    		int r2 = o2.getRating();
-    	    		if (niveau == (IJCController.c().aantalGroepen-1)) {
-    	    			r1 = o1.isKNSBLid() ? o1.getRating() * 10 : o1.getRating();
-    	    			r2 = o2.isKNSBLid() ? o2.getRating() * 10 : o2.getRating();
-    	    		}
-					result = r2 - r1;
-    	    	}
-    	    	if (!descending && sortering == Sortering.PUNTEN_DESC) result=-result;
-    	    	return result;
-    	    }
-    	});
-    }
+	/*
+	 * public void sorteerPunten(Boolean toggle, Boolean descending) {
+	 * logger.log(Level.INFO, "sortering = " + sortering); if (toggle) sortering =
+	 * sortering != Sortering.PUNTEN_ASC? Sortering.PUNTEN_ASC :
+	 * Sortering.PUNTEN_DESC; logger.log(Level.INFO, "sortering = " + sortering);
+	 * Collections.sort(spelers, new Comparator<Speler>() {
+	 * 
+	 * @Override public int compare(Speler o1, Speler o2) { int result =
+	 * o2.getPunten() - o1.getPunten(); if (result == 0) { int r1 = o1.getRating();
+	 * int r2 = o2.getRating(); if (niveau == (IJCController.c().aantalGroepen-1)) {
+	 * r1 = o1.isKNSBLid() ? o1.getRating() * 10 : o1.getRating(); r2 =
+	 * o2.isKNSBLid() ? o2.getRating() * 10 : o2.getRating(); } result = r2 - r1; }
+	 * if (!descending && sortering == Sortering.PUNTEN_ASC) result=-result; return
+	 * result; } }); }
+	 */
 
+    
+	 public void sorteerRating(Boolean toggle) {
+		 
+	 }
+	 
     /**
      * Sorteer de spelers in deze groep op rating
      */
-    public void sorteerRating(Boolean toggle) {
-    	if (toggle) sortering = sortering != Sortering.RATING_ASC ? Sortering.RATING_ASC : Sortering.RATING_DESC;
-    	Collections.sort(spelers, new Comparator<Speler>() {
-    	    @Override
-    	    public int compare(Speler o1, Speler o2) {
-    	    	if (sortering == Sortering.RATING_ASC) {
-    	    		return o2.getRating() - o1.getRating();
-    	    	} else {
-    	    		return o1.getRating() - o2.getRating();
-    	    	}
-    	    }
-    	});
-    }
-
+	/*
+	 * public void sorteerRating(Boolean toggle) { if (toggle) sortering = sortering
+	 * != Sortering.RATING_ASC ? Sortering.RATING_ASC : Sortering.RATING_DESC;
+	 * Collections.sort(spelers, new Comparator<Speler>() {
+	 * 
+	 * @Override public int compare(Speler o1, Speler o2) { if (sortering ==
+	 * Sortering.RATING_ASC) { return o2.getRating() - o1.getRating(); } else {
+	 * return o1.getRating() - o2.getRating(); } } }); }
+	 */
+    
     /**
      * Reset de punten en afwezigheidspunten van alle spelers in deze groep
      */

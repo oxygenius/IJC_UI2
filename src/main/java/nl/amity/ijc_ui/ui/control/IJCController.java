@@ -50,7 +50,7 @@ import nl.amity.ijc_ui.data.external.api.APIConfig;
 import nl.amity.ijc_ui.data.external.api.Plone52;
 import nl.amity.ijc_ui.data.groepen.Groep;
 import nl.amity.ijc_ui.data.groepen.Groepen;
-import nl.amity.ijc_ui.data.groepen.Groepen.Sortering;
+//import nl.amity.ijc_ui.data.groepen.Groepen.Sortering;
 import nl.amity.ijc_ui.data.groepen.Speler;
 import nl.amity.ijc_ui.data.wedstrijden.Groepswedstrijden;
 import nl.amity.ijc_ui.data.wedstrijden.Serie;
@@ -290,7 +290,8 @@ public class IJCController {
 	 */
 	private void resetAanwezigheidspunt() {
     	logger.log(Level.INFO, "Eerste ronde van een periode; reset aanwezigheidspunt");
-		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+		for (Groep groep : status.groepen.getGroepen()) {
 			for (Speler s : groep.getSpelers()) {
 				s.setAanwezig(false);
 			}
@@ -337,7 +338,8 @@ public class IJCController {
 	public void fix_groepen(Groepen s_groepen, int c_groepenaantal) {
 		if (s_groepen.getAantalGroepen() < c_groepenaantal) {
 			logger.log(Level.INFO, "More Groups is Config then in Status!");
-			for (Groep g : s_groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC))
+//			for (Groep g : s_groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC))
+			for (Groep g : s_groepen.getGroepen())
 				g.setNaam(c.groepsnamen[g.getNiveau()]);
 			for (int i=s_groepen.getAantalGroepen(); i<=c_groepenaantal;i++) {
 				s_groepen.addGroep(new Groep(i));						
@@ -348,7 +350,8 @@ public class IJCController {
 			//Waarschuwing en bevestiging voor verwijderen groepen uit Status.
 			//Zorg dat de te verwijderen groep leeg wordt gemaakt!
 			Groepen g_del = new Groepen();
-			for (Groep g : s_groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//			for (Groep g : s_groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+			for (Groep g : s_groepen.getGroepen()) {
 				if (g.getNiveau() >= c_groepenaantal) {
 					logger.log(Level.INFO, "Players from Groups (" + g.getNaam() + ") will be moved to lower group (" + s_groepen.getGroepByNiveau(g.getNiveau()-1) + ")");
 					IJCController.terugschuiven(g,s_groepen.getGroepByNiveau(g.getNiveau()-1));
@@ -357,7 +360,8 @@ public class IJCController {
 			}
 			logger.log(Level.INFO, "All players moved!");
 			try {
-				for (Groep g : g_del.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//				for (Groep g : g_del.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+				for (Groep g : g_del.getGroepen()) {
 					s_groepen.removeGroep(g);
 				}
 				logger.log(Level.INFO, "One or more Groups deleted!");
@@ -657,7 +661,8 @@ public class IJCController {
 		// Check for wrong KNSBnumbers; this is vital!!!
 		logger.log(Level.INFO, "Checking for wrong KNSBnumbers");
 		try {
-			for (Groep g: status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//			for (Groep g: status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+			for (Groep g: status.groepen.getGroepen()) {
 				logger.log(Level.INFO, "Checking groep " + g.getNaam(g.getNiveau()) + "(" + g.getNiveau() + ") ");
 				for (Speler s: g.getSpelers()) {
 					logger.log(Level.INFO, "Checking speler " + s.getNaam());
@@ -805,7 +810,8 @@ public class IJCController {
      */
     public Speler getSpelerOpNaam(String naam) {
     	if (status.groepen != null) {
-    		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//    		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+        	for (Groep groep : status.groepen.getGroepen()) {
     			for (Speler speler : groep.getSpelers()) {
     				if (speler.getNaam().equals(naam)) {
     					return speler;
@@ -823,7 +829,8 @@ public class IJCController {
      */
     public Speler getSpelerOpInitialen(String naam) {
     	if (status.groepen != null) {
-    		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//    		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+        	for (Groep groep : status.groepen.getGroepen()) {
     			for (Speler speler : groep.getSpelers()) {
     				if (speler.getInitialen().equals(naam)) {
     					return speler;
@@ -861,13 +868,15 @@ public class IJCController {
 	        // Als nieuwe periode, aanwezigheidspunten resetten en sorteren op rating
 			if (ronde == 1) {
 				resetAanwezigheidspunt();
-				for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//				for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+				for (Groep groep : status.groepen.getGroepen()) {
 					// sorteer aflopend op rating
 					groep.sorteerRating(false);
 				}
 			}
 			// Iedereen aanwezig zetten
-			for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//			for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+			for (Groep groep : status.groepen.getGroepen()) {
 				for (Speler s : groep.getSpelers()) {
 					s.setAanwezig(true);
 				}
@@ -972,7 +981,7 @@ public class IJCController {
 	 */
 	public void sorteeropNiveau() {
 //		status.groepen.sorteerGroepen();
-		status.groepen.sorteerNiveau(Sortering.NIVEAU_DESC);
+//		status.groepen.sorteerNiveau(Sortering.NIVEAU_DESC);
 	}
 
 	/**
@@ -1163,7 +1172,8 @@ public class IJCController {
 	}
 
 	public void wisZwartWitVoorkeur() {
-		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+		for (Groep groep : status.groepen.getGroepen()) {
 			for (Speler speler : groep.getSpelers()) {
 				speler.setWitvoorkeur(0);
 			}
@@ -1172,7 +1182,8 @@ public class IJCController {
 
 	public ArrayList<Speler> getNietKNSBLeden() {
 		ArrayList<Speler> lijst = new ArrayList<>(); 
-		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+		for (Groep groep : status.groepen.getGroepen()) {
 			for (Speler speler : groep.getSpelers()) {
 				if (!speler.isKNSBLid()) {
 					lijst.add(speler);

@@ -23,7 +23,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import nl.amity.ijc_ui.data.groepen.Groepen.Sortering;
+/*import nl.amity.ijc_ui.data.groepen.Groepen.Sortering;
+*/
 import nl.amity.ijc_ui.ui.control.IJCController;
 import nl.amity.ijc_ui.ui.util.Utils;
 import nl.amity.ijc_ui.ui.view.Hoofdscherm;
@@ -37,13 +38,16 @@ import nl.amity.ijc_ui.ui.view.Hoofdscherm;
  */
 public class Groepen {
 
-	public enum Sortering {NIVEAU_ASC, NIVEAU_DESC};
-
+	/*
+	 * public enum Sortering {NIVEAU_ASC, NIVEAU_DESC};
+	 */
     private ArrayList<Groep> groepen;
     private int periode;
     private int ronde;
-    private Sortering sortering;
-
+	/*
+	 * private Sortering sortering;
+	 */
+    
     private static String ls = System.lineSeparator();
 
 	private final static Logger logger = Logger.getLogger(Hoofdscherm.class.getName());
@@ -77,8 +81,12 @@ public class Groepen {
         return null;
     }
 
-    public ArrayList<Groep>getGroepen(Sortering sortering) {
-    	sorteerNiveau(sortering);
+//    public ArrayList<Groep>getGroepen(Sortering sortering) {
+//    	sorteerNiveau(sortering);
+//        return groepen;
+//    }
+
+    public ArrayList<Groep>getGroepen() {
         return groepen;
     }
 
@@ -123,7 +131,7 @@ public class Groepen {
         	if (reversed) index = (rev-i); else index=(rev+i); 
     		logger.log(Level.INFO, "index = " + index);        	
         	Groep groep = groepen.get(index);
-        	groep.sorteerPunten(false,true);
+//        	groep.sorteerPunten(false,true);
         	groep.renumber();
         	//Stand na 3e ronde , 1e periode               Keizergroep (16)
             //pos naam                           ini   zw rating  gespeeld tegen  punt
@@ -142,7 +150,7 @@ public class Groepen {
 				//if (rev - (i + 1) > 0) {
 				if (index > 0) {
 					Groep lager = groepen.get(index-1);
-					lager.sorteerPunten(false,true);
+//					lager.sorteerPunten(false,true);
 					lager.renumber();
 					if (ndoor > 1) {
 						result += IJCController.c().exportDoorschuiversStart + ls;
@@ -177,18 +185,22 @@ public class Groepen {
             g.renumber();
         }
     }
+
+	public void sorteerGroepen(boolean sorteerdefault) {
+		
+	}
+    
     /**
      * Sorteer alle groepen op punten
      */
-    public void sorteerGroepen(boolean sorteerdefault) {
-        for (Groep g : groepen) {
-        	if (sorteerdefault) g.sorteerPunten(false,true);
-        	else g.sorteerPunten(false,false);
-            g.renumber();
-        }
-
-    }
-
+	/*
+	 * public void sorteerGroepen(boolean sorteerdefault) { for (Groep g : groepen)
+	 * { if (sorteerdefault) g.sorteerPunten(false,true); else
+	 * g.sorteerPunten(false,false); g.renumber(); }
+	 * 
+	 * }
+	 */
+    
     /**
      * Zoek speler in alle groepen met het
      * opgegeven KNSB nummer
@@ -258,16 +270,13 @@ public class Groepen {
      * Sorteer de groepen op niveau. Zet hiermee de groepen op logische volgorde.
      * Dit kan Aflopend of Oplopend
      */
-    public void sorteerNiveau(Sortering sortering) {
-    	//sortering = Sortering.NIVEAU_ASC;
-    	Collections.sort(groepen, new Comparator<Groep>() {
-    	    @Override
-    	    public int compare(Groep o1, Groep o2) {
-    	    	int result = o1.getNiveau() - o2.getNiveau();
-    	    	return (sortering == Sortering.NIVEAU_ASC) ? result : -result;
-    	    }
-    	});
-    }
-    
+	/*
+	 * public void sorteerNiveau(Sortering sortering) { //sortering =
+	 * Sortering.NIVEAU_ASC; Collections.sort(groepen, new Comparator<Groep>() {
+	 * 
+	 * @Override public int compare(Groep o1, Groep o2) { int result =
+	 * o1.getNiveau() - o2.getNiveau(); return (sortering == Sortering.NIVEAU_ASC) ?
+	 * result : -result; } }); }
+	 */    
     
 }

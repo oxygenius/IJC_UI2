@@ -104,7 +104,7 @@ public class Hoofdscherm extends JFrame {
 	private static final long serialVersionUID = -2154845989579570030L;
 	private final static Logger logger = Logger.getLogger(Hoofdscherm.class.getName());
 
-	private String appVersion = "2.0.1.0";
+	private String appVersion = "2.0.1.2";
 	private JPanel hoofdPanel;
 	private JTabbedPane tabs;
 	private JPanel[] panels;
@@ -172,7 +172,8 @@ public class Hoofdscherm extends JFrame {
 		 */
 		int i =0;
 		//Groepen groepen = controller.sorteeropNiveau();
-		for (Groep g : controller.getStatus().groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//		for (Groep g : controller.getStatus().groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+		for (Groep g : controller.getStatus().groepen.getGroepen()) {
 			panels[i] = makePanel();
 		    fillGroupPanel(panels[i], i);
 		    tabs.addTab(g.getNaam(), null, panels[i],"Gegevens van " + g.getNaam()+ " (" + g.getNiveau() + ")");

@@ -70,7 +70,8 @@ public class SpelerDBImport {
 
 			// Lees spelers
 			int nieuweSpelers = 0;
-			for (Groep groep : status.resultaatVerwerkt.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//			for (Groep groep : status.resultaatVerwerkt.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+			for (Groep groep : status.resultaatVerwerkt.getGroepen()) {
 				for (Speler gs : groep.getSpelers()) {
 					DBSpeler dbSpeler = spelerDB.getSpelerByName(gs.getNaam());
 					if (dbSpeler == null) {
@@ -153,7 +154,8 @@ public class SpelerDBImport {
 		spelerDB.store(ronde);
 		// Lees spelers
 		int nieuweSpelers = 0;
-		for (Groep groep : groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//		for (Groep groep : groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+		for (Groep groep : groepen.getGroepen()) {
 			for (Speler gs : groep.getSpelers()) {
 				DBSpeler dbSpeler = spelerDB.getSpelerByKNSB(gs.getKNSBnummer());
 				if (dbSpeler == null) {

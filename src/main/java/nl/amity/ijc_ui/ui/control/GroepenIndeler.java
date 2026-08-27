@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 import nl.amity.ijc_ui.data.groepen.Groep;
 import nl.amity.ijc_ui.data.groepen.Groepen;
-import nl.amity.ijc_ui.data.groepen.Groepen.Sortering;
+//import nl.amity.ijc_ui.data.groepen.Groepen.Sortering;
 import nl.amity.ijc_ui.data.groepen.Speler;
 import nl.amity.ijc_ui.data.wedstrijden.Groepswedstrijden;
 import nl.amity.ijc_ui.data.wedstrijden.Serie;
@@ -52,7 +52,8 @@ public class GroepenIndeler implements GroepenIndelerInterface {
         wedstrijdGroepen.setRonde(ronde);
         // Eerst bepalen we de aanwezige spelers
         // Groepen worden gekopieerd maar zonder de afwezige spelers
-        for (Groep groep : aanwezigheidsGroepen.getGroepen(Groepen.Sortering.NIVEAU_DESC)) {
+//        for (Groep groep : aanwezigheidsGroepen.getGroepen(Groepen.Sortering.NIVEAU_DESC)) {
+        for (Groep groep : aanwezigheidsGroepen.getGroepen()) {
         	logger.log(Level.INFO, "Indeling voor groep " + groep.getNaam());
             Groep wedstrijdGroep = new Groep();
             wedstrijdGroep.setNiveau(groep.getNiveau());
@@ -136,7 +137,8 @@ public class GroepenIndeler implements GroepenIndelerInterface {
         // Doorloop hoogste groep tot ��n na laagste groep. In de laagste groep
         // kunnen geen spelers inschuiven
     	// Let op: iterator gaat op array index en NIET op groepID
-        ArrayList<Groep> groepen = wedstrijdGroepen.getGroepen(Groepen.Sortering.NIVEAU_DESC);
+//        ArrayList<Groep> groepen = wedstrijdGroepen.getGroepen(Groepen.Sortering.NIVEAU_DESC);
+        ArrayList<Groep> groepen = wedstrijdGroepen.getGroepen();
 //        for (int i = 0; i < groepen.size() - 1; ++i) {
         for (int i = 0; i < wedstrijdGroepen.getAantalGroepen() - 1; ++i) {
             aantal = bepaalAantalDoorschuiven(groepen.get(i).getNiveau(), aanwezigheidsGroepen.getPeriode(), aanwezigheidsGroepen.getRonde());
@@ -194,9 +196,11 @@ public class GroepenIndeler implements GroepenIndelerInterface {
         // kunnen geen spelers inschuiven
     	// Let op: iterator gaat op array index en NIET op groepID
         //ArrayList<Groep> groepen = wedstrijdGroepen.getGroepen(Groepen.Sortering.NIVEAU_DESC);
-        for (Groep groep : wedstrijdGroepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//        for (Groep groep : wedstrijdGroepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+        for (Groep groep : wedstrijdGroepen.getGroepen()) {
     		logger.log(Level.INFO, "Groep : "  + groep.getNaam());
-        	if (groep.getNiveau()+1 != aanwezigheidsGroepen.getGroepen(Sortering.NIVEAU_ASC).size()) {
+//        	if (groep.getNiveau()+1 != aanwezigheidsGroepen.getGroepen(Sortering.NIVEAU_ASC).size()) {
+            if (groep.getNiveau()+1 != aanwezigheidsGroepen.getGroepen().size()) {
         		aantal = bepaalAantalDoorschuiven(groep.getNiveau(), aanwezigheidsGroepen.getPeriode(), aanwezigheidsGroepen.getRonde());
         		logger.log(Level.INFO, "Doorschuiven van groep "  + groep.getNaam() + " naar " + (wedstrijdGroepen.getGroepByNiveau(groep.getNiveau()+1)).getNaam() + " n=" + aantal);
             	ArrayList<Speler> vanGroep = groep.getSpelers();
@@ -310,7 +314,8 @@ public class GroepenIndeler implements GroepenIndelerInterface {
     	int ronde = groepen.getRonde();
     	logger.log(Level.INFO, "Maken wedstrijden voor periode " + periode + " ronde " + ronde);
         Wedstrijden wedstrijden = new Wedstrijden();
-        for (Groep groepOrg : groepen.getGroepen(Groepen.Sortering.NIVEAU_DESC)) {
+//        for (Groep groepOrg : groepen.getGroepen(Groepen.Sortering.NIVEAU_DESC)) {
+        for (Groep groepOrg : groepen.getGroepen()) {
         	if (groepOrg.getAantalSpelers() == 1) {
     			logger.log(Level.WARNING, "Maar een speler. Kan geen wedstrijden maken. ");
         	} else {

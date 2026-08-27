@@ -13,15 +13,15 @@
  */
  package nl.amity.ijc_ui.data.external.api;
 
-import java.io.BufferedReader;
+//import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
+//import java.io.InputStreamReader;
+//import java.io.OutputStream;
+//import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
+//import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -35,7 +35,7 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.poi.openxml4j.opc.internal.ContentType;
+//import org.apache.poi.openxml4j.opc.internal.ContentType;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
@@ -82,11 +82,10 @@ public class Plone52 {
 		jsonOb1.put("password", password);
 		// logger.log(Level.WARNING, "Temporarily disbled!!!");
 		
-		  HttpClient send2client = HttpClient.newHttpClient(); HttpRequest Req2client =
-		  HttpRequest.newBuilder() .uri(URI.create("https://" + url + "/" + loginpath))
-		  .header("Accept", "application/json") .header("Content-Type",
-		  "application/json")
-		  .POST(HttpRequest.BodyPublishers.ofString(jsonOb1.toString())) .build();
+		  HttpClient send2client = HttpClient.newHttpClient();
+		  HttpRequest Req2client = HttpRequest.newBuilder() .uri(URI.create("https://" + url + "/" + loginpath))
+				  .header("Accept", "application/json") .header("Content-Type", "application/json")
+				  .POST(HttpRequest.BodyPublishers.ofString(jsonOb1.toString())) .build();
 		  HttpResponse<String> response = send2client.send(Req2client,
 		  HttpResponse.BodyHandlers.ofString()); httpsbody += response.body();
 		 

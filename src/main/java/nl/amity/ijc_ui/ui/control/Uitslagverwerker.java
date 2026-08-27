@@ -48,7 +48,8 @@ public class Uitslagverwerker {
 		Groepen updateGroepen = new Groepen();
 		updateGroepen.setPeriode(spelersgroepen.getPeriode());
 		updateGroepen.setRonde(spelersgroepen.getRonde());
-		for (Groep groep : spelersgroepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+//		for (Groep groep : spelersgroepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
+		for (Groep groep : spelersgroepen.getGroepen()) {
 			logger.log(Level.INFO, "Verwerk uitslag voor groep " + groep.getNaam());
 			Groep bijgewerkt = new Groep();
 			bijgewerkt.setNiveau(groep.getNiveau());

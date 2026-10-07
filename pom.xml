@@ -169,7 +169,7 @@ Main Class: nl.amity.ijc_ui.IJC_Wedstrijden
 </echo>
 
                     <!-- Generate Windows launcher script -->
-                    <echo file="${project.basedir}/Release/run.cmd" append="false">@echo off
+                    <echo file="${project.basedir}/Release/IJC_UI.cmd" append="false">@echo off
 rem Launcher for ${project.name} v${project.version} (Requires Java ${maven.compiler.target}+)
 start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"
 </echo>
@@ -179,7 +179,7 @@ start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"
                       <fileset dir="${project.basedir}/Release">
                         <include name="${project.artifactId}-${project.version}.jar"/>
                         <include name="release-info.txt"/>
-                        <include name="run.cmd"/>
+                        <include name="IJC_UI.cmd"/>
                         <include name="Leeg.docx"/>
                       </fileset>
                       <fileset dir="${project.basedir}">

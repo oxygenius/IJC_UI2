@@ -1,5 +1,5 @@
 Release Version: 2.0.1.4
 Artifact: ijc_ui-2.0.1.4.jar
 Target Java Version: Java 17 (Minimum required JRE: 17+)
-Build Date: 2026-10-07T11:22:32Z
+Build Date: 2026-10-07T12:37:17Z
 Main Class: nl.amity.ijc_ui.IJC_Wedstrijden

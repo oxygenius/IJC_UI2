@@ -112,7 +112,7 @@ public class WedstrijdschemaDialoog extends JDialog {
             protected Transferable createTransferable(JComponent source) {
                 SpelersIndelenModel model = (SpelersIndelenModel) ((JTable) source).getModel();
                 String value = model.getValueAt(((JTable) source).getSelectedRow(), 0).toString();
-                System.out.println("Dragging: " + value);
+                logger.log(Level.FINEST, () -> "Dragging: " + value);
                 return new StringSelection(value);
             }
 
@@ -337,14 +337,14 @@ public class WedstrijdschemaDialoog extends JDialog {
                     String val = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
                     if (!dl.isInsertRow()) {
                         // Update een wedstrijd met een andere speler
-                        System.out.println("Dropping at row " + row + ", column " + col + ", Value " + val);
+                        logger.log(Level.FINEST, () -> "Dropping at row " + row + ", column " + col + ", Value " + val);
                         if (col < 2) {
                             model.setSpeler(row, Integer.parseInt(val), true);
                         } else if (col > 2) {
                             model.setSpeler(row, Integer.parseInt(val), false);
                         }
                     } else {
-                        System.out.println("Inserting at row " + row + ", column " + col + ", Value " + val);
+                        logger.log(Level.FINEST, () -> "Inserting at row " + row + ", column " + col + ", Value " + val);
                         // Nieuwe wedstrijd
                         model.insertWedstrijd(row);
                         // met geselecteerde speler
@@ -356,7 +356,7 @@ public class WedstrijdschemaDialoog extends JDialog {
                     }
                     return true;
                 } catch (Exception ex) {
-                    System.out.println("Paste failed: " + ex.toString());
+                    logger.log(Level.WARNING, "Paste failed: " + ex.toString());
                     return false;
                 }
             }

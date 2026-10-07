@@ -73,6 +73,7 @@ import nl.amity.ijc_ui.ui.view.Bevesting;
 import nl.amity.ijc_ui.ui.view.ExternDialog;
 import nl.amity.ijc_ui.ui.view.LesTekstDialoog;
 import nl.amity.ijc_ui.ui.view.UitslagDialoog;
+import nl.amity.ijc_ui.util.LoggingConfig;
 
 /**
  * Main controller class voor afhandeling van de groepen en wedstrijden
@@ -104,19 +105,19 @@ public class IJCController {
     	}
     	catch (KeyStoreException kse) {
 			// TODO Auto-generated catch block
-			kse.printStackTrace();
+			logger.log(Level.WARNING, kse.getMessage(), kse);
     	}
     	try (InputStream data = new FileInputStream(ksfilename)) {
     		this.ks.load(data, keyStorePassword);
     	}
     	catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 			try {
 				ks.load(null);
 			} catch (Exception e2) {
 				// TODO Auto-generated catch block
-				e2.printStackTrace();
+				logger.log(Level.WARNING, e2.getMessage(), e2);
 			}
     	}
 
@@ -136,7 +137,7 @@ public class IJCController {
         	catch (GeneralSecurityException | IOException e)
         	{
     			// TODO Auto-generated catch block
-    			e.printStackTrace();
+    			logger.log(Level.WARNING, e.getMessage(), e);
         	}
         }
         return instance;
@@ -172,7 +173,7 @@ public class IJCController {
     	}
     	catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
     		pp.destroy();
 			return false;
     	}
@@ -185,10 +186,10 @@ public class IJCController {
      */
     public boolean checkPassword(String alias, char[] master, char[] passwd) throws GeneralSecurityException, DestroyFailedException {
     	if (Arrays.equals(this.getPassword(alias, master), new String(passwd).getBytes())) {
-			logger.log(Level.INFO, "oldPassword is OK");
+			logger.log(Level.FINE, "oldPassword is OK");
     		return true;
     	} else {
-			logger.log(Level.INFO, "oldPassword is Wrong");
+			logger.log(Level.WARNING, "oldPassword is Wrong");
     		return false;
     	}
     }
@@ -289,7 +290,7 @@ public class IJCController {
 	 * Zet voor alle spelers het aanwezigheidspunt op onwaar.
 	 */
 	private void resetAanwezigheidspunt() {
-    	logger.log(Level.INFO, "Eerste ronde van een periode; reset aanwezigheidspunt");
+    	logger.log(Level.FINE, "Eerste ronde van een periode; reset aanwezigheidspunt");
 //		for (Groep groep : status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 		for (Groep groep : status.groepen.getGroepen()) {
 			for (Speler s : groep.getSpelers()) {
@@ -305,7 +306,7 @@ public class IJCController {
 	 */
 	public boolean leesStatusBestand() {
 		synchronized (this) {
-        	logger.log(Level.INFO, "Lees status");
+        	logger.log(Level.FINE, "Lees status");
         	leesStatus();
         	leesConfiguratie();
         	checkStatus();
@@ -315,29 +316,29 @@ public class IJCController {
 				status.wedstrijdgroepen = null;
 				status.wedstrijden = null;
 				status.resultaatVerwerkt = null;
-	        	logger.log(Level.INFO, "Status bestand niet correct ingelezen");
+	        	logger.log(Level.WARNING, "Status bestand niet correct ingelezen");
 				return false;
 			}
 			if (status.groepen.getAantalGroepen() != c.aantalGroepen) {
-		    	logger.log(Level.INFO, "Fix Groepen!");
+		    	logger.log(Level.WARNING, "Fix Groepen!");
 				fix_groepen(status.groepen, c.aantalGroepen)		;
 			}
 			if (status.wedstrijdgroepen!=null) {
 				if (status.wedstrijdgroepen.getAantalGroepen() != c.aantalGroepen) {
-					logger.log(Level.INFO, "Fix Wedstrijdgroepen!");
+					logger.log(Level.WARNING, "Fix Wedstrijdgroepen!");
 					fix_groepen(status.wedstrijdgroepen, c.aantalGroepen);
 				}
 			}
 			status.groepen.sorteerGroepen(true);
 		}
-    	logger.log(Level.INFO, "Statusbestand ingelezen");
-    	logger.log(Level.INFO, "aantal entries APIConfig = " + c.externalAPIConfigs.apiconfigs.size());
+    	logger.log(Level.FINE, "Statusbestand ingelezen");
+    	logger.log(Level.CONFIG, "aantal entries APIConfig = " + c.externalAPIConfigs.apiconfigs.size());
 		return true;
 	}
 	
 	public void fix_groepen(Groepen s_groepen, int c_groepenaantal) {
 		if (s_groepen.getAantalGroepen() < c_groepenaantal) {
-			logger.log(Level.INFO, "More Groups is Config then in Status!");
+			logger.log(Level.WARNING, "More Groups is Config then in Status!");
 //			for (Groep g : s_groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC))
 			for (Groep g : s_groepen.getGroepen())
 				g.setNaam(c.groepsnamen[g.getNiveau()]);
@@ -346,7 +347,7 @@ public class IJCController {
 			}
 		}
 		if (s_groepen.getAantalGroepen() > c_groepenaantal) {
-			logger.log(Level.INFO, "More Groups (" + s_groepen.getAantalGroepen() + ") in Status then in Config (" + c_groepenaantal + ")!");
+			logger.log(Level.WARNING, "More Groups (" + s_groepen.getAantalGroepen() + ") in Status then in Config (" + c_groepenaantal + ")!");
 			//Waarschuwing en bevestiging voor verwijderen groepen uit Status.
 			//Zorg dat de te verwijderen groep leeg wordt gemaakt!
 			Groepen g_del = new Groepen();
@@ -472,8 +473,7 @@ public class IJCController {
      * Print wedstrijden op het scherm, opgedeeld per serie
      */
     public void printWedstrijden() {
-        System.out.print("\nWedstrijden Periode " + status.wedstrijden.getPeriode());
-        System.out.println(" Ronde " + status.wedstrijden.getRonde() + "\n-----------");
+        logger.log(Level.FINE, "Wedstrijden Periode " + status.wedstrijden.getPeriode() + " Ronde " + status.wedstrijden.getRonde());
         for (Groepswedstrijden gw : status.wedstrijden.getGroepswedstrijden()) {
         	printGroepsWedstrijden(gw);
         }
@@ -484,8 +484,7 @@ public class IJCController {
      */
 	public void printWedstrijden(int groep) {
 		logger.log(Level.INFO, "Print wedstrijden");
-		System.out.print("\nWedstrijden Periode " + status.wedstrijden.getPeriode());
-		System.out.println(" Ronde " + status.wedstrijden.getRonde() + "\n-----------");
+		logger.log(Level.FINE, "Wedstrijden Periode " + status.wedstrijden.getPeriode() + " Ronde " + status.wedstrijden.getRonde());
 		Groepswedstrijden gw = status.wedstrijden.getGroepswedstrijdenNiveau(groep);
 		printGroepsWedstrijden(gw);
 	}
@@ -495,26 +494,26 @@ public class IJCController {
 	 * @param gw
 	 */
 	public void printGroepsWedstrijden(Groepswedstrijden gw) {
-		System.out.println("  " + Groep.geefNaam(gw.getNiveau()));
+		logger.log(Level.FINE, " " + Groep.geefNaam(gw.getNiveau()));
 		int i = 1;
 		int distance = 0;
 		for (Serie serie : gw.getSeries()) {
-			System.out.println("    Serie " + i);
+			logger.log(Level.FINE, " Serie " + i);
 			for (Wedstrijd w : serie.getWedstrijden()) {
-				System.out.println("      " + w.toString());
+				logger.log(Level.FINE, " " + w.toString());
 				distance += w.getDistance();
 			}
 			++i;
 		}
 		if (!gw.getTriowedstrijden().isEmpty()) {
-			System.out.println("    Trio");
+			logger.log(Level.FINE, " Trio");
 			for (Wedstrijd w : gw.getTriowedstrijden()) {
-				System.out.println("      " + w.toString());
+				logger.log(Level.FINE, " " + w.toString());
 				distance += w.getDistance();
 			}
 
 		}
-		System.out.println("    Totale afstand : " + distance);
+		logger.log(Level.FINE, " Totale afstand : " + distance);
 	}
 
     /**
@@ -585,7 +584,7 @@ public class IJCController {
     	Uitslagverwerker uv = new Uitslagverwerker();
     	status.resultaatVerwerkt =  uv.verwerkUitslag(status.groepen, status.wedstrijden, status.externGespeeld);
     	status.resultaatVerwerkt.sorteerGroepen(true);
-    	System.out.println(status.resultaatVerwerkt.toPrintableString());
+    	logger.log(Level.FINER, () -> status.resultaatVerwerkt.toPrintableString());
     	logger.log(Level.INFO, "en sla uitslagen en status op");
     	new OutputStanden().export(status.resultaatVerwerkt);
     	new OutputUitslagen().export(status.wedstrijden);
@@ -610,16 +609,16 @@ public class IJCController {
     		this.ks.store(keyStoreOutputStream, this.keyStorePassword);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			logger.log(Level.WARNING, e1.getMessage(), e1);
 		} catch (KeyStoreException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 		} catch (CertificateException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 		}
     	
     	// Second save status
@@ -645,7 +644,7 @@ public class IJCController {
 				writer.close();
 			}
 			bestandsnaam = c.configuratieBestand + ".json";
-			logger.log(Level.INFO, "Sla configuratie op in bestand " + bestandsnaam);
+			logger.log(Level.CONFIG, "Sla configuratie op in bestand " + bestandsnaam);
 			// write converted json data to a file
 			writer = new FileWriter(bestandsnaam);
 			jsonString = gson.toJson(c);
@@ -653,19 +652,19 @@ public class IJCController {
 			writer.close();
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 	}
 
 	public boolean checkStatus() {
 		// Check for wrong KNSBnumbers; this is vital!!!
-		logger.log(Level.INFO, "Checking for wrong KNSBnumbers");
+		logger.log(Level.FINE, "Checking for wrong KNSBnumbers");
 		try {
 //			for (Groep g: status.groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 			for (Groep g: status.groepen.getGroepen()) {
-				logger.log(Level.INFO, "Checking groep " + g.getNaam(g.getNiveau()) + "(" + g.getNiveau() + ") ");
+				logger.log(Level.FINER, () -> "Checking groep " + g.getNaam(g.getNiveau()) + "(" + g.getNiveau() + ") ");
 				for (Speler s: g.getSpelers()) {
-					logger.log(Level.INFO, "Checking speler " + s.getNaam());
+					logger.log(Level.FINER, () -> "Checking speler " + s.getNaam());
 					s.setKNSBnummer(s.getKNSBnummer());
 				}
 			}
@@ -703,11 +702,11 @@ public class IJCController {
 			Status nieuw = gson.fromJson(br, Status.class);
 			status = nieuw;	// assure exception is thrown when things go wrong
 			// Check for wrong KNSBnumbers; this is vital!!!
-			logger.log(Level.INFO, "Aantal groepen in status is "+ status.groepen.getAantalGroepen());
+			logger.log(Level.FINE, "Aantal groepen in status is "+ status.groepen.getAantalGroepen());
 			return true;
 		} catch (Exception e) {
 			// Could not read status
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 			logger.log(Level.WARNING, "Exception in parsing content of leesStatus " + bestandsnaam +  ". Error: " + e.getMessage());
 			return leesStatus(bestandsnaam, "");
 		}
@@ -734,7 +733,7 @@ public class IJCController {
 			return true;
 		} catch (Exception e) {
 			// Could not read status
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 			logger.log(Level.WARNING, "Exception in parsing content of leesStatus " + bestandsnaam +  ". Error: " + e.getMessage());
 			return false;
 		}
@@ -750,7 +749,7 @@ public class IJCController {
 	public void leesConfiguratie() {
 		try {
 			String bestandsnaam = c.configuratieBestand + ".json";
-	    	logger.log(Level.INFO, "Lees configuratie uit bestand " + bestandsnaam);
+	    	logger.log(Level.CONFIG, "Lees configuratie uit bestand " + bestandsnaam);
 			Gson gson = new Gson();
 			BufferedReader br = new BufferedReader(new FileReader(bestandsnaam));
 			c = gson.fromJson(br, Configuratie.class);
@@ -759,6 +758,7 @@ public class IJCController {
 			} else {
 				c.Update();
 			}
+			LoggingConfig.setLevel(c.debugLevel);
 		} catch (IOException e) {
 			// Could not read status
 		}
@@ -1003,30 +1003,30 @@ public class IJCController {
 	 */
 	public void exporteerNaarExternalAPI() {
 		logger.log(Level.INFO, "Exporteer naar external API gekozen");
-		logger.log(Level.INFO, "Er zijn " + c.externalAPIs.size() + " in de actieve configuratie opgenomen.");
-		logger.log(Level.INFO, "Huidige periode : " + this.getGroepen().getPeriode());
-		logger.log(Level.INFO, "Huidige rondde : " + this.getGroepen().getRonde());
+		logger.log(Level.FINE, "Er zijn " + c.externalAPIs.size() + " in de actieve configuratie opgenomen.");
+		logger.log(Level.FINE, "Huidige periode : " + this.getGroepen().getPeriode());
+		logger.log(Level.FINE, "Huidige rondde : " + this.getGroepen().getRonde());
 		int vorigeperiode = Utils.vorigePeriode(c.perioden, c.rondes, this.getGroepen().getPeriode(), this.getGroepen().getRonde());
 		int vorigeronde = Utils.vorigeRonde(c.perioden, c.rondes, this.getGroepen().getPeriode(), this.getGroepen().getRonde());
-		logger.log(Level.INFO, "Vorige periode : " + vorigeperiode);
-		logger.log(Level.INFO, "Vorige rondde : " + vorigeronde);
+		logger.log(Level.FINE, "Vorige periode : " + vorigeperiode);
+		logger.log(Level.FINE, "Vorige rondde : " + vorigeronde);
 		for (APIConfig config : c.externalAPIConfigs.apiconfigs){
 			//try {
 			try {
 		        pw = new String(this.getPassword(config.getId().toString(),  c.salt));
 			} catch (GeneralSecurityException e2) {
 				// TODO Auto-generated catch block
-				e2.printStackTrace();
+				logger.log(Level.WARNING, e2.getMessage(), e2);
 			} catch (DestroyFailedException e2) {
 				// TODO Auto-generated catch block
-				e2.printStackTrace();
+				logger.log(Level.WARNING, e2.getMessage(), e2);
 			}
         
 					// Edit template tekst
 					txtLes = config.getTemplate();
 					// Edit template tekst
 					String txtLes = config.getTemplate();
-					logger.log(Level.INFO, "Template = " + txtLes);
+					logger.log(Level.FINEST, "Template = " + txtLes);
 //					Window parentWindow = SwingUtilities.getWindowAncestor(this.getClass());
 					LesTekstDialoog lt  = new LesTekstDialoog("Edit template voor Lestekst");
 					lt.setLesTekst(txtLes);
@@ -1034,7 +1034,7 @@ public class IJCController {
 					txtLes = lt.getLesTekst();
 					Boolean cancel = lt.getCanceled();
 					if (!cancel) {
-						logger.log(Level.INFO, "Aangepaste txtLes : " + txtLes);				
+						logger.log(Level.FINEST, "Aangepaste txtLes : " + txtLes);				
 						c.externalAPIs.export(config.getURL(), config.getPagePath(), config.getUserName(), pw, config.getLoginPath(), txtLes, vorigeperiode, vorigeronde);
 					} else {
 						logger.log(Level.INFO, "Canceled. No exported!");				
@@ -1163,11 +1163,11 @@ public class IJCController {
 		try {
 			v.voorspel(directory + File.separator + bestand);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 	}
 

@@ -86,13 +86,13 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 			// Sorteer keizergroep op rating voor indeling indien ronde = 2,3,4,5 of 6
 			groep.sorteerRating(false);
 		}		
-		logger.log(Level.INFO, "Bepalen wedstrijden voor groep " + wedstrijdgroep.getNaam() + " periode " + periode
+		logger.log(Level.FINE, "Bepalen wedstrijden voor groep " + wedstrijdgroep.getNaam() + " periode " + periode
 				+ " ronde " + ronde + " id " + wedstrijdgroep.getNiveau() + " doorschuivers " + doorschuivers);
 		// Maak wedstrijden
 		Groepswedstrijden gws = new Groepswedstrijden();
 		gws.setNiveau(groep.getNiveau());
 		int speelrondes = bepaalAantalSeries(groep.getNiveau(), periode, ronde);
-		logger.log(Level.INFO, "Aantal speelrondes " + speelrondes);
+		logger.log(Level.FINE, "Aantal speelrondes " + speelrondes);
 
 		// Trucje voor 5 speler in een wedstrijdgroep:
 		// Oud trucje voor 5 spelers in traditionele indeling werkt niet bij Fuzzy.
@@ -104,11 +104,11 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 
 		if (IJCController.c().fuzzyOneven && (!((groep.getAantalSpelers() & 1) == 0)) && speelrondes == 2) {
 			speelrondes = 3;
-			logger.log(Level.INFO, "Oneven spelers met 2 rondes dus maak 3 series");
+			logger.log(Level.FINE, "Oneven spelers met 2 rondes dus maak 3 series");
 		}
 		if (groep.getAantalSpelers() == 5 && speelrondes == 2) {
 			speelrondes = 3;
-			logger.log(Level.INFO, "Vijf spelers met 2 rondes dus maak 3 series");
+			logger.log(Level.FINE, "Vijf spelers met 2 rondes dus maak 3 series");
 		}
 		// Introductie Fuzzy Logic
 		//
@@ -116,8 +116,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 		int[] trio = {0,1,2};
 		int indexrow = 1;
 		for (int i = 0; i < speelrondes; i++) {
-			System.out.print(
-					"Creating serie " + Integer.toString(i + 1) + " voor groep " + groep.getNaam() + "\n");
+			logger.log(Level.FINE, "Creating serie " + Integer.toString(i + 1) + " voor groep " + groep.getNaam());
 			if (i > 0) {
 				if (!(trioloc == 0)) {
 					Groep reducedgroep = new Groep();
@@ -133,7 +132,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 					}
 					fuzzymatrix = MaakFuzzyMatrix(reducedgroep, i, speelrondes, spelersuitanderegroep);
 					//
-					System.out.print("Reduced Matrix\n");
+					logger.log(Level.FINEST, "Reduced Matrix");
 					Utils.printMatrix(fuzzymatrix);
 				} else {
 					fuzzymatrix = MaakFuzzyMatrix(groep, i, speelrondes, spelersuitanderegroep);
@@ -149,7 +148,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 				switch (i) {
 				case 2:
 					fuzzymatrix = Utils.removerowandcolumnfrom2D(fuzzymatrix, oneven2, indexrow);
-					System.out.print("Reduced Matrix\n");
+					logger.log(Level.FINEST, "Reduced Matrix");
 					Utils.printMatrix(fuzzymatrix);
 					break;
 				}
@@ -160,15 +159,15 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 				switch (i) {
 				case 2:
 					fuzzymatrix = Utils.removerowandcolumnfrom2D(fuzzymatrix, vijf2, indexrow);
-					System.out.print("Reduced Matrix\n");
+					logger.log(Level.FINEST, "Reduced Matrix");
 					Utils.printMatrix(fuzzymatrix);
 					break;
 				}
 			}
 			int[][] fmatrix = fuzzymatrix;
 
-			logger.log(Level.INFO, "FuzzyMatrix created.");
-			System.out.print("Triagonalization of Matrix\n");
+			logger.log(Level.FINE, "FuzzyMatrix created.");
+			logger.log(Level.FINEST, "Triagonalization of Matrix");
 			minimizetriagonal triagonal = new minimizetriagonal();
 			triagonal.setA(fuzzymatrix);
 			triagonal.setIterations(groep.getAantalSpelers());
@@ -179,7 +178,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 				SpelersNamenopvolgorde(tri,indexrow, groep.getSpelers());
 				//groep.SpelersNamenopvolgorde(ordertest);
 			}
-			System.out.print("Deze groep " + groep.getNaam() + " heeft " + tri.length + " spelers.\n");
+			logger.log(Level.FINE, "Deze groep " + groep.getNaam() + " heeft " + tri.length + " spelers.");
 //			if (speelrondes >1) {
 			if (!IJCController.c().fuzzyOneven && !(groep.getAantalSpelers() == 5)) {
 				trioloc = minimizetriagonal.gettrio(tri,1);
@@ -211,9 +210,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 					Wedstrijd w = new Wedstrijd(wedstrijdnr, s1, s2, 0);
 					s.addWedstrijd(w, true);
 					wedstrijdnr++;
-					System.out.printf("Wedstrijd tussen " + w.getWit().getNaam()
-							+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-									+ "\n");
+					logger.log(Level.FINER, () -> "Wedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 									}
 			} else {
 				for (int k = 0; k < trioloc - 2; k += 2) {
@@ -224,9 +221,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 					Wedstrijd w = new Wedstrijd(wedstrijdnr, s1, s2, 0);
 					s.addWedstrijd(w, true);
 					wedstrijdnr++;
-					System.out.printf("Wedstrijd tussen " + w.getWit().getNaam()
-							+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-									+ "\n");				}
+					logger.log(Level.FINER, "Wedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");				}
 				for (int k = trioloc + 2; k <= fmatrix.length - 1; k += 2) {
 					Speler s1 = groep.getSpelerByID(tri[k][0]); // Speler
 																			// wit
@@ -234,9 +229,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 																				// zwart
 					Wedstrijd w = new Wedstrijd(wedstrijdnr, s1, s2, 0);
 					s.addWedstrijd(w, true);
-					System.out.printf("Wedstrijd tussen " + w.getWit().getNaam()
-							+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-									+ "\n");
+					logger.log(Level.FINER, () -> "Wedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 					wedstrijdnr++;
 				}
 				// trio
@@ -245,24 +238,18 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 							groep.getSpelerByID(trio[0]),
 							groep.getSpelerByID(trio[1]), 0);
 					gws.addTrioWedstrijd(w);
-					System.out.printf("Triowedstrijd tussen " + w.getWit().getNaam()
-							+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-									+ "\n");
+					logger.log(Level.FINER, "Triowedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 					w = new Wedstrijd(2 * (wedstrijdnr - 1) + 2, groep.getSpelerByID(trio[1]),
 									groep.getSpelerByID(trio[2]), 0);
 					gws.addTrioWedstrijd(w);
-					System.out.printf("Triowedstrijd tussen " + w.getWit().getNaam()
-							+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-									+ "\n");
+					logger.log(Level.FINER, "Triowedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 					w = new Wedstrijd(2 * (wedstrijdnr - 1) + 3,
 							groep.getSpelerByID(trio[2]),
 							groep.getSpelerByID(trio[0]), 0);
 					gws.addTrioWedstrijd(w);
-					System.out.printf("Triowedstrijd tussen " + w.getWit().getNaam()
-							+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-									+ "\n");
+					logger.log(Level.FINER, "Triowedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 					groep = updateSpelers(groep, gws.getTriowedstrijden());
-					logger.log(Level.INFO, "Update Spelers triowedstrijden");
+					logger.log(Level.FINER, "Update Spelers triowedstrijden");
 					// update gegevens tegenstanders en witvoorkeur
 				}
 				// Einde trio
@@ -270,9 +257,9 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 			if (s != null) {
 				s.renumber(i); // Hernummer wedstrijden.
 				gws.addSerie(s);
-				logger.log(Level.INFO, "Voeg Serie toe");
+				logger.log(Level.FINER, "Voeg Serie toe");
 				groep = updateSpelers(groep, s);
-				logger.log(Level.INFO, "Update Spelers gewone wedstrijden");
+				logger.log(Level.FINER, "Update Spelers gewone wedstrijden");
 				// update gegevens tegenstanders en witvoorkeur
 			}
 		}
@@ -284,11 +271,11 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 		if (!IJCController.c().fuzzyOneven && groep.getAantalSpelers() == 5) {
 			gws=Samenvoegenseries(gws);
 		}
-		logger.log(Level.INFO, "ZW balans voor groep " + wedstrijdgroep.getNaam() + " voor deze ronde is " +wedstrijdgroep.getZWbalansvoor());
+		logger.log(Level.FINE, "ZW balans voor groep " + wedstrijdgroep.getNaam() + " voor deze ronde is " +wedstrijdgroep.getZWbalansvoor());
 		groep.setZWbalansna();
 		// Overdragen tijdelijke data naar reguliere data voor deze waarde.
 		wedstrijdgroep.setZWbalansna(groep.getZWbalansna());
-		logger.log(Level.INFO, "ZW balans voor groep " + wedstrijdgroep.getNaam() + " na deze ronde is " + wedstrijdgroep.getZWbalansna());
+		logger.log(Level.FINE, "ZW balans voor groep " + wedstrijdgroep.getNaam() + " na deze ronde is " + wedstrijdgroep.getZWbalansna());
 		return gws;
 	}
 
@@ -335,9 +322,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 			w = new Wedstrijd(wedstrijdnr, s1, s2, 0);
 			s.addWedstrijd(w, true);
 			wedstrijdnr++;
-			System.out.printf("5 Spelers- Serie 1. Wedstrijd tussen " + w.getWit().getNaam()
-					+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-							+ "\n");
+			logger.log(Level.FINER, "5 Spelers- Serie 1. Wedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 							}
 		break;
 	case 1:
@@ -373,9 +358,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 			w = new Wedstrijd(wedstrijdnr, s1, s2, 0);
 			s.addWedstrijd(w, true);
 			wedstrijdnr++;
-			System.out.printf("5 Spelers- Serie 2. Wedstrijd tussen " + w.getWit().getNaam()
-					+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-							+ "\n");
+			logger.log(Level.FINER, "5 Spelers- Serie 2. Wedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 		break;
 	case 2:
 		for (int k = 0; k <= 3; k += 2) {
@@ -387,9 +370,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 			w = new Wedstrijd(wedstrijdnr, s1, s2, 0);
 			s.addWedstrijd(w, true);
 			wedstrijdnr++;
-			System.out.printf("5 Spelers- Serie 3. Wedstrijd tussen " + w.getWit().getNaam()
-					+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-							+ "\n");
+			logger.log(Level.FINER, "5 Spelers- Serie 3. Wedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 							}
 		break;
 	}
@@ -414,9 +395,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 			w = new Wedstrijd(wedstrijdnr, s1, s2, 0);
 			s.addWedstrijd(w, true);
 			wedstrijdnr++;
-			System.out.printf("Oneven Spelers- Serie 1. Wedstrijd tussen " + w.getWit().getNaam()
-					+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-							+ "\n");
+			logger.log(Level.FINER, "Oneven Spelers- Serie 1. Wedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 							}
 		break;
 	case 1:
@@ -453,9 +432,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 			w = new Wedstrijd(wedstrijdnr, s1, s2, 0);
 			s.addWedstrijd(w, true);
 			wedstrijdnr++;
-			System.out.printf("Oneven Spelers- Serie 2. Wedstrijd tussen " + w.getWit().getNaam()
-					+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-							+ "\n");
+			logger.log(Level.FINER, "Oneven Spelers- Serie 2. Wedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 		break;
 	case 2:
  		for (int k = 0; k <= groep.getAantalSpelers()-2; k += 2) {
@@ -467,9 +444,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 			w = new Wedstrijd(wedstrijdnr, s1, s2, 0);
 			s.addWedstrijd(w, true);
 			wedstrijdnr++;
-			System.out.printf("Oneven Spelers- Serie 3. Wedstrijd tussen " + w.getWit().getNaam()
-					+ " (wit) en " + w.getZwart().getNaam() + " (zwart)"
-							+ "\n");
+			logger.log(Level.FINER, "Oneven Spelers- Serie 3. Wedstrijd tussen " + w.getWit().getNaam() + " (wit) en " + w.getZwart().getNaam() + " (zwart)");
 							}
 		break;
 	}
@@ -552,7 +527,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 		int i, j, weging = 0;
 		int tegenstanders[] = new int[4];
 		// matrix1 : Niet tegen dezelfde tegenstander
-		System.out.print("Initializing Matrix1\n");
+		logger.log(Level.FINEST, "Initializing Matrix1");
 		i = 1;
 		for (Speler s1 : wedstrijdgroep.getSpelers()) {
 			matrix1[i-1][0] = s1.getId();
@@ -596,7 +571,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 		}
 		Utils.printMatrix(matrix1);
 		// matrix2 : Geen speler die een veel hogere of lagere ranking heeft.
-		System.out.print("Initializing Matrix2\n");
+		logger.log(Level.FINEST, "Initializing Matrix2");
 		for (i = 1; i <= wedstrijdgroep.getAantalSpelers(); i++) {
 			// This next line has no actual function
 			// It's just to debug matrices on their index.
@@ -660,7 +635,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 		Utils.printMatrix(matrix2);
 		// matrix 3 : Iedere tegenstander moet zoveel mogelijk evenveel met wit
 		// als zwart spelen
-		System.out.print("Initializing Matrix3\n");
+		logger.log(Level.FINEST, "Initializing Matrix3");
 		i = 1;
 		for (Speler s1 : wedstrijdgroep.getSpelers()) {
 			matrix3[i-1][0] = s1.getId();
@@ -815,7 +790,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 		Utils.printMatrix(matrix3);
 		// matrix 4 : De doorschuivende speler speelt bij voorkeur tegen iemand
 		// van zijn de hogere groep in eerste serie en in de tweede serie juist tegen iemand van zijn eigen groep.
-		System.out.print("Initializing Matrix4\n");
+		logger.log(Level.FINEST, "Initializing Matrix4");
 		i = 1;
 		for (Speler s1 : wedstrijdgroep.getSpelers()) {
 			matrix4[i-1][0] = s1.getId();
@@ -882,7 +857,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 		Utils.printMatrix(matrix4);
 		//
 		// matrix5 : Geen speler die een veel hoger of lager aantal rankingpunten heeft.
-		System.out.print("Initializing Matrix5\n");
+		logger.log(Level.FINEST, "Initializing Matrix5");
 		i = 1;
 		for (Speler s1 : wedstrijdgroep.getSpelers()) {
 			matrix5[i-1][0] = s1.getId();
@@ -936,14 +911,14 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 		matrix = Utils.add2DArrays(1, matrix, mf3, matrix3);
 		matrix = Utils.add2DArrays(1, matrix, mf4, matrix4);
 		//matrix = Utils.add2DArrays(1, matrix, mf5, matrix5);
-		System.out.print("Output Matrix\n");
+		logger.log(Level.FINEST, "Output Matrix");
 		Utils.printMatrix(matrix);
 		return matrix;
 	}
 
 	private void SpelersNamenopvolgorde(int[][] tri, int indexrow, ArrayList<Speler> spelers) {
     	for (int i=0;i<tri.length;i++) {
-    		System.out.print("Speler ID " + spelers.get(tri[i][indexrow-1]-1).getId() + " met naam " + spelers.get(tri[i][indexrow-1]-1).getNaam() + " staat op plaats " + i + ".\n");
+    		logger.log(Level.FINEST, "Speler ID " + spelers.get(tri[i][indexrow-1]-1).getId() + " met naam " + spelers.get(tri[i][indexrow-1]-1).getNaam() + " staat op plaats " + i + ".");
     	}
     }
 
@@ -967,10 +942,10 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
                     speler.setWitvoorkeur(speler.getWitvoorkeur() + 1);
 
                 } else {
-                    System.out.println("Hmmm, speler niet gevonden....");
+                    logger.log(Level.WARNING, "Hmmm, speler niet gevonden....");
                 }
-                logger.log(Level.INFO, "tegenstanders voor speler " + speler.getNaam() + " aangepast van " + wv + " naar "+ speler.getTegenstandersString());
-                logger.log(Level.INFO, "witvoorkeur voor speler " + speler.getNaam() + " aangepast van " + wv + " naar "+ speler.getWitvoorkeur());
+                logger.log(Level.FINER, "tegenstanders voor speler " + speler.getNaam() + " aangepast van " + wv + " naar "+ speler.getTegenstandersString());
+                logger.log(Level.FINER, "witvoorkeur voor speler " + speler.getNaam() + " aangepast van " + wv + " naar "+ speler.getWitvoorkeur());
             }
         }
         return groep;
@@ -983,11 +958,11 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
             	wv = W.getWit().getWitvoorkeur();
             	groep.getSpelerByID(W.getWit().getId()).setWitvoorkeur(W.getWit().getWitvoorkeur() - 1);
             	groep.getSpelerByID(W.getWit().getId()).addTegenstander(W.getZwart().getInitialen());
-                logger.log(Level.INFO, "witvoorkeur voor speler " + W.getWit().getNaam() + " aangepast van " + wv + " naar "+ W.getWit().getWitvoorkeur());
+                logger.log(Level.FINER, "witvoorkeur voor speler " + W.getWit().getNaam() + " aangepast van " + wv + " naar "+ W.getWit().getWitvoorkeur());
             	wv = W.getZwart().getWitvoorkeur();
             	groep.getSpelerByID(W.getZwart().getId()).setWitvoorkeur(W.getZwart().getWitvoorkeur() + 1);
             	groep.getSpelerByID(W.getZwart().getId()).addTegenstander(W.getWit().getInitialen());
-                logger.log(Level.INFO, "witvoorkeur voor speler " + W.getZwart().getNaam() + " aangepast van " + wv + " naar "+ W.getZwart().getWitvoorkeur());
+                logger.log(Level.FINER, "witvoorkeur voor speler " + W.getZwart().getNaam() + " aangepast van " + wv + " naar "+ W.getZwart().getWitvoorkeur());
             }
         }
         return groep;

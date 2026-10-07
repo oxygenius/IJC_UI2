@@ -5,7 +5,7 @@
 
   <groupId>nl.amity</groupId>
   <artifactId>ijc_ui</artifactId>
-  <version>2.0.1.5</version>
+  <version>2.0.1.7</version>
   <packaging>jar</packaging>
 
   <name>IJC_UI</name>
@@ -193,9 +193,8 @@ start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"
                         <include name="IJC_UI.cmd"/>
                         <include name="Leeg.docx"/>
                       </fileset>
+                      <!-- configuratie.json en status.json bevatten clubgegevens en worden niet meegeleverd -->
                       <fileset dir="${project.basedir}">
-                        <include name="configuratie.json"/>
-                        <include name="status.json"/>
                         <include name="logging.properties"/>
                         <include name="README.md"/>
                       </fileset>

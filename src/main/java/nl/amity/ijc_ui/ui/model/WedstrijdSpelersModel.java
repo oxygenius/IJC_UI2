@@ -110,7 +110,12 @@ public class WedstrijdSpelersModel extends AbstractTableModel {
             	// Voeg voor een doorgeschoven speler een * toe aan de naam
             	boolean doorgeschoven = controller.getGroepByID(groepID).getNiveau() != speler.getGroep();
             	int aantalRondes = controller.c().bepaalAantalSeries(groepID, controller.getGroepen().getPeriode(), controller.getGroepen().getRonde());
-            	if (((row == 0) || row == controller.getWedstrijdGroepByID(groepID).getAantalSpelers()-1) && ((this.getRowCount() & 1) == 1) && (aantalRondes & 1) == 1) {
+            	int aantalSpelers = controller.getWedstrijdGroepByID(groepID).getAantalSpelers();
+            	// Oneven aantal spelers bij een oneven aantal series: eerste en laatste speler markeren
+            	boolean onevenIndeling = ((row == 0) || (row == aantalSpelers - 1)) && ((aantalSpelers & 1) == 1) && ((aantalRondes & 1) == 1);
+            	// Te weinig spelers voor het aantal series: alle spelers markeren
+            	boolean teWeinigSpelers = aantalSpelers < (aantalRondes < 2 ? 2 : 4);
+            	if (onevenIndeling || teWeinigSpelers) {
             		return "<html>" + warninghtml + speler.getNaam() + (doorgeschoven ? "*" : "") + "</font></html>";
             	} else {
             		return speler.getNaam() + (doorgeschoven ? "*" : "");

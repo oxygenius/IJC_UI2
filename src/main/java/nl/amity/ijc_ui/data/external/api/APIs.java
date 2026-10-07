@@ -95,17 +95,16 @@ public class APIs {
 							plone52Token = Plone52.login(url, username, password, loginpath);
 						}
 						catch (Exception e) {
-							logger.log(Level.INFO, "Could not login for external api : " + api.getType() + api.getVersionMin());
+							logger.log(Level.WARNING, "Could not login for external api : " + api.getType() + api.getVersionMin());
 							return;
 						}
 						logger.log(Level.INFO, "Login for external api : " + api.getType() + api.getVersionMin() + " succesful. Token retrieved!");
-						logger.log(Level.INFO, "Token :" + plone52Token.getToken());
 						try {
 							userList = Plone52.userList(plone52Token);
 						} catch (Exception e2) {
-							e2.printStackTrace();
+							logger.log(Level.WARNING, e2.getMessage(), e2);
 						}
-						logger.log(Level.INFO, "Userlist opgehaald");
+						logger.log(Level.FINEST, "Userlist opgehaald");
 						JSONArray jArray = new JSONArray(userList);
 						for(int index=0; index<jArray.length(); index++) {
 							JSONObject user = (JSONObject) jArray.get(index);
@@ -125,10 +124,10 @@ public class APIs {
 								try {
 									statusCode = Plone52.delete(plone52Token,strId);
 								} catch (Exception e1) {
-									e1.printStackTrace();
+									logger.log(Level.WARNING, e1.getMessage(), e1);
 								}
 								if (statusCode != 204) {
-									logger.log(Level.INFO, "Deletion of user " + strId + " failed! StatusCode : " + statusCode);
+									logger.log(Level.WARNING, "Deletion of user " + strId + " failed! StatusCode : " + statusCode);
 								} else {
 									// logger.log(Level.INFO, "Deletion of user " + strId + " succesful!");
 									deleted++;
@@ -146,10 +145,10 @@ public class APIs {
 										statusCode = Plone52.delete(plone52Token, strUser);
 									} catch (Exception e1) {
 										// TODO Auto-generated catch block
-										e1.printStackTrace();
+										logger.log(Level.WARNING, e1.getMessage(), e1);
 									}
 									if (statusCode != 204) {
-										logger.log(Level.INFO, "Deletion of user " + strUser + " failed! StatusCode : " + statusCode);
+										logger.log(Level.WARNING, "Deletion of user " + strUser + " failed! StatusCode : " + statusCode);
 									} else {
 										logger.log(Level.INFO, "Deletion of user " + strUser + " succesful!");
 									}
@@ -178,7 +177,7 @@ public class APIs {
 						response = Plone52.getrequest2(url);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						logger.log(Level.WARNING, e.getMessage(), e);
 					}
 				}
 			}
@@ -196,20 +195,19 @@ public class APIs {
 						plone52Token = Plone52.login(url, username, password, loginpath);
 					}
 					catch (Exception e) {
-				    	logger.log(Level.INFO, "Could not login for external api : " + api.getType() + api.getVersionMin());
-						e.printStackTrace();
+				    	logger.log(Level.WARNING, "Could not login for external api : " + api.getType() + api.getVersionMin());
+						logger.log(Level.WARNING, e.getMessage(), e);
 				    	return;
 				    }
 					logger.log(Level.INFO, "Login for external api : " + api.getType() + api.getVersionMin() + " succesful. Token retrieved!");
-					logger.log(Level.INFO, "Token :" + plone52Token.getToken());
 					if (plone52Token.getToken()!=null) {
 						try {
 							response = Plone52.createpage(plone52Token, url, pagepath, template, periode, ronde);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							logger.log(Level.WARNING, e.getMessage(), e);
 						}
-						logger.log(Level.INFO, "Response van Plone52 request is : " + response);
+						logger.log(Level.FINEST, "Response van Plone52 request is : " + response);
 					}
 			    }					
 			}	

@@ -14,10 +14,14 @@
  */
 package nl.amity.ijc_ui.ui.view;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.awt.*;
 
 //Grid Layout which allows components of different sizes
 public class ExtendedGridLayout extends GridLayout {
+
+	private final static Logger logger = Logger.getLogger(ExtendedGridLayout.class.getName());
 	private static final long serialVersionUID = -8955988731671279921L;
 
 	public ExtendedGridLayout() {
@@ -71,7 +75,7 @@ public class ExtendedGridLayout extends GridLayout {
 	}
 
 	public Dimension minimumLayoutSize(Container parent) {
-		System.err.println("minimumLayoutSize");
+		logger.log(Level.FINEST, "minimumLayoutSize");
 		synchronized (parent.getTreeLock()) {
 			Insets insets = parent.getInsets();
 			int ncomponents = parent.getComponentCount();

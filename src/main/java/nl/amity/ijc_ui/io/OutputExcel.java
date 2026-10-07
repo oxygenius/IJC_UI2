@@ -60,7 +60,7 @@ public class OutputExcel implements WedstrijdenExportInterface {
 		updateCell(sheet, row, 3, wedstrijd.getWit().getNaam());
 		updateCell(sheet, row, 4, "-");
 		updateCell(sheet, row, 5, wedstrijd.getZwart().getNaam());
-		logger.log(Level.INFO, wedstrijd.getWit().getNaam() + " - " + wedstrijd.getZwart().getNaam());
+		logger.log(Level.FINER, () -> wedstrijd.getWit().getNaam() + " - " + wedstrijd.getZwart().getNaam());
 		borderFull(getCell(sheet, row, 7));
 		borderFull(getCell(sheet, row, 8));
 	}

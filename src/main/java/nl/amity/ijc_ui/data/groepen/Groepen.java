@@ -112,12 +112,12 @@ public class Groepen {
 		int rev = 0 ;
 		if (reversed) rev = groepen.size() - 1;
 		int index;
-		logger.log(Level.INFO, "rev = " + rev);
+		logger.log(Level.FINEST, "rev = " + rev);
 		for (int i = 0; i < groepen.size(); ++i) {
 			if (reversed) index = (rev-i); else index=(rev+i);
-    		logger.log(Level.INFO, "index = " + index);
+    		logger.log(Level.FINEST, "index = " + index);
         	Groep groep = groepen.get(index);
-			logger.log(Level.INFO, "groep = " + groep.getNaam());
+			logger.log(Level.FINEST, () -> "groep = " + groep.getNaam());
 //        	groep.sorteerPunten(false,true);
         	groep.renumber();
         	//Stand na 3e ronde , 1e periode               Keizergroep (16)
@@ -135,7 +135,7 @@ public class Groepen {
 				int ndoor = IJCController.c().bepaalAantalDoorschuiversVolgendeRonde(groep.getNiveau(), periode, ronde);
 				if ((reversed && index > 0) || (!reversed && index + 1 < groepen.size())) {
 					Groep lager;
-					logger.log(Level.INFO, "index = " + index + "van groep" + groep.getNaam());
+					logger.log(Level.FINEST, "index = " + index + "van groep" + groep.getNaam());
 					if (reversed) lager = groepen.get(index - 1); else lager = groepen.get(index + 1);
 //					lager.sorteerPunten(false,true);
 					lager.renumber();

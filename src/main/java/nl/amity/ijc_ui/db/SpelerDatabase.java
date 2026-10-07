@@ -225,26 +225,25 @@ public class SpelerDatabase extends ObjectDatabase {
 			for (int j = i + 1; j < spelers.size(); j++) {
 				DBSpeler s2 = spelers.get(j);
 				if (s1.getAfkorting().equals(s2.getAfkorting())) {
-					System.out.println(s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
-					System.out.println(s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
+					logger.log(Level.FINE, s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
+					logger.log(Level.FINE, s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
 					if (s2.getNaam().equals(s1.getNaam())) {
 						if (s1.getKnsbnummer() > 5000000 && s2.getKnsbnummer() < 20000000) {
-							System.out.println(s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
+							logger.log(Level.FINE, s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
 							moveHistToAnotherPlayer(s2, s1);
 							store(s1);
 							delete(s2);
 						} else if (s2.getKnsbnummer() > 5000000 && s1.getKnsbnummer() < 20000000) {
-							System.out.println(s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
+							logger.log(Level.FINE, s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
 							moveHistToAnotherPlayer(s1, s2);
 							store(s2);
 							delete(s1);
 						} else {
-							System.out.println("No upgrade in KNSB");
+							logger.log(Level.FINE, "No upgrade in KNSB");
 						}
 					} else {
-						System.out.println("Different names!");
+						logger.log(Level.FINE, "Different names!");
 					}
-					System.out.println("\n");
 				}
 			}
 		}
@@ -265,21 +264,20 @@ public class SpelerDatabase extends ObjectDatabase {
 			for (int j = i + 1; j < spelers.size(); j++) {
 				DBSpeler s2 = spelers.get(j);
 				if (s1.getNaam().equals(s2.getNaam())) {
-					System.out.println(s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
-					System.out.println(s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
+					logger.log(Level.FINE, s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
+					logger.log(Level.FINE, s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
 					if (s1.getLaatsteRonde() > s2.getLaatsteRonde()) {
-						System.out.println("MERGING: " + s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
+						logger.log(Level.FINE, "MERGING: " + s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
 						moveHistToAnotherPlayer(s2, s1);
 						store(s1);
 						delete(s2);
 					} else {
-						System.out.println("MERGING: " + s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
+						logger.log(Level.FINE, "MERGING: " + s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
 						moveHistToAnotherPlayer(s1, s2);
 						moveHistToAnotherPlayer(s1, s2);
 						store(s2);
 						delete(s1);
 					}
-					System.out.println("\n");
 				}
 			}
 		}
@@ -299,21 +297,20 @@ public class SpelerDatabase extends ObjectDatabase {
 			for (int j = i + 1; j < spelers.size(); j++) {
 				DBSpeler s2 = spelers.get(j);
 				if (s1.getKnsbnummer() == s2.getKnsbnummer()) {
-					System.out.println(s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
-					System.out.println(s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
+					logger.log(Level.FINE, s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
+					logger.log(Level.FINE, s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
 					if (s1.getLaatsteRonde() > s2.getLaatsteRonde()) {
-						System.out.println(s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
+						logger.log(Level.FINE, s1.getAfkorting() + "-" + s1.getKnsbnummer() + "-" + s1.getNaam());
 						moveHistToAnotherPlayer(s2, s1);
 						store(s1);
 						delete(s2);
 					} else {
-						System.out.println(s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
+						logger.log(Level.FINE, s2.getAfkorting() + "-" + s2.getKnsbnummer() + "-" + s2.getNaam());
 						moveHistToAnotherPlayer(s1, s2);
 						moveHistToAnotherPlayer(s1, s2);
 						store(s2);
 						delete(s1);
 					}
-					System.out.println("\n");
 				}
 			}
 		}
@@ -339,15 +336,15 @@ public class SpelerDatabase extends ObjectDatabase {
 		List<DBSpeler> spelers = query("select s from DBSpeler s", DBSpeler.class);
 		for (DBSpeler speler : spelers) {
 			ArrayList<Integer> teVerwijderen = new ArrayList<>();
-			System.out.println(speler.getKnsbnummer() + " - " + speler.getAfkorting() + " - " + speler.getNaam());
+			logger.log(Level.FINE, speler.getKnsbnummer() + " - " + speler.getAfkorting() + " - " + speler.getNaam());
 			for (int i = 0; i < speler.getHistorie().size(); ++i) {
 				DBHistorie hist = speler.getHistorie().get(i);
 				int rid = hist.getRonde().rondeIdentifier();
-				System.out.println("  " + rid);
+				logger.log(Level.FINE, " " + rid);
 				for (int j = i + 1; j < speler.getHistorie().size(); ++j) {
 					DBHistorie hist2 = speler.getHistorie().get(j);
 					if ((hist2.getRonde().rondeIdentifier() == rid)) {
-						System.out.println("    dubbel");
+						logger.log(Level.FINE, " dubbel");
 						teVerwijderen.add(hist.getPunten() > hist2.getPunten() ? j : i);
 					}
 				}
@@ -356,7 +353,7 @@ public class SpelerDatabase extends ObjectDatabase {
 				DBHistorie h = speler.getHistorie().get(teVerwijderen.get(i));
 				h.setSpeler(null);
 				speler.getHistorie().remove(teVerwijderen.get(i));
-				System.out.print(" X ");
+				logger.log(Level.FINER, "Dubbele historie verwijderd");
 			}
 			store(speler);
 		}

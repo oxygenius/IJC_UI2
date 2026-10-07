@@ -69,7 +69,7 @@ class PasswordDialoog extends JDialog {
         controller = IJCController.getInstance();
         setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    	logger.log(Level.INFO, "Change Password Dialog");
+    	logger.log(Level.FINEST, "Change Password Dialog");
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(8, 2));
@@ -113,7 +113,7 @@ class PasswordDialoog extends JDialog {
         panel.add(new JLabel(""));
         panel.add(lblStatus);
         panel.add(new JLabel(""));
-    	logger.log(Level.INFO, "Added password fields");
+    	logger.log(Level.FINEST, "Added password fields");
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(new ActionListener() {
             @Override
@@ -122,13 +122,13 @@ class PasswordDialoog extends JDialog {
             	// Check old password
             	try {
 					if (controller.checkPassword(apiconfig.getId().toString(), controller.getSalt(), oldPassword.getPassword())) {
-						logger.log(Level.INFO, "oldPassword is OK");
+						logger.log(Level.FINEST, "oldPassword is OK");
 						if (Arrays.equals(newPassword1.getPassword(), newPassword2.getPassword())) {
-							logger.log(Level.INFO, "newPasswords are equal");                		
+							logger.log(Level.FINEST, "newPasswords are equal");                		
 							//if (savenewPassword(newPassword1)) {
 							try {
 								if (controller.setPassword(apiconfig.getId().toString(), (new String(newPassword1.getPassword()).getBytes()), controller.getSalt())) {
-									logger.log(Level.INFO, "newPassword is Set");
+									logger.log(Level.FINEST, "newPassword is Set");
 									setVisible(false);
 									dispose();
 								} else {
@@ -136,10 +136,10 @@ class PasswordDialoog extends JDialog {
 								}
 							} catch (GeneralSecurityException e1) {
 								// TODO Auto-generated catch block
-								e1.printStackTrace();
+								logger.log(Level.WARNING, e1.getMessage(), e1);
 							} catch (DestroyFailedException e1) {
 								// TODO Auto-generated catch block
-								e1.printStackTrace();
+								logger.log(Level.WARNING, e1.getMessage(), e1);
 							}
 						}
 					} else {
@@ -147,10 +147,10 @@ class PasswordDialoog extends JDialog {
 					}
 				} catch (GeneralSecurityException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					logger.log(Level.WARNING, e1.getMessage(), e1);
 				} catch (DestroyFailedException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					logger.log(Level.WARNING, e1.getMessage(), e1);
 				}
             }
         });
@@ -160,19 +160,19 @@ class PasswordDialoog extends JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-            	logger.log(Level.INFO, "Action performed in Cancel");
+            	logger.log(Level.FINEST, "Action performed in Cancel");
                 setVisible(false);
                 dispose();
             }
         });
         panel.add(saveButton);
         panel.add(cancelButton);
-    	logger.log(Level.INFO, "Buttons added");
+    	logger.log(Level.FINEST, "Buttons added");
         getContentPane().add(panel);
-    	logger.log(Level.INFO, "Added Panel");
+    	logger.log(Level.FINEST, "Added Panel");
         setSize(600, 150);
         setLocationRelativeTo(frame);
-    	logger.log(Level.INFO, "Dialog ready");
+    	logger.log(Level.FINEST, "Dialog ready");
     }
     
     public void setAPIConfig(APIConfig apiconfig) {

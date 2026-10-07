@@ -329,9 +329,9 @@ public class Groep {
      */
 
 	 public void sorteerPunten(Boolean toggle, Boolean descending) {
-	   logger.log(Level.INFO, "sortering = " + sortering); if (toggle) sortering =
+	   logger.log(Level.FINEST, "sortering = " + sortering); if (toggle) sortering =
 	   sortering != Sortering.PUNTEN_ASC? Sortering.PUNTEN_ASC : Sortering.PUNTEN_DESC;
-       logger.log(Level.INFO, "sortering = " + sortering);
+       logger.log(Level.FINEST, () -> "sortering = " + sortering);
 	   spelers.sort((o1, o2) -> {
            int result = o2.getPunten() - o1.getPunten();
            if (result == 0) {

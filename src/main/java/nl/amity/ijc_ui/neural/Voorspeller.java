@@ -73,7 +73,7 @@ public class Voorspeller {
 		try {
 			mlp = (MultilayerPerceptron) weka.core.SerializationHelper.read(networkfile);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 	}
 
@@ -96,7 +96,7 @@ public class Voorspeller {
 			Instances trainData = readTrainingData(trainingfile);
 			evaluateTrainingData(trainData);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
 
@@ -131,7 +131,7 @@ public class Voorspeller {
 		mlp.buildClassifier(data);
 		Evaluation eval = new Evaluation(data);
 		eval.evaluateModel(mlp, data);
-		logger.log(Level.INFO, eval.toSummaryString(true));
+		logger.log(Level.FINE, eval.toSummaryString(true));
 		return eval;
 	}
 
@@ -148,9 +148,9 @@ public class Voorspeller {
 		FileReader trainreader = new FileReader(trainingfile);
 		Instances train = new Instances(trainreader);
 		train.setClassIndex(train.numAttributes() - 1);
-		logger.log(Level.INFO, "num attributes : " + train.numAttributes());
-		logger.log(Level.INFO, "num classes    : " + train.numClasses());
-		logger.log(Level.INFO, "num data items : " + train.numInstances());
+		logger.log(Level.FINER, () -> "num attributes : " + train.numAttributes());
+		logger.log(Level.FINER, () -> "num classes    : " + train.numClasses());
+		logger.log(Level.FINER, () -> "num data items : " + train.numInstances());
 		return train;
 	}
 
@@ -166,7 +166,7 @@ public class Voorspeller {
 			double clsLabel = mlp.classifyInstance(datapredict.instance(i));
 			predicteddata.instance(i).setClassValue(clsLabel);
 		}
-		logger.log(Level.INFO,predicteddata.toString());
+		logger.log(Level.FINER, () -> predicteddata.toString());
 		// Save instances
 		String outputBestand = bestandsnaam.substring(0,bestandsnaam.length() - 5) + "_solved.arff";
 		BufferedWriter writer = new BufferedWriter(new FileWriter(outputBestand));

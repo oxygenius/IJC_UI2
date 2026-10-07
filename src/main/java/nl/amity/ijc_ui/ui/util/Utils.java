@@ -16,6 +16,8 @@
 
 package nl.amity.ijc_ui.ui.util;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.BufferedReader;
@@ -41,6 +43,8 @@ import javax.swing.table.TableColumn;
  */
 public class Utils {
 
+	private final static Logger logger = Logger.getLogger(Utils.class.getName());
+
 	public static void fixedComponentSize(Component c, int width, int height) {
 		c.setMinimumSize(new Dimension(width, height));
 		c.setMaximumSize(new Dimension(width, height));
@@ -55,25 +59,34 @@ public class Utils {
 
 	// Displays a 2d array in the console, one line per row.
 	public static void printMatrix(ArrayList<ArrayList<Integer>> grid) {
+		if (!logger.isLoggable(Level.FINEST)) return;
+		StringBuilder sb = new StringBuilder();
 		for (int r = 0; r < grid.size(); r++) {
 			for (int c = 0; c < grid.get(r).size(); c++)
-				System.out.print(grid.get(r).get(c) + "\t");
-			System.out.println();
+				sb.append(grid.get(r).get(c)).append('\t');
+			sb.append(System.lineSeparator());
 		}
+		logger.log(Level.FINEST, () -> sb.toString());
 	}
 
 	public static void printMatrix(int grid[][]) {
+		if (!logger.isLoggable(Level.FINEST)) return;
+		StringBuilder sb = new StringBuilder();
 		for (int r = 0; r < grid.length; r++) {
 			for (int c = 0; c < grid[0].length; c++)
-				System.out.print(grid[r][c] + "\t");
-			System.out.println();
+				sb.append(grid[r][c]).append('\t');
+			sb.append(System.lineSeparator());
 		}
+		logger.log(Level.FINEST, () -> sb.toString());
 	}
 
 	public static void printMatrix(int grid[]) {
+		if (!logger.isLoggable(Level.FINEST)) return;
+		StringBuilder sb = new StringBuilder();
 		for (int r = 0; r < grid.length; r++) {
-			System.out.print(grid[r] + " \n");
+			sb.append(grid[r]).append(System.lineSeparator());
 		}
+		logger.log(Level.FINEST, () -> sb.toString());
 	}
 
 	public static int[][] add2DArrays(int A[][], int B[][]) {
@@ -248,7 +261,7 @@ public class Utils {
 			return list.toArray(new String[0]);
 		} catch (IOException ex) {
 			// logger.log(Level.INFO, "Lees bestand mislukt " + ex.getMessage());
-			System.out.println("Exception: " + ex.toString());
+			logger.log(Level.WARNING, "Exception: " + ex.toString());
 			Utils.stacktrace(ex);
 		}
 		return null;

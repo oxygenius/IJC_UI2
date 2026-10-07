@@ -74,10 +74,10 @@ public class OutputKNSB implements WedstrijdenExportInterface {
 			result += new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 			result += ";" + w.getWit().getKNSBnummer() + ";" + w.getZwart().getKNSBnummer() + ";";
 			result += w.getUitslag() + ";" + w.getWit().getNaam() + ";" + w.getZwart().getNaam() + ";";
-			logger.log(Level.INFO, result);
+			logger.log(Level.FINER, result);
 			return result;
 		} else {
-			logger.log(Level.INFO, "Niet opgeslagen: " + w.toString());
+			logger.log(Level.WARNING, "Niet opgeslagen: " + w.toString());
 			return null;
 		}
 	}

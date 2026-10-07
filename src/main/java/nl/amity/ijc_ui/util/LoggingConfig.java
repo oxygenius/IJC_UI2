@@ -94,4 +94,30 @@ public class LoggingConfig {
             System.err.println("Failed to initialize file logging: " + e.getMessage());
         }
     }
+
+    /**
+     * Changes the log level of the root logger and the console handler at runtime.
+     * The file handler logs everything that passes the root logger.
+     *
+     * @param levelName name of a java.util.logging.Level (e.g. "INFO", "FINE")
+     */
+    public static synchronized void setLevel(String levelName) {
+        Level level;
+        try {
+            level = Level.parse(levelName);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            Logger.getLogger(LoggingConfig.class.getName()).warning("Unknown log level '" + levelName + "', using INFO");
+            level = Level.INFO;
+        }
+        Logger rootLogger = Logger.getLogger("");
+        rootLogger.setLevel(level);
+        for (Handler handler : rootLogger.getHandlers()) {
+            if (handler instanceof ConsoleHandler) {
+                handler.setLevel(level);
+            }
+        }
+        // Log at the lowest level that still passes, so the change is always visible
+        Logger.getLogger(LoggingConfig.class.getName()).log(level.intValue() > Level.INFO.intValue() ? level : Level.INFO,
+                "Log level set to " + level.getName());
+    }
 }

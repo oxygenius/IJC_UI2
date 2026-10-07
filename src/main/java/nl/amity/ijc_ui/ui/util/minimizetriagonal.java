@@ -69,11 +69,11 @@ public class minimizetriagonal {
 			i++;
 			cont = minimize();
 			contsum += cont;
-			System.out.printf("Iteration nr. %d with %d swaps\n", i, cont);
+			logger.log(Level.FINEST, String.format("Iteration nr. %d with %d swaps", i, cont));
 		} while (cont > 0 && i < getIterations());
 		if (cont == 0) {
-			logger.log(Level.INFO, "Iteration completed in " + i + " iterations");
-			logger.log(Level.INFO, "Required " + contsum + " swaps");
+			logger.log(Level.FINER, "Iteration completed in " + i + " iterations");
+			logger.log(Level.FINER, "Required " + contsum + " swaps");
 		} else {
 			logger.log(Level.SEVERE, "Iteration failed. No convergence within maximum of " + getIterations() + " iterations.");
 		}
@@ -93,14 +93,14 @@ public class minimizetriagonal {
 				for (int j = (Math.max(i - 1, 0)); j <= Math.min(i + 1, M.length); j++) {
 					if (!(i == j)) {
 						String result = String.format("M[%d][%d] is %d \n", i, j, M[i][j + indexrow]);
-						logger.log(Level.INFO, result);
+						logger.log(Level.FINER, result);
 						result = String.format("M[%d][%d] is %d \n", j, i, M[j][i + indexrow]);
-						logger.log(Level.INFO, result);
+						logger.log(Level.FINER, result);
 						somt += M[i][j + indexrow] + M[j][i + indexrow];
 
 					}
 				}
-				System.out.printf("somt is %d \n", somt);
+				logger.log(Level.FINEST, String.format("somt is %d", somt));
 				if (somt < triosom) {
 					triosom = somt;
 					trio = i;
@@ -108,9 +108,9 @@ public class minimizetriagonal {
 			}
 		}
 		if (trio == 0) {
-			logger.log(Level.INFO, "Geen Trio");
+			logger.log(Level.FINER, "Geen Trio");
 		} else {
-			logger.log(Level.INFO, String.format("Trio gevonden op %d, %d en %d \n", trio - 1, trio, trio + 1));			}
+			logger.log(Level.FINER, String.format("Trio gevonden op %d, %d en %d \n", trio - 1, trio, trio + 1));			}
 		return trio;
 	}
 
@@ -127,7 +127,7 @@ public class minimizetriagonal {
 		int trisum1 = 0; // som van de mini matrix voor swap.
 		int trisum2 = 0; // som van de mini matrix na swap.
 		int swapped = 0;
-		logger.log(Level.INFO, "Starting minimizing process\n");
+		logger.log(Level.FINER, "Starting minimizing process\n");
 		int indexrow = 1;
 		tri = getA();
 		for (k = 0; k < tri.length - 1; k++) {

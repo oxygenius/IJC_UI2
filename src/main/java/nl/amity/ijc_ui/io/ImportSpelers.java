@@ -40,7 +40,7 @@ public class ImportSpelers {
         // Lees het volledige bestand in naar een String array
         String[] stringArr = leesBestand(bestandsnaam);
         for (String regel : stringArr) {
-    		logger.log(Level.INFO, "Speler : " + bestandsnaam);
+    		logger.log(Level.FINER, () -> "Speler : " + bestandsnaam);
         	List<String> items = Arrays.asList(regel.split("\\s*,\\s*"));
         	int groepID = Integer.parseInt(items.get(0));
         	Speler s = new Speler();
@@ -58,7 +58,7 @@ public class ImportSpelers {
         	}
         	Groep groep = IJCController.getInstance().getGroepByID(groepID);
         	groep.addSpeler(s);
-    		logger.log(Level.INFO, "toegevoegd aan : " + groep.getNaam());
+    		logger.log(Level.FINER, () -> "toegevoegd aan : " + groep.getNaam());
         }
     }
 
@@ -78,7 +78,7 @@ public class ImportSpelers {
             in.close();
             return list.toArray(new String[0]);
         } catch (IOException ex) {
-			logger.log(Level.INFO, "Lees bestand mislukt " +  ex.getMessage());
+			logger.log(Level.WARNING, "Lees bestand mislukt " +  ex.getMessage());
         	//System.out.println("Exception: " + ex.toString());
             //Utils.stacktrace(ex);
 

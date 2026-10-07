@@ -1,5 +1,7 @@
 package nl.amity.ijc_ui.io.util;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,6 +26,8 @@ import javax.net.ssl.TrustManagerFactory;
 
 public class HttpConnector {
 
+	private final static Logger logger = Logger.getLogger(HttpConnector.class.getName());
+
 		private static final String USER_AGENT = "Mozilla/5.0";
 
 		public static String sendGET(String urlstring) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException, UnrecoverableKeyException, KeyManagementException {
@@ -44,7 +48,7 @@ public class HttpConnector {
 			URL url = new URL(urlstring);
 			HttpsURLConnection urlConn = (HttpsURLConnection) url.openConnection();
 			int responseCode = urlConn.getResponseCode();
-			System.out.println("GET Response Code :: " + responseCode);
+			logger.log(Level.FINE, "GET Response Code :: " + responseCode);
 			StringBuffer response = null;
 			if (responseCode == HttpURLConnection.HTTP_OK) { // success
 				BufferedReader in = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
@@ -57,9 +61,9 @@ public class HttpConnector {
 				in.close();
 
 				// print result
-				System.out.println(response.toString());
+				logger.log(Level.FINEST, response.toString());
 			} else {
-				System.out.println("GET request did not work.");
+				logger.log(Level.WARNING, "GET request did not work.");
 			}
 			return response.toString();
 
@@ -80,7 +84,7 @@ public class HttpConnector {
 			// For POST only - END
 
 			int responseCode = con.getResponseCode();
-			System.out.println("POST Response Code :: " + responseCode);
+			logger.log(Level.FINE, "POST Response Code :: " + responseCode);
 
 			if (responseCode == HttpURLConnection.HTTP_OK) { //success
 				BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -93,10 +97,10 @@ public class HttpConnector {
 				in.close();
 
 				// print result
-				System.out.println(response.toString());
+				logger.log(Level.FINEST, () -> response.toString());
 				return response.toString();
 			} else {
-				System.out.println("POST request did not work.");
+				logger.log(Level.WARNING, "POST request did not work.");
 				return "";
 			}
 		}

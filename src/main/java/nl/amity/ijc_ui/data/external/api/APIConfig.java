@@ -15,6 +15,8 @@
  */
 package nl.amity.ijc_ui.data.external.api;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.util.UUID;
@@ -24,6 +26,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.security.auth.DestroyFailedException;
 
 public class APIConfig {
+
+	private final static Logger logger = Logger.getLogger(APIConfig.class.getName());
 
 	UUID id = UUID.randomUUID();
 	int apiId;
@@ -138,7 +142,7 @@ public class APIConfig {
     	}
     	catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();		    		
+			logger.log(Level.WARNING, e.getMessage(), e);		    		
     	}
     	finally {
     		pp.destroy();
@@ -185,7 +189,7 @@ public class APIConfig {
     	}
     	catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();		    		
+			logger.log(Level.WARNING, e.getMessage(), e);		    		
     	}
     	finally {
     		pp.destroy();

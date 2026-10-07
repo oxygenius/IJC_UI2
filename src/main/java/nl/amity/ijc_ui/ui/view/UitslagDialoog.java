@@ -15,6 +15,8 @@
  */
 package nl.amity.ijc_ui.ui.view;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.BufferedReader;
@@ -36,6 +38,8 @@ import nl.amity.ijc_ui.ui.control.IJCController;
  *
  */
 public class UitslagDialoog {
+
+	private final static Logger logger = Logger.getLogger(UitslagDialoog.class.getName());
 
 	public void createDialog() {
 		JDialog dialog = new JDialog();
@@ -59,7 +63,7 @@ public class UitslagDialoog {
 			}
 			reader.close();
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.log(Level.WARNING, e1.getMessage(), e1);
 		}
 
 		txtArea.setText(fileContents.toString());

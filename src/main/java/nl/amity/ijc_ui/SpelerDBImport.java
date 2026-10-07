@@ -1,5 +1,7 @@
 package nl.amity.ijc_ui;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -28,6 +30,8 @@ import nl.amity.ijc_ui.ui.util.Utils;
 
 public class SpelerDBImport {
 
+	private final static Logger logger = Logger.getLogger(SpelerDBImport.class.getName());
+
 	SpelerDatabase spelerDB;
 
 	public SpelerDBImport() {
@@ -39,7 +43,7 @@ public class SpelerDBImport {
 			Status status = leesStatusBestand(bestandsnaam);
 			importStatusObject(status);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.WARNING, ex.getMessage(), ex);
             Utils.stacktrace(ex);
 
 		}
@@ -66,7 +70,7 @@ public class SpelerDBImport {
 					status.wedstrijden.getRonde());
 			// check of ronde al bestaat
 			if (spelerDB.rondeExists(ronde)) {
-				System.out.println("Ronde reeds ingelezen");
+				logger.log(Level.INFO, "Ronde reeds ingelezen");
 				spelerDB.endTransaction();
 				return;
 			}
@@ -95,7 +99,7 @@ public class SpelerDBImport {
 					spelerDB.store(dbSpeler);
 				}
 			}
-			System.out.println("Aantal nieuwe spelers : " + nieuweSpelers);
+			logger.log(Level.INFO, "Aantal nieuwe spelers : " + nieuweSpelers);
 
 			spelerDB.endTransaction();
 			spelerDB.startTransaction();
@@ -116,12 +120,12 @@ public class SpelerDBImport {
 				wedstrijden.add(wsw);
 				wedstrijden.add(wsz);
 			}
-			System.out.println("Aantal wedstrijden : " + wedstrijden.size());
+			logger.log(Level.INFO, "Aantal wedstrijden : " + wedstrijden.size());
 			spelerDB.store(ronde);
 			spelerDB.endTransaction();
 		} catch (Exception ex) {
 			// Could not read status
-			ex.printStackTrace();
+			logger.log(Level.WARNING, ex.getMessage(), ex);
             //Utils.stacktrace(ex);
 
 		}
@@ -151,7 +155,7 @@ public class SpelerDBImport {
 		DBRonde ronde = new DBRonde(null, jaar, p, r);
 		// check of ronde al bestaat
 		if (spelerDB.rondeExists(ronde)) {
-			System.out.println("Ronde reeds ingelezen");
+			logger.log(Level.INFO, "Ronde reeds ingelezen");
 			spelerDB.endTransaction();
 			return;
 		}
@@ -179,7 +183,7 @@ public class SpelerDBImport {
 				spelerDB.store(dbSpeler);
 			}
 		}
-		System.out.println("Aantal nieuwe spelers : " + nieuweSpelers);
+		logger.log(Level.INFO, "Aantal nieuwe spelers : " + nieuweSpelers);
 		spelerDB.endTransaction();
 	}
 
@@ -195,7 +199,7 @@ public class SpelerDBImport {
 		Status status;
 		BufferedReader br = new BufferedReader(new FileReader(bestandsnaam));
 		status = new Gson().fromJson(br, Status.class);
-		System.out.println("Done reading");
+		logger.log(Level.INFO, "Done reading");
 		br.close();
 		return status;
 	}

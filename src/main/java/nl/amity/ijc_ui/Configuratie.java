@@ -350,6 +350,12 @@ public class Configuratie {
 	public double fuzzyWegingDoorschuiverEigenGroep = 0.98;
 
 	/**
+	 * Niveau van de logging, naam van een java.util.logging.Level
+	 * (SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL of OFF)
+	 */
+	public String debugLevel = "INFO";
+
+	/**
 	 * plone52URL is the URL for a Plone 5.2 RESTAPI connection
 	 */
 	//public String plone52URL = "";

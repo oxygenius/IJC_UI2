@@ -61,9 +61,9 @@ public class KNSBNummerDialoog extends JDialog {
                 controller.wisExterneSpelers();
                 for (JTextField jtf : knsbVelden) {
                     if (jtf != null && jtf.getText() != null && !jtf.getText().equals("")) {
-                    	logger.log(Level.INFO, "Extern gespeeld door (invoer) :" + jtf.getText());
+                    	logger.log(Level.FINER, () -> "Extern gespeeld door (invoer) :" + jtf.getText());
                         Speler s = controller.addExterneSpeler(jtf.getText());
-                    	logger.log(Level.INFO, "Extern gespeeld door (Speler) :" + s.getNaam());
+                    	logger.log(Level.FINER, () -> "Extern gespeeld door (Speler) :" + s.getNaam());
                     }
                 }
                 setVisible(false);

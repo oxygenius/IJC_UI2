@@ -89,7 +89,7 @@ public class Plone52 {
 		  HttpResponse<String> response = send2client.send(Req2client,
 		  HttpResponse.BodyHandlers.ofString()); httpsbody += response.body();
 		 
-		logger.log(Level.INFO, "httpsbody is '" + httpsbody + "'");
+		logger.log(Level.FINEST, "httpsbody is '" + httpsbody + "'");
 		token = gson.fromJson(httpsbody, Token.class);
 		return token;
 	}
@@ -155,7 +155,7 @@ public class Plone52 {
 		jsonOb2.put("encoding","utf-8");
 		jsonOb1.put("text", jsonOb2);		
 		//
-		System.out.println("JSON : " + jsonOb1.toString(2));
+		logger.log(Level.FINEST, () -> "JSON : " + jsonOb1.toString(2));
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create("https://" + url + "/" + path))
 				.header("Accept", "application/json")
@@ -167,7 +167,7 @@ public class Plone52 {
 			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			httpsbody += response.body();
 		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 		/*
 		 * if (httpsresponse / 100 != 2 ) {
@@ -178,7 +178,7 @@ public class Plone52 {
 		Map<String, Object> map = gson.fromJson(httpsbody, new TypeToken<Map<String, Object>>() {}.getType());
 		Object id = map.get("id");
 	        
-		System.out.println("Document created with title : " + id.toString());
+		logger.log(Level.INFO, "Document created with title : " + id.toString());
 		httpsbody = "";
 		request = HttpRequest.newBuilder()
 				.uri(URI.create("https://" + url + "/" + path + "/" + id.toString() + "/@workflow/publish"))
@@ -192,13 +192,13 @@ public class Plone52 {
 			httpsresponse = response.statusCode();
 			httpsbody += response.body();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 		if (httpsresponse / 100 != 2 ) {
 //			System.out.println("StatusCode :" + httpsresponse);
 //			System.out.println("URI :" + httpsbody);
-			logger.log(Level.INFO, "StatusCode :" + httpsresponse);
-			logger.log(Level.INFO, "URI :" + httpsbody);
+			logger.log(Level.FINEST, "StatusCode :" + httpsresponse);
+			logger.log(Level.FINEST, "URI :" + httpsbody);
 			return Integer.toString(httpsresponse);
 		} else {
 //			System.out.println("Document published!");

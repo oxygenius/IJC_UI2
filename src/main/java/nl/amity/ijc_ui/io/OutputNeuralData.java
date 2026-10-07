@@ -58,7 +58,7 @@ public class OutputNeuralData implements WedstrijdenExportInterface {
 			writer.write(result);
 			writer.close();
 		} catch (Exception ex) {
-            logger.log(Level.INFO, "Exception: " +  ex.getMessage());
+            logger.log(Level.WARNING, "Exception: " +  ex.getMessage());
             Utils.stacktrace(ex);
 			return false;
 		}

@@ -4,7 +4,7 @@
   <groupId>nl.amity</groupId>
   <artifactId>ijc_ui</artifactId>
   <name>IJC_UI</name>
-  <version>2.0.1.5</version>
+  <version>2.0.1.7</version>
   <description>Interne Jeugd Competitie UI</description>
   <build>
     <plugins>
@@ -99,8 +99,6 @@ start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"</echo>
                         <include />
                       </fileset>
                       <fileset>
-                        <include />
-                        <include />
                         <include />
                         <include />
                       </fileset>

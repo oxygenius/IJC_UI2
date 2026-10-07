@@ -103,7 +103,7 @@ public class Hoofdscherm extends JFrame {
 	private static final long serialVersionUID = -2154845989579570030L;
 	private final static Logger logger = Logger.getLogger(Hoofdscherm.class.getName());
 
-	private String appVersion = "2.0.1.6";
+	private String appVersion = "2.0.1.7";
 	private JPanel hoofdPanel;
 	private JTabbedPane tabs;
 	private JPanel[] panels;
@@ -142,7 +142,7 @@ public class Hoofdscherm extends JFrame {
 		aantal = Groep.getAantalGroepen();
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle(IJCController.c().verenigingNaam + " - " + IJCController.c().appTitle + " - versie " + this.appVersion);
-		logger.log(Level.INFO, "Java version: " + System.getProperty("java.runtime.version"));
+		logger.log(Level.CONFIG, "Java version: " + System.getProperty("java.runtime.version"));
 		logger.log(Level.INFO, IJCController.c().verenigingNaam + " - " + IJCController.c().appTitle + " - versie " + this.appVersion);
 		hoofdPanel = new javax.swing.JPanel();
 		addButtons();
@@ -177,10 +177,10 @@ public class Hoofdscherm extends JFrame {
 		    fillGroupPanel(panels[i], i);
 		    tabs.addTab(g.getNaam(), null, panels[i],"Gegevens van " + g.getNaam()+ " (" + g.getNiveau() + ")");
 		    //tabs.addTab(g.getNaam(), null, panels[i]);
-		    logger.log(Level.INFO, g.getNaam() + " (" + g.getNiveau() + ")");
+		    logger.log(Level.FINEST, () -> g.getNaam() + " (" + g.getNiveau() + ")");
 		    i++;
 		}
-		logger.log(Level.INFO, "i = " + i);
+		logger.log(Level.FINEST, "i = " + i);
 		
 		
 		hoofdPanel.add(tabs);
@@ -318,18 +318,15 @@ public class Hoofdscherm extends JFrame {
 							//tabs.setTitleAt(i, Groep.geefNaam(i) + " ("+i+") *");
 							tabs.setTitleAt(i, Groep.geefNaam(i) + "*");
 							//tabs.setToolTipText("Gegevens van " + Groep.geefNaam(i)+ " (" + i + ")");
-							logger.log(Level.INFO, "SetTitle");
 						} else {
 							//tabs.setTitleAt(i, Groep.geefNaam(i) + " ("+i+")");
 							tabs.setTitleAt(i, Groep.geefNaam(i));
 							//tabs.setToolTipText("Gegevens van " + Groep.geefNaam(i)+ " (" + i + ")");
-							logger.log(Level.INFO, "SetTitle");
 						}
 					} else {
 						//.setTitleAt(i, Groep.geefNaam(i) + " ("+i+") *");
 						tabs.setTitleAt(i, Groep.geefNaam(i) + "*");
 						//tabs.setToolTipText("Gegevens van " + Groep.geefNaam(i)+ " (" + i + ")");
-						logger.log(Level.INFO, "SetTitle");
 					}
 				}
 			}
@@ -708,7 +705,7 @@ public class Hoofdscherm extends JFrame {
 	 * rightScrollPane[i] 338 x 500 * JTable rightScrollPane[i] 338 x 600 *
 	 */
 	public void initSizes() {
-		logger.log(Level.INFO, "Maak alle componenten van het juiste formaat");
+		logger.log(Level.FINEST, "Maak alle componenten van het juiste formaat");
 		// Fix the layout of the components on the screen.
 //		fixedComponentSize(this, 1320, 670);
 		fixedComponentSize(this, 1150, 670);
@@ -830,11 +827,11 @@ public class Hoofdscherm extends JFrame {
 		    public void mouseClicked(MouseEvent e) {
 		        int col = aanwezigheidsTabel[index].columnAtPoint(e.getPoint());
 		        String name = aanwezigheidsTabel[index].getColumnName(col);
-		        System.out.println("Column index selected " + col + " " + name);
+		        logger.log(Level.FINEST, () -> "Column index selected " + col + " " + name);
 		        int groepID = tabs.getSelectedIndex();
 		        switch (col) {
 		        case 0:
-		        	logger.log(Level.INFO, "Zet aanwezigheid alle spelers");
+		        	logger.log(Level.FINEST, "Zet aanwezigheid alle spelers");
 		        	controller.setAlleSpelersAanwezigheid(groepID);
 		        	if (controller.isAutomatisch()) {
 		        		controller.maakGroepsindeling();
@@ -844,7 +841,7 @@ public class Hoofdscherm extends JFrame {
 		        	repaint();
 		        	break;
 		        case 4:
-		        	logger.log(Level.INFO, "Sorteer op rating (toggle) in de groep");
+		        	logger.log(Level.FINEST, "Sorteer op rating (toggle) in de groep");
 		        	controller.sorteerGroepOpRating(groepID, true);
 		        	if (controller.isAutomatisch()) {
 			        	// Opnieuw indelen op basis van nieuwe volgorde
@@ -853,7 +850,7 @@ public class Hoofdscherm extends JFrame {
 		        	}
 		        	break;
 		        case 5:
-		        	logger.log(Level.INFO, "Sorteer op punten (toggle) in de groep");
+		        	logger.log(Level.FINEST, "Sorteer op punten (toggle) in de groep");
 		        	controller.sorteerGroepOpPunten(groepID, true);
 		        	if (controller.isAutomatisch()) {
 			        	// Opnieuw indelen op basis van nieuwe volgorde
@@ -895,7 +892,6 @@ public class Hoofdscherm extends JFrame {
 							rd.addWindowListener(new WindowAdapter() {
 								@Override
 								public void windowClosed(WindowEvent e) {
-									System.out.println("closing...");
 									hoofdPanel.repaint();
 									// do something...
 								}
@@ -1201,7 +1197,6 @@ public class Hoofdscherm extends JFrame {
 		dialoog.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				System.out.println("closing...");
 				hoofdPanel.repaint();
 			}
 
@@ -1278,7 +1273,6 @@ public class Hoofdscherm extends JFrame {
 		ed.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				System.out.println("closing...");
 				hoofdPanel.repaint();
 			}
 		});
@@ -1311,7 +1305,7 @@ public class Hoofdscherm extends JFrame {
 				updateZWbalansna();
 				updateUpdateStandButton();
 			} catch (Exception ex) {
-	             logger.log(Level.INFO, "Exception: " +  ex.getMessage());
+	             logger.log(Level.WARNING, "Exception: " +  ex.getMessage());
 	             Utils.stacktrace(ex);
 			}
 			hoofdPanel.repaint();
@@ -1324,9 +1318,8 @@ public class Hoofdscherm extends JFrame {
 		dialoog.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				System.out.println("closing...");
 				//TODO config naar status doorzetten
-				logger.log(Level.INFO, "Adjusting status to changes in config");
+				logger.log(Level.FINE, "Adjusting status to changes in config");
 				Status s = controller.getStatus();
 				Configuratie c = IJCController.c();
 				int s_groepen= s.groepen.getAantalGroepen();

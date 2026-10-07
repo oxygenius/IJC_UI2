@@ -97,7 +97,7 @@ public class SpelersScherm extends JFrame {
 	 * Creates new form MainWindow
 	 */
 	public SpelersScherm() {
-		logger.log(Level.INFO, "Constructor");
+		logger.log(Level.FINEST, "Constructor");
 		db = SpelerDatabase.getInstance();
 		db.openDatabase();
 		initComponents();
@@ -106,7 +106,7 @@ public class SpelersScherm extends JFrame {
 	}
 
 	private void initComponents() {
-		logger.log(Level.INFO, "Init components");
+		logger.log(Level.FINEST, "Init components");
 		//setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 		setTitle(IJCController.c().verenigingNaam + " - " + "Spelers");
 
@@ -174,7 +174,7 @@ public class SpelersScherm extends JFrame {
 	 * rightScrollPane[i] 338 x 500 * JTable rightScrollPane[i] 338 x 600 *
 	 */
 	public void initSizes() {
-		logger.log(Level.INFO, "Maak alle componenten van het juiste formaat");
+		logger.log(Level.FINEST, "Maak alle componenten van het juiste formaat");
 		// Fix the layout of the components on the screen.
 		fixedComponentSize(this, 1200, 670);
 		fixedComponentSize(hoofdPanel, 1190, 660);
@@ -210,7 +210,7 @@ public class SpelersScherm extends JFrame {
 	}
 
 	protected void fillRondePane() {
-		logger.log(Level.INFO, "Maak de verschillende panes and viewports");
+		logger.log(Level.FINEST, "Maak de verschillende panes and viewports");
 
 		rondeModel = new DBRondeModel(rondesPane);
 		rondesTabel = new JTable(rondeModel) {
@@ -243,16 +243,16 @@ public class SpelersScherm extends JFrame {
 		        int row = rondesTabel.rowAtPoint(evt.getPoint());
 		        int col = rondesTabel.columnAtPoint(evt.getPoint());
 		        if (row >= 0 && col >= 0) {
-		            System.out.println("Clicked on row " + row + ", col " + col + " of rondes");
+		            logger.log(Level.FINEST, () -> "Clicked on row " + row + ", col " + col + " of rondes");
 		            rondeModel.setSelectedRonde(row);
 		            DBRonde selRonde = rondeModel.getSelectedRond();
 	            	spelersModel.setRonde(selRonde);
 	            	spelersModel.fireTableChanged(null);
 	            	initSizes();
 		            if (selRonde != null) {
-		            	System.out.println("Selected ronde : " + selRonde);
+		            	logger.log(Level.FINEST, () -> "Selected ronde : " + selRonde);
 		            } else {
-		            	System.out.println("Selected ronde : -");
+		            	logger.log(Level.FINEST, "Selected ronde : -");
 		            }
 		        }
 		        hoofdPanel.revalidate();
@@ -289,7 +289,7 @@ public class SpelersScherm extends JFrame {
 					//g2.initialize(createXYDataset(selectectSpelers));
 					g2.initialize(createCategoryDataset(selectectSpelers));
 					fixedComponentSize(g2, 700,380);
-					logger.log(Level.INFO, "Adding graph");
+					logger.log(Level.FINEST, "Adding graph");
 					graphPanel.removeAll();
 					graphPanel.add(g2);
 					hoofdPanel.revalidate();

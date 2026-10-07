@@ -53,6 +53,7 @@ import nl.amity.ijc_ui.data.external.api.API;
 import nl.amity.ijc_ui.data.external.api.APIConfig;
 import nl.amity.ijc_ui.ui.control.IJCController;
 import nl.amity.ijc_ui.ui.util.Utils;
+import nl.amity.ijc_ui.util.LoggingConfig;
 
 /**
  * Panel met editor voor Configuratie object.
@@ -110,6 +111,8 @@ public class ConfigurationDialog extends JDialog {
 	private JTextField tfFuzzyZwartWit;
 	private JTextField tfFuzzyDoorschuiver;
 	private JComboBox cbAPI;
+	private JComboBox<String> cbDebugLevel;
+	private static final String[] DEBUG_LEVELS = { "OFF", "SEVERE", "WARNING", "INFO", "CONFIG", "FINE", "FINER", "FINEST", "ALL" };
 	private String newAPItext = "Nieuwe ExportAPI";
 	
 	public ConfigurationDialog(Frame frame, String title) {
@@ -136,6 +139,7 @@ public class ConfigurationDialog extends JDialog {
 		tabs.addTab("Indeling", createPanelIndeling());
 		tabs.addTab("Export", createPanelExport());
 		tabs.addTab("ExportAPI", createPanelExportAPIs());
+		tabs.addTab("Debug", createPanelDebug());
 		Utils.fixedComponentSize(tabs, 600, 400);
 
 		JPanel buttonPanel = new JPanel();
@@ -385,8 +389,8 @@ public class ConfigurationDialog extends JDialog {
 					if (event.getSource () == cbAPI) {
 						txt=((API) cbAPI.getSelectedItem()).getAPIName();
 						id=((API) cbAPI.getSelectedItem()).getId();
-						logger.log(Level.INFO, "SelectedItemName : " + txt);
-						logger.log(Level.INFO, "SelectedItemId : " + id);
+						logger.log(Level.FINEST, () -> "SelectedItemName : " + txt);
+						logger.log(Level.FINEST, () -> "SelectedItemId : " + id);
 					}
 			}
 		});
@@ -413,7 +417,6 @@ public class ConfigurationDialog extends JDialog {
 				passwordDialoog.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosed(WindowEvent e) {
-						System.out.println("closing...");
 						panel.repaint();
 					}
 
@@ -461,7 +464,7 @@ public class ConfigurationDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				apiconfig.setAPIId(((API) cbAPI.getSelectedItem()).getId());
-				logger.log(Level.INFO, "SelectedItemId : " + apiconfig.getAPIId());
+				logger.log(Level.FINEST, () -> "SelectedItemId : " + apiconfig.getAPIId());
 				apiconfig.setUserName(tfUserName.getText());
 				apiconfig.setURL(tfURL.getText());
 				apiconfig.setLoginPath(tfLoginPath.getText());
@@ -469,9 +472,9 @@ public class ConfigurationDialog extends JDialog {
 				apiconfig.setActive(cbActive.isSelected());
 				apiconfig.setTemplate(taTemplate.getText());
 				if (cbActive.isSelected()) {
-					logger.log(Level.INFO, "Checkbox selected");
+					logger.log(Level.FINEST, "Checkbox selected");
 				} else {
-					logger.log(Level.INFO, "Checkbox not selected");
+					logger.log(Level.FINEST, "Checkbox not selected");
 				}
 				if (newconfig) {
 					config.externalAPIConfigs.apiconfigs.add(apiconfig);
@@ -481,7 +484,7 @@ public class ConfigurationDialog extends JDialog {
 					catch (Exception e) {
 						// TODO Auto-generated catch block
 						logger.log(Level.WARNING, "Wachtwoord instellen mislukt.");
-						e.printStackTrace();			
+						logger.log(Level.WARNING, e.getMessage(), e);			
 					}
 
 					try {
@@ -677,6 +680,22 @@ public class ConfigurationDialog extends JDialog {
 		return panel;
 	}
 
+	public JPanel createPanelDebug() {
+		JPanel panel = new JPanel(false);
+		panel.setLayout(new ExtendedGridLayout(20, 2));
+		// public String debugLevel = "INFO";
+		panel.add(new JLabel("Debug level logging"));
+		cbDebugLevel = new JComboBox<>(DEBUG_LEVELS);
+		cbDebugLevel.setSelectedItem(config.debugLevel != null ? config.debugLevel.toUpperCase() : "INFO");
+		cbDebugLevel.setToolTipText("FINE, FINER en FINEST geven meer detail in IJC_UI.log; wordt direct actief na OK");
+		panel.add(cbDebugLevel);
+		for (int i = 0; i < 19; i++) {
+			panel.add(new JLabel(" "));
+			panel.add(new JLabel(" "));
+		}
+		return panel;
+	}
+
 	private void storeValues() {
 		updateTextConfig(config, "appTitle", tfAppnaam.getText(), 5);
 		updateTextConfig(config, "verenigingNaam", tfVerenigingNaam.getText(), 5);
@@ -738,6 +757,8 @@ public class ConfigurationDialog extends JDialog {
 		updateDoubleConfig(config, "fuzzyWegingAfstandRanglijstpunten", tfFuzzyRanglijstpunten.getText(), 0.0, 1.0);
 		updateDoubleConfig(config, "fuzzyWegingZwartWitVerdeling", tfFuzzyZwartWit.getText(), 0.0, 1.0);
 		updateDoubleConfig(config, "fuzzyWegingDoorschuiverEigenGroep", tfFuzzyDoorschuiver.getText(), 0.0, 1.0);
+		config.debugLevel = (String) cbDebugLevel.getSelectedItem();
+		LoggingConfig.setLevel(config.debugLevel);
 
 	}
 
@@ -749,7 +770,7 @@ public class ConfigurationDialog extends JDialog {
 	 * @param minlengte Minimale lengte van de text
 	 */
 	private static void updateTextConfig(Configuratie c, String fieldname, String value, int minlengte) {
-		logger.log(Level.INFO, "Saving value \'" + value + "\' to field " + fieldname);
+		logger.log(Level.CONFIG, "Saving value \'" + value + "\' to field " + fieldname);
 		if ((value != null) && (value.length() >= minlengte)) {
 			try {
 				c.getClass().getField(fieldname).set(c, value);
@@ -769,7 +790,7 @@ public class ConfigurationDialog extends JDialog {
 	 */
 	private static void updateIntConfig(Configuratie c, String fieldname, String value, int min, int max) {
 		try {
-			logger.log(Level.INFO, "Saving value \'" + value + "\' to field " + fieldname);
+			logger.log(Level.CONFIG, "Saving value \'" + value + "\' to field " + fieldname);
 			int nieuw = Integer.parseInt(value);
 			if ((nieuw >= min) && (nieuw <= max)) {
 				c.getClass().getField(fieldname).set(c, nieuw);
@@ -789,7 +810,7 @@ public class ConfigurationDialog extends JDialog {
 	 */
 	private static void updateDoubleConfig(Configuratie c, String fieldname, String value, double min, double max) {
 		try {
-			logger.log(Level.INFO, "Saving value \'" + value + "\' to field " + fieldname);
+			logger.log(Level.CONFIG, "Saving value \'" + value + "\' to field " + fieldname);
 			double nieuw = Double.parseDouble(value);
 			if ((nieuw >= min) && (nieuw <= max)) {
 				c.getClass().getField(fieldname).set(c, nieuw);

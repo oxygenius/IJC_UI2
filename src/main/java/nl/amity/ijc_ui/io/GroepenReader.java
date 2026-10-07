@@ -56,7 +56,7 @@ public class GroepenReader {
      */
     public Groepen leesGroepenJSON(String bestandsnaam) {
 		try {
-			logger.log(Level.INFO, "Lezen groepen in JSON formaat uit : " + bestandsnaam);
+			logger.log(Level.FINE, "Lezen groepen in JSON formaat uit : " + bestandsnaam);
 			Gson gson = new Gson();
 			BufferedReader br = new BufferedReader(new FileReader(bestandsnaam));
 			Groepen groepen = gson.fromJson(br, Groepen.class);
@@ -67,10 +67,10 @@ public class GroepenReader {
 	        	if (groepen.getPeriode() > IJCController.c().perioden) groepen.setPeriode(1);
 	        }
 	        
-			logger.log(Level.INFO, "Volgende periode " +  groepen.getPeriode() + " en ronde " + groepen.getRonde());
+			logger.log(Level.FINE, "Volgende periode " +  groepen.getPeriode() + " en ronde " + groepen.getRonde());
 	        return groepen;
 		} catch (IOException ex) {
-			logger.log(Level.INFO, "Lezen groepen in JSON formaat mislukt " +  ex.getMessage());
+			logger.log(Level.WARNING, "Lezen groepen in JSON formaat mislukt " +  ex.getMessage());
             //Utils.stacktrace(ex);
 		}
 		return null;
@@ -82,7 +82,7 @@ public class GroepenReader {
      * @return De ingelezen spelers verdeeld over de groepen
      */
     public Groepen leesGroepen(String bestandsnaam) {
-		logger.log(Level.INFO, "Lezen groepen in TXT formaat uit : " + bestandsnaam);
+		logger.log(Level.FINE, "Lezen groepen in TXT formaat uit : " + bestandsnaam);
         String[] stringArr = leesBestand(bestandsnaam);
 
         // Lees iedere groep in en voeg deze toe aan de verzameling groepen
@@ -95,7 +95,7 @@ public class GroepenReader {
         	periode++;
         	if (periode > IJCController.c().perioden) periode = 1;
         }
-		logger.log(Level.INFO, "Periode " + periode  + " en ronde " + ronde + " als speelronde");
+		logger.log(Level.FINE, "Periode " + periode  + " en ronde " + ronde + " als speelronde");
         groepen.setRonde(ronde);
         groepen.setPeriode(periode);
         // Groepen achterste voren inlezen
@@ -122,7 +122,7 @@ public class GroepenReader {
             in.close();
             return list.toArray(new String[0]);
         } catch (IOException ex) {
-			logger.log(Level.INFO, "Lezen bestand mislukt " +  ex.getMessage());
+			logger.log(Level.WARNING, "Lezen bestand mislukt " +  ex.getMessage());
             //Utils.stacktrace(ex);
         }
         return null;
@@ -138,7 +138,7 @@ public class GroepenReader {
      * @return Groep van het gespecificeerde niveau met al zijn spelers
      */
     private Groep leesGroep(String[] data, String token, int type) {
-		logger.log(Level.INFO, "Zoeken naar token \'" +  token + "\' en type " + type);
+		logger.log(Level.FINEST, () -> "Zoeken naar token \'" +  token + "\' en type " + type);
         Groep groep = new Groep(type);
         // Zoek regel met token
         boolean found = false;
@@ -150,7 +150,7 @@ public class GroepenReader {
         // Lees spelers (begint 3 regels na het vinden van de groepsnaam)
         // Index is hier ��n groter dan de index waar he token is gevonden
         index += 2;
-		logger.log(Level.INFO, "Spelers groep beginnen op regel " + index);
+		logger.log(Level.FINEST, "Spelers groep beginnen op regel " + index);
         // Zolang er een punt in de regel staat, is er nog een speler gevonden
         while ((index < data.length) && data[index].contains(".")) {
         	Speler s = genereerSpeler(data[index++], type);
@@ -168,7 +168,7 @@ public class GroepenReader {
      */
     private Speler genereerSpeler(String desc, int groep) {
         Speler speler = new Speler();
-        System.out.println(desc);
+        logger.log(Level.FINEST, () -> desc);
         // ID
         speler.setId(getIntegerDeel(desc, 0, 2));
         // Naam

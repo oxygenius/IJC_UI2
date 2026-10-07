@@ -50,12 +50,12 @@ public class Uitslagverwerker {
 		updateGroepen.setRonde(spelersgroepen.getRonde());
 		for (Groep groep : spelersgroepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
 //		for (Groep groep : spelersgroepen.getGroepen()) {
-			logger.log(Level.INFO, "Verwerk uitslag voor groep " + groep.getNaam());
+			logger.log(Level.FINE, "Verwerk uitslag voor groep " + groep.getNaam());
 			Groep bijgewerkt = new Groep();
 			bijgewerkt.setNiveau(groep.getNiveau());
 			for (Speler speler : groep.getSpelers()) {
 				boolean extern = heeftExternGespeeld(speler, externGespeeld);
-				logger.log(Level.INFO, "Speler " + speler.getNaam() + ", Extern ? " + extern);
+				logger.log(Level.FINER, () -> "Speler " + speler.getNaam() + ", Extern ? " + extern);
 				Speler update = updateSpeler(speler, wedstrijden, extern);
 				bijgewerkt.addSpeler(update);
 			}
@@ -102,7 +102,7 @@ public class Uitslagverwerker {
 		int wedstrijdenHoger = 0;
 		// Standaardpunt
 		int puntenbij = 1;
-		logger.log(Level.INFO, "      Aanwezigheidspunt :" + puntenbij);
+		logger.log(Level.FINER, "      Aanwezigheidspunt :" + puntenbij);
 		if (!speler.isAanwezig()) {
 			// Speler heeft mogelijk wel reglementair verloren door niet aanwezig te zijn.
 			// Tegenstander moet punten behouden en niet nadelig geraakt worden door afwezigheid
@@ -111,7 +111,7 @@ public class Uitslagverwerker {
 			spelerWedstrijden = new ArrayList<>();
 		}
 		for (Wedstrijd w : spelerWedstrijden) {
-			logger.log(Level.INFO, "    Wedstrijd :" + w.toString());
+			logger.log(Level.FINER, () -> "    Wedstrijd :" + w.toString());
 			int resultaat = 0; // TOTO style -> 0 = onbekend
 			Speler tegenstander = w.getWit().gelijkAan(speler) ? w.getZwart() : w.getWit();
 			if (updateSpeler.getGroep() < tegenstander.getGroep())
@@ -124,38 +124,38 @@ public class Uitslagverwerker {
 				puntenbij += 1;
 				aantalremise++;
 				resultaat = 3;
-				logger.log(Level.INFO, "      Remise         : " + puntenbij);
+				logger.log(Level.FINER, "      Remise         : " + puntenbij);
 			} else if ((w.getUitslag() == Wedstrijd.WIT_WINT) && (w.getWit().gelijkAan(speler))) {
 				puntenbij += 2;
 				aantalgewonnen++;
 				resultaat = 1;
-				logger.log(Level.INFO, "      Winst met wit  : " + puntenbij);
+				logger.log(Level.FINER, "      Winst met wit  : " + puntenbij);
 			} else if ((w.getUitslag() == Wedstrijd.ZWART_WINT) && (w.getZwart().gelijkAan(speler))) {
 				puntenbij += 2;
 				aantalgewonnen++;
 				resultaat = 1;
-				logger.log(Level.INFO, "      Winst met zwart :" + puntenbij);
+				logger.log(Level.FINER, "      Winst met zwart :" + puntenbij);
 			} else {
 				// verlies
 				resultaat = 2;
-				logger.log(Level.INFO, "      Verlies        :" + puntenbij);
+				logger.log(Level.FINER, "      Verlies        :" + puntenbij);
 			}
 			// WITVOORKEUR
 			if (w.getWit().gelijkAan(speler)) {
 				updateSpeler.setWitvoorkeur(updateSpeler.getWitvoorkeur() - 1);
-				logger.log(Level.INFO, "      Witvoorkeur -1 :" + updateSpeler.getWitvoorkeur());
+				logger.log(Level.FINER, () -> "      Witvoorkeur -1 :" + updateSpeler.getWitvoorkeur());
 			} else {
 				updateSpeler.setWitvoorkeur(updateSpeler.getWitvoorkeur() + 1);
-				logger.log(Level.INFO, "      Witvoorkeur +1 :" + updateSpeler.getWitvoorkeur());
+				logger.log(Level.FINER, () -> "      Witvoorkeur +1 :" + updateSpeler.getWitvoorkeur());
 			}
 			// TEGENSTANDERS
 			String res = resultaat == 1 ? "+" : (resultaat == 2 ? "-" : (resultaat == 3 ? "=" : "?"));
 			updateSpeler.addTegenstander(tegenstander.getInitialen() + res);
-			logger.log(Level.INFO, "      Tegenstanders  :" + updateSpeler.getTegenstandersString());
+			logger.log(Level.FINER, () -> "      Tegenstanders  :" + updateSpeler.getTegenstandersString());
 		}
 		if (spelerWedstrijden.size() == 1) {
 			// bij 1 wedstrijd dubbele punten
-			logger.log(Level.INFO, "Enkele wedstrijd gepeeld dus verdubbelaar");
+			logger.log(Level.FINER, "Enkele wedstrijd gepeeld dus verdubbelaar");
 			if (puntenbij == 3)
 				puntenbij = 5;
 			if (puntenbij == 2)
@@ -163,7 +163,7 @@ public class Uitslagverwerker {
 		}
 		// Spelen in een hogere groep levert punten op
 		if (heeftHogerGespeeld(speler, wedstrijden)) {
-			logger.log(Level.INFO, "      Hoger gespeeld :" + puntenbij);
+			logger.log(Level.FINER, "      Hoger gespeeld :" + puntenbij);
 			puntenbij++;
 		}
 		puntenbij = Math.min(puntenbij, 5); // niet meer dan 5 punten er bij
@@ -173,7 +173,7 @@ public class Uitslagverwerker {
 				puntenbij += 2;
 				updateSpeler.setAfwezigheidspunt(true);
 				updateSpeler.addTegenstander("## ");
-				logger.log(Level.INFO, "      Eerste keer afw : 2 punten");
+				logger.log(Level.FINER, "      Eerste keer afw : 2 punten");
 			} else if (!extern) {
 				updateSpeler.addTegenstander("-- ");
 			}
@@ -194,18 +194,18 @@ public class Uitslagverwerker {
 		if ((wedstrijdenHoger > 0)) {
 			// Alle wedstrijden tegen speler hoger dus kant op punten
 			String lr = "KEI punten bepalen, aantal gewonnen = " + aantalgewonnen + " aantal remise = " + aantalremise;
-			logger.log(Level.INFO, lr);
+			logger.log(Level.FINER, () -> lr);
 			int keipunten_bij = 0;
 			if (aantalgewonnen == 1 && aantalremise == 1)
 				keipunten_bij = 1;
 			if (aantalgewonnen == spelerWedstrijden.size())
 				keipunten_bij = 2;
-			logger.log(Level.INFO, "Speler " + updateSpeler.getNaam() + " verdient aantal keipunten: " + keipunten_bij);
+			logger.log(Level.FINE, "Speler " + updateSpeler.getNaam() + " verdient aantal keipunten: " + keipunten_bij);
 			updateSpeler.setKeikansen(updateSpeler.getKeikansen() + 1);
 			updateSpeler.setKeipunten(updateSpeler.getKeipunten() + keipunten_bij);
 		}
 
-		logger.log(Level.INFO, "      Punten bij tot :" + puntenbij);
+		logger.log(Level.FINER, "      Punten bij tot :" + puntenbij);
 		updateSpeler.setPunten(updateSpeler.getPunten() + puntenbij);
 		return updateSpeler;
 	}
@@ -241,7 +241,7 @@ public class Uitslagverwerker {
 	 * @return wedstrijden gespeeld door speler
 	 */
 	private ArrayList<Wedstrijd> getWedstrijdenVoorSpeler(Speler speler, Wedstrijden wedstrijden) {
-		logger.log(Level.INFO, "Vind wedstrijden voor speler :" + speler.toString());
+		logger.log(Level.FINER, () -> "Vind wedstrijden voor speler :" + speler.toString());
 		ArrayList<Wedstrijd> result = new ArrayList<>();
 		for (Groepswedstrijden gws : wedstrijden.getGroepswedstrijden()) {
 			for (Serie serie : gws.getSeries()) {
@@ -257,7 +257,7 @@ public class Uitslagverwerker {
 				}
 			}
 		}
-		logger.log(Level.INFO, "" + result.size() + " wedstrijden gevonden voor " + speler.toString());
+		logger.log(Level.FINER, () -> "" + result.size() + " wedstrijden gevonden voor " + speler.toString());
 		return result;
 	}
 
@@ -290,12 +290,12 @@ public class Uitslagverwerker {
 					wit.setRating(Math.max(nieuwWit, 100));
 					zwart.setRating(Math.max(nieuwZwart, 100));
 	
-					logger.log(Level.INFO, wedstrijd.toString());
-					logger.log(Level.INFO, "Wit: " + wit.getNaam() + " van " + ratingWit + " naar " + nieuwWit);
-					logger.log(Level.INFO, "Zwart: " + zwart.getNaam() + " van " + ratingZwart + " naar " + nieuwZwart);
+					logger.log(Level.FINE, wedstrijd.toString());
+					logger.log(Level.FINE, "Wit: " + wit.getNaam() + " van " + ratingWit + " naar " + nieuwWit);
+					logger.log(Level.FINE, "Zwart: " + zwart.getNaam() + " van " + ratingZwart + " naar " + nieuwZwart);
 				} else {
-					logger.log(Level.INFO, wedstrijd.toString());
-					logger.log(Level.INFO, "Niet reglementair, geen aanpassing rating");
+					logger.log(Level.FINE, wedstrijd.toString());
+					logger.log(Level.FINE, "Niet reglementair, geen aanpassing rating");
 				}
 			}
 		}

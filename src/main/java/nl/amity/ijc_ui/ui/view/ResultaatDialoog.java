@@ -105,7 +105,7 @@ class ResultaatDialoog extends JDialog {
                 int i = 0;
                 for (JTextField jtf : uitslagVelden) {
                     if (jtf != null && jtf.getText() != null && !jtf.getText().equals("")) {
-                        System.out.println("Veld " + i + " Waarde " + Integer.parseInt(jtf.getText()));
+                        logger.log(Level.FINER, "Veld " + i + " Waarde " + Integer.parseInt(jtf.getText()));
                         wedstrijden.get(i).setUitslag012(Integer.parseInt(jtf.getText()));
                     }
                     ++i;

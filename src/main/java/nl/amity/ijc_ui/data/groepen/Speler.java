@@ -145,11 +145,11 @@ public class Speler implements Cloneable {
         String last = splitted[splitted.length-1];
         String init = "" + first.charAt(0) + last.charAt(0);
         int poging = 1;
-		logger.log(Level.INFO, "Trying initials: " + init);
+		logger.log(Level.FINEST, "Trying initials: " + init);
         while (checkInit(init)) {
         	poging++;
         	init=toggleCase(init, poging);
-    		logger.log(Level.INFO, "Trying initials: " + init);
+    		logger.log(Level.FINEST, "Trying initials: " + init);
         }
         initialen = init;
     }

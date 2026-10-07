@@ -1,0 +1,1464 @@
+{
+ "automatisch": false,
+ "wedstrijdgroepen": {
+  "groepen": [
+   {
+    "niveau": 0,
+    "ZWbalansvoor": 1.0,
+    "ZWbalansna": 1.0,
+    "spelers": [
+     {
+      "id": 1,
+      "uid": "89eee89e-e25e-5980-abed-6ddfd7f3b1c2",
+      "naam": "Speler 01",
+      "initialen": "AH",
+      "witvoorkeur": 1.0,
+      "groep": 0,
+      "rating": 253,
+      "tegenstanders": [
+       "SH+",
+       "OO+",
+       "FH+",
+       "SS-"
+      ],
+      "punten": 11,
+      "afwezigheidspunt": true,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 3,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ## "
+     },
+     {
+      "id": 2,
+      "uid": "c2d09765-cba1-5783-89db-8f0e3e5e8c40",
+      "naam": "Speler 02",
+      "initialen": "FV",
+      "witvoorkeur": 0.0,
+      "groep": 0,
+      "rating": 155,
+      "tegenstanders": [
+       "kK-",
+       "FH-",
+       "SH-",
+       "OO="
+      ],
+      "punten": 7,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 2,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- SS="
+     },
+     {
+      "id": 3,
+      "uid": "38b1107f-dd2b-5f00-9ab5-00b1d29747db",
+      "naam": "Speler 03",
+      "initialen": "SH",
+      "witvoorkeur": 0.0,
+      "groep": 0,
+      "rating": 155,
+      "tegenstanders": [
+       "AH-",
+       "OO-",
+       "FV+",
+       "aA+"
+      ],
+      "punten": 9,
+      "afwezigheidspunt": true,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 0,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ## "
+     },
+     {
+      "id": 4,
+      "uid": "193fb0c5-c2a1-59c6-a801-e830bfb76516",
+      "naam": "Speler 04",
+      "initialen": "FH",
+      "witvoorkeur": 0.0,
+      "groep": 0,
+      "rating": 156,
+      "tegenstanders": [
+       "SS=",
+       "FV+",
+       "AH-",
+       "kK-"
+      ],
+      "punten": 9,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 1,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- aA="
+     },
+     {
+      "id": 5,
+      "uid": "cb709cf2-7205-504d-8afd-713bf6507b8d",
+      "naam": "Speler 05",
+      "initialen": "OO",
+      "witvoorkeur": 0.0,
+      "groep": 0,
+      "rating": 111,
+      "tegenstanders": [
+       "SH+",
+       "AH-",
+       "kK-",
+       "FV="
+      ],
+      "punten": 6,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 0,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- SS-"
+     },
+     {
+      "id": 6,
+      "uid": "a28218a3-b8f4-564f-8bd0-125da216293b",
+      "naam": "Speler 06",
+      "initialen": "aA",
+      "witvoorkeur": 0.0,
+      "groep": 0,
+      "rating": 113,
+      "tegenstanders": [
+       "FH=",
+       "## ",
+       "SS=",
+       "SH-"
+      ],
+      "punten": 7,
+      "afwezigheidspunt": true,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 0,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- FV-"
+     }
+    ]
+   },
+   {
+    "niveau": 1,
+    "ZWbalansvoor": 5.0,
+    "ZWbalansna": 5.0,
+    "spelers": [
+     {
+      "id": 1,
+      "uid": "4fbceeb2-a3ce-5f88-a908-e6b4201cc647",
+      "naam": "Speler 07",
+      "initialen": "RT",
+      "witvoorkeur": -1.0,
+      "groep": 1,
+      "rating": 478,
+      "tegenstanders": [
+       "FE+",
+       "AK-",
+       "GS-",
+       "DB-"
+      ],
+      "punten": 17,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 1,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- DB-"
+     },
+     {
+      "id": 2,
+      "uid": "e77112ca-7496-5f93-957e-7d2820cd70c2",
+      "naam": "Speler 08",
+      "initialen": "kK",
+      "witvoorkeur": 2.0,
+      "groep": 0,
+      "rating": 367,
+      "tegenstanders": [
+       "FV+",
+       "SS-",
+       "OO+",
+       "FH+"
+      ],
+      "punten": 11,
+      "afwezigheidspunt": true,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 3,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ## "
+     },
+     {
+      "id": 3,
+      "uid": "7596700a-11d2-59c7-9def-90ea84e73a16",
+      "naam": "Speler 09",
+      "initialen": "GS",
+      "witvoorkeur": 1.0,
+      "groep": 1,
+      "rating": 688,
+      "tegenstanders": [
+       "## ",
+       "-- ",
+       "RT+",
+       "FE-"
+      ],
+      "punten": 17,
+      "afwezigheidspunt": true,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 3,
+      "keikansen": 13,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- AK="
+     },
+     {
+      "id": 4,
+      "uid": "c3157141-97d6-5339-8abb-794bb22c9b78",
+      "naam": "Speler 10",
+      "initialen": "DH",
+      "witvoorkeur": 0.0,
+      "groep": 1,
+      "rating": 502,
+      "tegenstanders": [
+       "NZ+",
+       "FE+",
+       "BJ-",
+       "NZ+"
+      ],
+      "punten": 19,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 6,
+      "keikansen": 7,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- BJ-"
+     },
+     {
+      "id": 5,
+      "uid": "8d145d67-0394-5d62-a5e1-ce64b62e4fa1",
+      "naam": "Speler 11",
+      "initialen": "BJ",
+      "witvoorkeur": 0.0,
+      "groep": 1,
+      "rating": 507,
+      "tegenstanders": [
+       "DB-",
+       "II+",
+       "DH+",
+       "AK-"
+      ],
+      "punten": 20,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 0,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- DH+"
+     },
+     {
+      "id": 6,
+      "uid": "dfb0da9c-9bf9-5c19-af37-40ca5d204ab1",
+      "naam": "Speler 12",
+      "initialen": "FE",
+      "witvoorkeur": -1.0,
+      "groep": 1,
+      "rating": 544,
+      "tegenstanders": [
+       "RT-",
+       "DH-",
+       "NZ+",
+       "GS+"
+      ],
+      "punten": 17,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 2,
+      "keikansen": 4,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- DB-"
+     },
+     {
+      "id": 7,
+      "uid": "c952f95d-c5b5-5161-b595-b6ff593383e5",
+      "naam": "Speler 13",
+      "initialen": "NZ",
+      "witvoorkeur": 0.0,
+      "groep": 1,
+      "rating": 364,
+      "tegenstanders": [
+       "DH-",
+       "DB-",
+       "FE-",
+       "DH-"
+      ],
+      "punten": 14,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 6,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- AK-"
+     },
+     {
+      "id": 8,
+      "uid": "c5beec76-2cac-5548-b547-946c4e5fd816",
+      "naam": "Speler 14",
+      "initialen": "SS",
+      "witvoorkeur": 0.0,
+      "groep": 0,
+      "rating": 204,
+      "tegenstanders": [
+       "FH=",
+       "kK+",
+       "aA=",
+       "AH+"
+      ],
+      "punten": 12,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 0,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- OO+"
+     }
+    ]
+   },
+   {
+    "niveau": 2,
+    "ZWbalansvoor": 3.0,
+    "ZWbalansna": 3.0,
+    "spelers": [
+     {
+      "id": 1,
+      "uid": "dc1e69eb-331d-5221-92aa-3daed0411c3c",
+      "naam": "Speler 15",
+      "initialen": "LE",
+      "witvoorkeur": 1.0,
+      "groep": 3,
+      "rating": 1860,
+      "tegenstanders": [
+       "MV=",
+       "## ",
+       "-- ",
+       "JV="
+      ],
+      "punten": 37,
+      "afwezigheidspunt": true,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 0,
+      "speelgeschiedenis": "PD+SA+WS+MV+KD+PD+## SA-PD+WS+MV-SA-WS+TB+KD+RR="
+     },
+     {
+      "id": 2,
+      "uid": "7590afd7-f777-5940-8281-2c4a6e977efc",
+      "naam": "Speler 16",
+      "initialen": "AA",
+      "witvoorkeur": -1.0,
+      "groep": 2,
+      "rating": 951,
+      "tegenstanders": [
+       "IT=",
+       "LT+",
+       "JJ=",
+       "MV-"
+      ],
+      "punten": 29,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 4,
+      "keikansen": 15,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- SF="
+     },
+     {
+      "id": 3,
+      "uid": "65bfc30d-f1b2-5299-9fd5-a91f1f1bca4a",
+      "naam": "Speler 17",
+      "initialen": "IT",
+      "witvoorkeur": 0.0,
+      "groep": 2,
+      "rating": 1089,
+      "tegenstanders": [
+       "AA=",
+       "JJ-",
+       "LT-",
+       "FF-"
+      ],
+      "punten": 23,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 8,
+      "keikansen": 26,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- SA="
+     },
+     {
+      "id": 4,
+      "uid": "9eb3fb67-efb5-507b-b728-afbc2b6006ce",
+      "naam": "Speler 18",
+      "initialen": "LT",
+      "witvoorkeur": 1.0,
+      "groep": 2,
+      "rating": 925,
+      "tegenstanders": [
+       "Jh=",
+       "AA-",
+       "IT+",
+       "JJ-"
+      ],
+      "punten": 27,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 4,
+      "keikansen": 11,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ES="
+     },
+     {
+      "id": 5,
+      "uid": "40532e9f-f85b-54c0-9950-fac797d26a9b",
+      "naam": "Speler 19",
+      "initialen": "JJ",
+      "witvoorkeur": 0.0,
+      "groep": 2,
+      "rating": 856,
+      "tegenstanders": [
+       "ES=",
+       "IT+",
+       "AA=",
+       "LT+"
+      ],
+      "punten": 33,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 0,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- IB="
+     },
+     {
+      "id": 6,
+      "uid": "0315b720-2360-5619-8e87-01bf894ae056",
+      "naam": "Speler 20",
+      "initialen": "DB",
+      "witvoorkeur": 0.0,
+      "groep": 1,
+      "rating": 444,
+      "tegenstanders": [
+       "BJ+",
+       "NZ+",
+       "AK+",
+       "RT+"
+      ],
+      "punten": 25,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 3,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- FE+"
+     }
+    ]
+   },
+   {
+    "niveau": 3,
+    "ZWbalansvoor": 1.0,
+    "ZWbalansna": 1.0,
+    "spelers": [
+     {
+      "id": 1,
+      "uid": "b2f2c43a-b876-54ec-b8da-549b06692c61",
+      "naam": "Speler 21",
+      "initialen": "JV",
+      "witvoorkeur": -1.0,
+      "groep": 3,
+      "rating": 1832,
+      "tegenstanders": [
+       "jW=",
+       "PD+",
+       "KD-",
+       "LE="
+      ],
+      "punten": 39,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 11,
+      "keikansen": 25,
+      "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- MV="
+     },
+     {
+      "id": 2,
+      "uid": "e817a350-1749-5ddd-8f06-a3414f7a73bc",
+      "naam": "Speler 22",
+      "initialen": "KD",
+      "witvoorkeur": 0.0,
+      "groep": 3,
+      "rating": 1999,
+      "tegenstanders": [
+       "AT=",
+       "MV+",
+       "JV+",
+       "jW+"
+      ],
+      "punten": 45,
+      "afwezigheidspunt": false,
+      "aanwezig": true,
+      "KNSBnummer": 0,
+      "keipunten": 0,
+      "keikansen": 1,
+      "speelgeschiedenis": "NK+GZ+MV=SA-LE-WS-SA-PD-TB+NK+SA-WS+MV-TB-SA-AE="
+     }
+    ]
+   }
+  ],
+  "periode": 1,
+  "ronde": 4
+ },
+ "wedstrijden": {
+  "groepswedstrijden": [
+   {
+    "niveau": 0,
+    "series": [
+     {
+      "nummer": 0,
+      "wedstrijden": [
+       {
+        "id": 1,
+        "wit": {
+         "id": 5,
+         "uid": "cb709cf2-7205-504d-8afd-713bf6507b8d",
+         "naam": "Speler 05",
+         "initialen": "OO",
+         "witvoorkeur": 0.0,
+         "groep": 0,
+         "rating": 111,
+         "tegenstanders": [
+          "kK-",
+          "FV=",
+          "aA!",
+          "FH!"
+         ],
+         "punten": 6,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- AH-"
+        },
+        "zwart": {
+         "id": 6,
+         "uid": "a28218a3-b8f4-564f-8bd0-125da216293b",
+         "naam": "Speler 06",
+         "initialen": "aA",
+         "witvoorkeur": 0.0,
+         "groep": 0,
+         "rating": 113,
+         "tegenstanders": [
+          "SS=",
+          "SH-",
+          "OO!",
+          "AH!"
+         ],
+         "punten": 7,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ## "
+        },
+        "uitslag": 2,
+        "nietReglementair": true
+       },
+       {
+        "id": 2,
+        "wit": {
+         "id": 3,
+         "uid": "38b1107f-dd2b-5f00-9ab5-00b1d29747db",
+         "naam": "Speler 03",
+         "initialen": "SH",
+         "witvoorkeur": 0.0,
+         "groep": 0,
+         "rating": 155,
+         "tegenstanders": [
+          "FV+",
+          "aA+",
+          "FH!",
+          "FV!"
+         ],
+         "punten": 9,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- OO-"
+        },
+        "zwart": {
+         "id": 4,
+         "uid": "193fb0c5-c2a1-59c6-a801-e830bfb76516",
+         "naam": "Speler 04",
+         "initialen": "FH",
+         "witvoorkeur": 0.0,
+         "groep": 0,
+         "rating": 156,
+         "tegenstanders": [
+          "AH-",
+          "kK-",
+          "SH!",
+          "OO!"
+         ],
+         "punten": 9,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 1,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- FV+"
+        },
+        "uitslag": 1,
+        "nietReglementair": true
+       },
+       {
+        "id": 3,
+        "wit": {
+         "id": 1,
+         "uid": "89eee89e-e25e-5980-abed-6ddfd7f3b1c2",
+         "naam": "Speler 01",
+         "initialen": "AH",
+         "witvoorkeur": 1.0,
+         "groep": 0,
+         "rating": 253,
+         "tegenstanders": [
+          "FH+",
+          "SS-",
+          "FV!",
+          "aA!"
+         ],
+         "punten": 11,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 3,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- OO+"
+        },
+        "zwart": {
+         "id": 2,
+         "uid": "c2d09765-cba1-5783-89db-8f0e3e5e8c40",
+         "naam": "Speler 02",
+         "initialen": "FV",
+         "witvoorkeur": 0.0,
+         "groep": 0,
+         "rating": 155,
+         "tegenstanders": [
+          "SH-",
+          "OO=",
+          "AH!",
+          "SH!"
+         ],
+         "punten": 7,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 2,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- FH-"
+        },
+        "uitslag": 1,
+        "nietReglementair": true
+       }
+      ]
+     },
+     {
+      "nummer": 0,
+      "wedstrijden": [
+       {
+        "id": 4,
+        "wit": {
+         "id": 6,
+         "uid": "a28218a3-b8f4-564f-8bd0-125da216293b",
+         "naam": "Speler 06",
+         "initialen": "aA",
+         "witvoorkeur": 0.0,
+         "groep": 0,
+         "rating": 113,
+         "tegenstanders": [
+          "SS=",
+          "SH-",
+          "OO!",
+          "AH!"
+         ],
+         "punten": 7,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ## "
+        },
+        "zwart": {
+         "id": 1,
+         "uid": "89eee89e-e25e-5980-abed-6ddfd7f3b1c2",
+         "naam": "Speler 01",
+         "initialen": "AH",
+         "witvoorkeur": 1.0,
+         "groep": 0,
+         "rating": 253,
+         "tegenstanders": [
+          "FH+",
+          "SS-",
+          "FV!",
+          "aA!"
+         ],
+         "punten": 11,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 3,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- OO+"
+        },
+        "uitslag": 2,
+        "nietReglementair": true
+       },
+       {
+        "id": 5,
+        "wit": {
+         "id": 4,
+         "uid": "193fb0c5-c2a1-59c6-a801-e830bfb76516",
+         "naam": "Speler 04",
+         "initialen": "FH",
+         "witvoorkeur": 0.0,
+         "groep": 0,
+         "rating": 156,
+         "tegenstanders": [
+          "AH-",
+          "kK-",
+          "SH!",
+          "OO!"
+         ],
+         "punten": 9,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 1,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- FV+"
+        },
+        "zwart": {
+         "id": 5,
+         "uid": "cb709cf2-7205-504d-8afd-713bf6507b8d",
+         "naam": "Speler 05",
+         "initialen": "OO",
+         "witvoorkeur": 0.0,
+         "groep": 0,
+         "rating": 111,
+         "tegenstanders": [
+          "kK-",
+          "FV=",
+          "aA!",
+          "FH!"
+         ],
+         "punten": 6,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- AH-"
+        },
+        "uitslag": 2,
+        "nietReglementair": true
+       },
+       {
+        "id": 6,
+        "wit": {
+         "id": 2,
+         "uid": "c2d09765-cba1-5783-89db-8f0e3e5e8c40",
+         "naam": "Speler 02",
+         "initialen": "FV",
+         "witvoorkeur": 0.0,
+         "groep": 0,
+         "rating": 155,
+         "tegenstanders": [
+          "SH-",
+          "OO=",
+          "AH!",
+          "SH!"
+         ],
+         "punten": 7,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 2,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- FH-"
+        },
+        "zwart": {
+         "id": 3,
+         "uid": "38b1107f-dd2b-5f00-9ab5-00b1d29747db",
+         "naam": "Speler 03",
+         "initialen": "SH",
+         "witvoorkeur": 0.0,
+         "groep": 0,
+         "rating": 155,
+         "tegenstanders": [
+          "FV+",
+          "aA+",
+          "FH!",
+          "FV!"
+         ],
+         "punten": 9,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- OO-"
+        },
+        "uitslag": 1,
+        "nietReglementair": true
+       }
+      ]
+     }
+    ],
+    "triowedstrijden": []
+   },
+   {
+    "niveau": 1,
+    "series": [
+     {
+      "nummer": 0,
+      "wedstrijden": [
+       {
+        "id": 1,
+        "wit": {
+         "id": 3,
+         "uid": "7596700a-11d2-59c7-9def-90ea84e73a16",
+         "naam": "Speler 09",
+         "initialen": "GS",
+         "witvoorkeur": -1.0,
+         "groep": 1,
+         "rating": 688,
+         "tegenstanders": [
+          "RT+",
+          "FE-",
+          "NZ!",
+          "RT!"
+         ],
+         "punten": 17,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 3,
+         "keikansen": 13,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "
+        },
+        "zwart": {
+         "id": 7,
+         "uid": "c952f95d-c5b5-5161-b595-b6ff593383e5",
+         "naam": "Speler 13",
+         "initialen": "NZ",
+         "witvoorkeur": 0.0,
+         "groep": 1,
+         "rating": 364,
+         "tegenstanders": [
+          "FE-",
+          "DH-",
+          "GS!",
+          "SS!"
+         ],
+         "punten": 14,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 6,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- DB-"
+        },
+        "uitslag": 2,
+        "nietReglementair": true
+       },
+       {
+        "id": 2,
+        "wit": {
+         "id": 5,
+         "uid": "8d145d67-0394-5d62-a5e1-ce64b62e4fa1",
+         "naam": "Speler 11",
+         "initialen": "BJ",
+         "witvoorkeur": 0.0,
+         "groep": 1,
+         "rating": 507,
+         "tegenstanders": [
+          "DH+",
+          "AK-",
+          "SS!",
+          "FE!"
+         ],
+         "punten": 20,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- II+"
+        },
+        "zwart": {
+         "id": 8,
+         "uid": "c5beec76-2cac-5548-b547-946c4e5fd816",
+         "naam": "Speler 14",
+         "initialen": "SS",
+         "witvoorkeur": 2.0,
+         "groep": 1,
+         "rating": 204,
+         "tegenstanders": [
+          "aA=",
+          "AH+",
+          "BJ!",
+          "NZ!"
+         ],
+         "punten": 12,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- kK+"
+        },
+        "uitslag": 1,
+        "nietReglementair": true
+       },
+       {
+        "id": 3,
+        "wit": {
+         "id": 2,
+         "uid": "e77112ca-7496-5f93-957e-7d2820cd70c2",
+         "naam": "Speler 08",
+         "initialen": "kK",
+         "witvoorkeur": 0.0,
+         "groep": 1,
+         "rating": 367,
+         "tegenstanders": [
+          "OO+",
+          "FH+",
+          "RT!",
+          "DH!"
+         ],
+         "punten": 11,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 3,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- SS-"
+        },
+        "zwart": {
+         "id": 1,
+         "uid": "4fbceeb2-a3ce-5f88-a908-e6b4201cc647",
+         "naam": "Speler 07",
+         "initialen": "RT",
+         "witvoorkeur": 1.0,
+         "groep": 1,
+         "rating": 478,
+         "tegenstanders": [
+          "GS-",
+          "DB-",
+          "kK!",
+          "GS!"
+         ],
+         "punten": 17,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 1,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- AK-"
+        },
+        "uitslag": 2,
+        "nietReglementair": true
+       },
+       {
+        "id": 4,
+        "wit": {
+         "id": 4,
+         "uid": "c3157141-97d6-5339-8abb-794bb22c9b78",
+         "naam": "Speler 10",
+         "initialen": "DH",
+         "witvoorkeur": 0.0,
+         "groep": 1,
+         "rating": 502,
+         "tegenstanders": [
+          "BJ-",
+          "NZ+",
+          "FE!",
+          "kK!"
+         ],
+         "punten": 19,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 6,
+         "keikansen": 7,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- FE+"
+        },
+        "zwart": {
+         "id": 6,
+         "uid": "dfb0da9c-9bf9-5c19-af37-40ca5d204ab1",
+         "naam": "Speler 12",
+         "initialen": "FE",
+         "witvoorkeur": -1.0,
+         "groep": 1,
+         "rating": 544,
+         "tegenstanders": [
+          "NZ+",
+          "GS+",
+          "DH!",
+          "BJ!"
+         ],
+         "punten": 17,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 2,
+         "keikansen": 4,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- DH-"
+        },
+        "uitslag": 2,
+        "nietReglementair": true
+       }
+      ]
+     },
+     {
+      "nummer": 0,
+      "wedstrijden": [
+       {
+        "id": 5,
+        "wit": {
+         "id": 7,
+         "uid": "c952f95d-c5b5-5161-b595-b6ff593383e5",
+         "naam": "Speler 13",
+         "initialen": "NZ",
+         "witvoorkeur": 0.0,
+         "groep": 1,
+         "rating": 364,
+         "tegenstanders": [
+          "FE-",
+          "DH-",
+          "GS!",
+          "SS!"
+         ],
+         "punten": 14,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 6,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- DB-"
+        },
+        "zwart": {
+         "id": 8,
+         "uid": "c5beec76-2cac-5548-b547-946c4e5fd816",
+         "naam": "Speler 14",
+         "initialen": "SS",
+         "witvoorkeur": 2.0,
+         "groep": 1,
+         "rating": 204,
+         "tegenstanders": [
+          "aA=",
+          "AH+",
+          "BJ!",
+          "NZ!"
+         ],
+         "punten": 12,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- kK+"
+        },
+        "uitslag": 2,
+        "nietReglementair": true
+       },
+       {
+        "id": 6,
+        "wit": {
+         "id": 6,
+         "uid": "dfb0da9c-9bf9-5c19-af37-40ca5d204ab1",
+         "naam": "Speler 12",
+         "initialen": "FE",
+         "witvoorkeur": -1.0,
+         "groep": 1,
+         "rating": 544,
+         "tegenstanders": [
+          "NZ+",
+          "GS+",
+          "DH!",
+          "BJ!"
+         ],
+         "punten": 17,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 2,
+         "keikansen": 4,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- DH-"
+        },
+        "zwart": {
+         "id": 5,
+         "uid": "8d145d67-0394-5d62-a5e1-ce64b62e4fa1",
+         "naam": "Speler 11",
+         "initialen": "BJ",
+         "witvoorkeur": 0.0,
+         "groep": 1,
+         "rating": 507,
+         "tegenstanders": [
+          "DH+",
+          "AK-",
+          "SS!",
+          "FE!"
+         ],
+         "punten": 20,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- II+"
+        },
+        "uitslag": 1,
+        "nietReglementair": true
+       },
+       {
+        "id": 7,
+        "wit": {
+         "id": 3,
+         "uid": "7596700a-11d2-59c7-9def-90ea84e73a16",
+         "naam": "Speler 09",
+         "initialen": "GS",
+         "witvoorkeur": -1.0,
+         "groep": 1,
+         "rating": 688,
+         "tegenstanders": [
+          "RT+",
+          "FE-",
+          "NZ!",
+          "RT!"
+         ],
+         "punten": 17,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 3,
+         "keikansen": 13,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "
+        },
+        "zwart": {
+         "id": 1,
+         "uid": "4fbceeb2-a3ce-5f88-a908-e6b4201cc647",
+         "naam": "Speler 07",
+         "initialen": "RT",
+         "witvoorkeur": 1.0,
+         "groep": 1,
+         "rating": 478,
+         "tegenstanders": [
+          "GS-",
+          "DB-",
+          "kK!",
+          "GS!"
+         ],
+         "punten": 17,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 1,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- AK-"
+        },
+        "uitslag": 3,
+        "nietReglementair": true
+       },
+       {
+        "id": 8,
+        "wit": {
+         "id": 2,
+         "uid": "e77112ca-7496-5f93-957e-7d2820cd70c2",
+         "naam": "Speler 08",
+         "initialen": "kK",
+         "witvoorkeur": 0.0,
+         "groep": 1,
+         "rating": 367,
+         "tegenstanders": [
+          "OO+",
+          "FH+",
+          "RT!",
+          "DH!"
+         ],
+         "punten": 11,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 3,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- SS-"
+        },
+        "zwart": {
+         "id": 4,
+         "uid": "c3157141-97d6-5339-8abb-794bb22c9b78",
+         "naam": "Speler 10",
+         "initialen": "DH",
+         "witvoorkeur": 0.0,
+         "groep": 1,
+         "rating": 502,
+         "tegenstanders": [
+          "BJ-",
+          "NZ+",
+          "FE!",
+          "kK!"
+         ],
+         "punten": 19,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 6,
+         "keikansen": 7,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- FE+"
+        },
+        "uitslag": 1,
+        "nietReglementair": true
+       }
+      ]
+     }
+    ],
+    "triowedstrijden": []
+   },
+   {
+    "niveau": 2,
+    "series": [
+     {
+      "nummer": 0,
+      "wedstrijden": [
+       {
+        "id": 1,
+        "wit": {
+         "id": 6,
+         "uid": "0315b720-2360-5619-8e87-01bf894ae056",
+         "naam": "Speler 20",
+         "initialen": "DB",
+         "witvoorkeur": -1.0,
+         "groep": 2,
+         "rating": 444,
+         "tegenstanders": [
+          "NZ+",
+          "AK+",
+          "RT+",
+          "JJ!"
+         ],
+         "punten": 25,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 3,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- BJ+"
+        },
+        "zwart": {
+         "id": 5,
+         "uid": "40532e9f-f85b-54c0-9950-fac797d26a9b",
+         "naam": "Speler 19",
+         "initialen": "JJ",
+         "witvoorkeur": 1.0,
+         "groep": 2,
+         "rating": 856,
+         "tegenstanders": [
+          "IT+",
+          "AA=",
+          "LT+",
+          "DB!"
+         ],
+         "punten": 33,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- ES="
+        },
+        "uitslag": 1,
+        "nietReglementair": true
+       },
+       {
+        "id": 2,
+        "wit": {
+         "id": 1,
+         "uid": "dc1e69eb-331d-5221-92aa-3daed0411c3c",
+         "naam": "Speler 15",
+         "initialen": "LE",
+         "witvoorkeur": 0.0,
+         "groep": 2,
+         "rating": 1860,
+         "tegenstanders": [
+          "## ",
+          "-- ",
+          "JV=",
+          "IT!"
+         ],
+         "punten": 37,
+         "afwezigheidspunt": true,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 0,
+         "speelgeschiedenis": "PD+SA+WS+MV+KD+PD+## SA-PD+WS+MV-SA-WS+TB+KD+MV="
+        },
+        "zwart": {
+         "id": 3,
+         "uid": "65bfc30d-f1b2-5299-9fd5-a91f1f1bca4a",
+         "naam": "Speler 17",
+         "initialen": "IT",
+         "witvoorkeur": 1.0,
+         "groep": 2,
+         "rating": 1089,
+         "tegenstanders": [
+          "JJ-",
+          "LT-",
+          "FF-",
+          "LE!"
+         ],
+         "punten": 23,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 8,
+         "keikansen": 26,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- AA="
+        },
+        "uitslag": 2,
+        "nietReglementair": true
+       },
+       {
+        "id": 3,
+        "wit": {
+         "id": 4,
+         "uid": "9eb3fb67-efb5-507b-b728-afbc2b6006ce",
+         "naam": "Speler 18",
+         "initialen": "LT",
+         "witvoorkeur": 0.0,
+         "groep": 2,
+         "rating": 925,
+         "tegenstanders": [
+          "AA-",
+          "IT+",
+          "JJ-",
+          "AA!"
+         ],
+         "punten": 27,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 4,
+         "keikansen": 11,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- Jh="
+        },
+        "zwart": {
+         "id": 2,
+         "uid": "7590afd7-f777-5940-8281-2c4a6e977efc",
+         "naam": "Speler 16",
+         "initialen": "AA",
+         "witvoorkeur": 0.0,
+         "groep": 2,
+         "rating": 951,
+         "tegenstanders": [
+          "LT+",
+          "JJ=",
+          "MV-",
+          "LT!"
+         ],
+         "punten": 29,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 4,
+         "keikansen": 15,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- IT="
+        },
+        "uitslag": 1,
+        "nietReglementair": true
+       }
+      ]
+     }
+    ],
+    "triowedstrijden": []
+   },
+   {
+    "niveau": 3,
+    "series": [
+     {
+      "nummer": 0,
+      "wedstrijden": [
+       {
+        "id": 1,
+        "wit": {
+         "id": 2,
+         "uid": "e817a350-1749-5ddd-8f06-a3414f7a73bc",
+         "naam": "Speler 22",
+         "initialen": "KD",
+         "witvoorkeur": -1.0,
+         "groep": 3,
+         "rating": 1999,
+         "tegenstanders": [
+          "MV+",
+          "JV+",
+          "jW+",
+          "JV!"
+         ],
+         "punten": 45,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 0,
+         "keikansen": 1,
+         "speelgeschiedenis": "NK+GZ+MV=SA-LE-WS-SA-PD-TB+NK+SA-WS+MV-TB-SA-AT="
+        },
+        "zwart": {
+         "id": 1,
+         "uid": "b2f2c43a-b876-54ec-b8da-549b06692c61",
+         "naam": "Speler 21",
+         "initialen": "JV",
+         "witvoorkeur": 0.0,
+         "groep": 3,
+         "rating": 1832,
+         "tegenstanders": [
+          "PD+",
+          "KD-",
+          "LE=",
+          "KD!"
+         ],
+         "punten": 39,
+         "afwezigheidspunt": false,
+         "aanwezig": true,
+         "KNSBnummer": 0,
+         "keipunten": 11,
+         "keikansen": 25,
+         "speelgeschiedenis": "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- jW="
+        },
+        "uitslag": 1,
+        "nietReglementair": true
+       }
+      ]
+     }
+    ],
+    "triowedstrijden": []
+   }
+  ],
+  "ronde": 4,
+  "periode": 1,
+  "speeldatum": "Sep 17, 2026, 7:20:13 PM"
+ }
+}

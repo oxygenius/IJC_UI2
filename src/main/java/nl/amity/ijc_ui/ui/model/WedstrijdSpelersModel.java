@@ -105,7 +105,7 @@ public class WedstrijdSpelersModel extends AbstractTableModel {
         Speler speler = controller.getWedstrijdGroepByID(groepID).getSpelers().get(row);
         switch (col) {
             case 0:
-                return new Integer(speler.getId());
+                return speler.getId();
             case 1:
             	// Voeg voor een doorgeschoven speler een * toe aan de naam
             	boolean doorgeschoven = controller.getGroepByID(groepID).getNiveau() != speler.getGroep();
@@ -116,9 +116,9 @@ public class WedstrijdSpelersModel extends AbstractTableModel {
             		return speler.getNaam() + (doorgeschoven ? "*" : "");
             	}
             case 2:
-            	return new Integer(speler.getRating());
+            	return speler.getRating();
             case 3:
-            	return new Integer(speler.getPunten());
+            	return speler.getPunten();
             case 4:
                 return speler.getInitialen();
             case 5:

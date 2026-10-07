@@ -31,9 +31,7 @@ public interface GroepenIndelerInterface {
 	/**
 	 Maak het westrijdschema voor een avond
 	 @param groepen
-	 @param periode
-	 @param ronde
-	 @return 
+     @return
 	 */
 	Wedstrijden maakWedstrijdschema(Groepen groepen);
 

@@ -96,7 +96,7 @@ public class WedstrijdModel extends AbstractTableModel {
         Wedstrijd ws = controller.getWedstrijden().getGroepswedstrijdenNiveau(groepID).getWedstrijden().get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return new Integer(ws.getId());
+                return ws.getId();
             case 1:
                 return ws.getWit().getNaam();
             case 2:

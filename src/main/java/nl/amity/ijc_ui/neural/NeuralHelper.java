@@ -50,7 +50,7 @@ public class NeuralHelper {
 	 * @ATTRIBUTE resultaat {wit,remise,zwart}
 	 *
 	 *            retourneer data voor ��n wedstrijd
-	 * @param gw
+	 * @param w
 	 */
 
 	public static String convertWedstrijd(Wedstrijd w) {

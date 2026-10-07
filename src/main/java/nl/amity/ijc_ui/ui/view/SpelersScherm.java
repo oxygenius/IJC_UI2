@@ -8,7 +8,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * See: http://www.gnu.org/licenses/gpl-3.0.html
- *
  * Problemen in deze code:
  *
  */
@@ -24,6 +23,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serial;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,12 +72,12 @@ public class SpelersScherm extends JFrame {
 	// private static final Font courierFont = new Font("Courier New",
 	// Font.PLAIN, 11);
 
-	private static final long serialVersionUID = -1L;
+	@Serial
+    private static final long serialVersionUID = -1L;
 	private final static Logger logger = Logger.getLogger(SpelersScherm.class.getName());
 
 	private JPanel hoofdPanel;
-	private JPanel gegevensPanel;
-	private JPanel dataPanel;
+    private JPanel dataPanel;
 	private JPanel graphPanel;
 	private JScrollPane rondesPane;
 	private JScrollPane spelersPane;
@@ -91,7 +91,7 @@ public class SpelersScherm extends JFrame {
 	private DBWedstrijdenModel wedstrijdenModel;
 
 	private IJCController controller;
-	private SpelerDatabase db;
+	private final SpelerDatabase db;
 
 	/**
 	 * Creates new form MainWindow
@@ -123,7 +123,7 @@ public class SpelersScherm extends JFrame {
 		dataPanel.add(rondesPane);
 		dataPanel.add(spelersPane);
 
-		gegevensPanel = new JPanel();
+        JPanel gegevensPanel = new JPanel();
 		gegevensPanel.setLayout(new ExtendedGridLayout(2, 1));
 		graphPanel = new JPanel();
 		wedstrijdenPane = new JScrollPane();
@@ -153,7 +153,7 @@ public class SpelersScherm extends JFrame {
 		JMenu filemenu = new JMenu("Bestand");
 		// File menu
 		JMenuItem item = new JMenuItem("Afsluiten");
-		item.setAccelerator(KeyStroke.getKeyStroke('X', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		item.setAccelerator(KeyStroke.getKeyStroke('X', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -209,26 +209,20 @@ public class SpelersScherm extends JFrame {
 		Utils.fixedColumSize(c, width);
 	}
 
-	protected JPanel makePanel() {
-		JPanel panel = new JPanel(false);
-		panel.setLayout(new GridLayout(1, 4));
-		return panel;
-	}
-
 	protected void fillRondePane() {
 		logger.log(Level.INFO, "Maak de verschillende panes and viewports");
 
 		rondeModel = new DBRondeModel(rondesPane);
 		rondesTabel = new JTable(rondeModel) {
-			private static final long serialVersionUID = -1L;
+			@Serial
+            private static final long serialVersionUID = -1L;
 
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				// Tooltip
-				if (c instanceof JComponent) {
-					JComponent jc = (JComponent) c;
-					jc.setToolTipText(((DBRondeModel) getModel()).getToolTip(row, column).toString());
+				if (c instanceof JComponent jc) {
+                    jc.setToolTipText(((DBRondeModel) getModel()).getToolTip(row, column).toString());
 				}
 				// Alternate row color
 				if (!isRowSelected(row)) {
@@ -267,15 +261,15 @@ public class SpelersScherm extends JFrame {
 		});
 		spelersModel = new DBSpelerModel(rondesPane);
 		spelersTabel = new JTable(spelersModel) {
-			private static final long serialVersionUID = -1L;
+			@Serial
+            private static final long serialVersionUID = -1L;
 
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				// Tooltip
-				if (c instanceof JComponent) {
-					JComponent jc = (JComponent) c;
-					jc.setToolTipText(((DBSpelerModel) getModel()).getToolTip(row, column).toString());
+				if (c instanceof JComponent jc) {
+                    jc.setToolTipText(((DBSpelerModel) getModel()).getToolTip(row, column).toString());
 				}
 				// Alternate row color
 				if (!isRowSelected(row)) {
@@ -290,7 +284,7 @@ public class SpelersScherm extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				List<DBSpeler> selectectSpelers = ((DBSpelerModel) spelersTabel.getModel()).getSelectedSpelers();
 				wedstrijdenModel.setSpelers(selectectSpelers);
-				if (selectectSpelers != null && selectectSpelers.size() > 0) {
+				if (selectectSpelers != null && !selectectSpelers.isEmpty()) {
 					LineGraph g2 = new LineGraph("", "Ronde", "Rating", true);
 					//g2.initialize(createXYDataset(selectectSpelers));
 					g2.initialize(createCategoryDataset(selectectSpelers));
@@ -306,7 +300,8 @@ public class SpelersScherm extends JFrame {
 
 		wedstrijdenModel = new DBWedstrijdenModel(rondesPane);
 		wedstrijdenTabel = new JTable(wedstrijdenModel) {
-			private static final long serialVersionUID = -1L;
+			@Serial
+            private static final long serialVersionUID = -1L;
 
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -381,7 +376,7 @@ public class SpelersScherm extends JFrame {
 					" ORDER BY ronde.periode ASC, ronde.ronde ASC");
 			for (int i = 0; i < result.size(); ++i) {
 				Object o[] = (Object[]) result.get(i);
-				Double val = new Double(((Integer) o[2]).intValue());
+				Double val = Double.valueOf(((Number) o[2]).doubleValue());
 				String label = o[0].toString() + "." + o[1].toString();
 //				cat.addValue((Number) val, speler.getAfkorting(), ((Integer) o[0]).intValue());
 				cat.addValue((Number) val, speler.getAfkorting(), label);

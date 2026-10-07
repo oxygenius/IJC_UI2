@@ -76,7 +76,7 @@ public class DBSpelerModel extends AbstractTableModel {
     /**
      * Laat alleen spelers zien die in de ingestelde ronde
      * hebben gespeeld.
-     * @param id
+     * @param ronde
      */
     public void setRonde(DBRonde ronde) {
         spelers = ronde != null ? database.getSpelers(ronde) : database.getSpelers("naam");

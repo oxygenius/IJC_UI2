@@ -68,7 +68,7 @@ public class DBWedstrijdenModel extends AbstractTableModel {
 	/**
 	 * Laat alleen wedstrijden voor geselecteerde speler
 	 *
-	 * @param id
+	 * @param speler
 	 */
 	public void setSpeler(DBSpeler speler) {
 		wedstrijden = speler != null ? database.getWedstrijdenVoorSpeler(speler) : null;
@@ -94,7 +94,7 @@ public class DBWedstrijdenModel extends AbstractTableModel {
 	/**
 	 * Laat alleen wedstrijden voor geselecteerde ronde
 	 *
-	 * @param id
+	 * @param ronde
 	 */
 	public void setRonde(DBRonde ronde) {
 		wedstrijden = ronde != null ? database.getWedstrijdenVoorRonde(ronde) : null;
@@ -104,8 +104,7 @@ public class DBWedstrijdenModel extends AbstractTableModel {
 	/**
 	 * Laat alleen wedstrijden voor geselecteerde ronde
 	 *
-	 * @param id
-	 */
+     */
 	public void setRondeEnSpeler(DBRonde r, DBSpeler s) {
 		wedstrijden = ((r != null) && (s != null)) ? database.getWedstrijdenVoorSpeler(s, r) : null;
 		sorteer();

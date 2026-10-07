@@ -107,15 +107,15 @@ public class SpelersModel extends AbstractTableModel {
         	case 0:
         		return speler.isAanwezig();
             case 1:
-                return new Integer(speler.getId());
+                return speler.getId();
             case 2:
                 return speler.getNaam();
             case 3:
                 return speler.getInitialen();
             case 4:
-                return new Integer(speler.getRating());
+                return speler.getRating();
             case 5:
-                return new Integer(speler.getPunten());
+                return speler.getPunten();
             default:
                 return "";
         }

@@ -93,7 +93,7 @@ public class SpelersIndelenModel extends AbstractTableModel {
         Speler speler = controller.getWedstrijdGroepByID(groepID).getSpelers().get(row);
         switch (col) {
             case 0:
-                return new Integer(speler.getId());
+                return speler.getId();
             case 1:
                 return speler.getNaam();
             case 2:

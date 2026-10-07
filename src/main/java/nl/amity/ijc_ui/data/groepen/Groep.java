@@ -8,16 +8,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * See: http://www.gnu.org/licenses/gpl-3.0.html
- *
- * Problemen in deze code:
- * - ...
- * - ...
  */
 package nl.amity.ijc_ui.data.groepen;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,19 +26,15 @@ import nl.amity.ijc_ui.ui.control.IJCController;
  */
 public class Groep {
 
-	/*
-	 * enum Sortering {RATING_ASC, RATING_DESC, PUNTEN_ASC, PUNTEN_DESC};
-	 */
-	
+    enum Sortering {RATING_ASC, RATING_DESC, PUNTEN_ASC, PUNTEN_DESC}
+
     private int niveau;
     private double ZWbalansvoor;
     private double ZWbalansna;
     private ArrayList<Speler> spelers;
-	/*
-	 * private Sortering sortering;
-	 */
-    
-    private final static Logger logger = Logger.getLogger(IJCController.class.getName());
+    private Sortering sortering;
+
+    private static final Logger logger = Logger.getLogger(Groep.class.getName());
 
     
     /**
@@ -196,8 +186,8 @@ public class Groep {
     }
 
     /**
-     * Verwijder speler op de opgegeven locatie
-     * @param loc Locatie van de te verwijderen speler
+     * Verwijder speler
+     * @param speler Te verwijderen speler
      */
     public void removeSpeler(Speler speler) {
         spelers.remove(speler);
@@ -222,7 +212,7 @@ public class Groep {
 
     /**
      * Geef naam van deze groep
-     * @param Groepsnaam
+     * @param naam Groepsnaam
      */
     public void setNaam(String naam) {
     	IJCController.c().groepsnamen[niveau] = naam;
@@ -241,15 +231,15 @@ public class Groep {
      * Retourneer een lijst van spelers. Vorm:
      *
      * @param lang Als waar, lange notatoe
-     * @return
+     * @return String representatie
      */
     public String toPrintableString(boolean lang) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (Speler s : getSpelers()) {
-            result += s.toPrintableString(lang);
-            result += System.lineSeparator();
+            result.append(s.toPrintableString(lang));
+            result.append(System.lineSeparator());
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -330,11 +320,6 @@ public class Groep {
     	return result;
     }
 
-    
-    public void sorteerPunten(Boolean toggle, Boolean descending) {
- 
-	}
-    
     /**
      * Sorteer de spelers in deze groep op punten. Bij hetzelfde aantal
      * punten wordt gesorteerd op rating
@@ -342,39 +327,31 @@ public class Groep {
      * @param descending don't mind sortering just do descending
      * 
      */
-	/*
-	 * public void sorteerPunten(Boolean toggle, Boolean descending) {
-	 * logger.log(Level.INFO, "sortering = " + sortering); if (toggle) sortering =
-	 * sortering != Sortering.PUNTEN_ASC? Sortering.PUNTEN_ASC :
-	 * Sortering.PUNTEN_DESC; logger.log(Level.INFO, "sortering = " + sortering);
-	 * Collections.sort(spelers, new Comparator<Speler>() {
-	 * 
-	 * @Override public int compare(Speler o1, Speler o2) { int result =
-	 * o2.getPunten() - o1.getPunten(); if (result == 0) { int r1 = o1.getRating();
-	 * int r2 = o2.getRating(); if (niveau == (IJCController.c().aantalGroepen-1)) {
-	 * r1 = o1.isKNSBLid() ? o1.getRating() * 10 : o1.getRating(); r2 =
-	 * o2.isKNSBLid() ? o2.getRating() * 10 : o2.getRating(); } result = r2 - r1; }
-	 * if (!descending && sortering == Sortering.PUNTEN_ASC) result=-result; return
-	 * result; } }); }
-	 */
+
+	 public void sorteerPunten(Boolean toggle, Boolean descending) {
+	   logger.log(Level.INFO, "sortering = " + sortering); if (toggle) sortering =
+	   sortering != Sortering.PUNTEN_ASC? Sortering.PUNTEN_ASC : Sortering.PUNTEN_DESC;
+       logger.log(Level.INFO, "sortering = " + sortering);
+	   spelers.sort((o1, o2) -> {
+           int result = o2.getPunten() - o1.getPunten();
+           if (result == 0) {
+                int r1 = o1.getRating();
+                int r2 = o2.getRating();
+                if (niveau == (IJCController.c().aantalGroepen-1)) {
+                    r1 = o1.isKNSBLid() ? o1.getRating() * 10 : o1.getRating();
+                    r2 = o2.isKNSBLid() ? o2.getRating() * 10 : o2.getRating();
+                }
+                result = r2 - r1;
+           }
+           if (!descending && sortering == Sortering.PUNTEN_ASC) result = -result;
+           return result;
+       });
+     }
 
     
 	 public void sorteerRating(Boolean toggle) {
 		 
 	 }
-	 
-    /**
-     * Sorteer de spelers in deze groep op rating
-     */
-	/*
-	 * public void sorteerRating(Boolean toggle) { if (toggle) sortering = sortering
-	 * != Sortering.RATING_ASC ? Sortering.RATING_ASC : Sortering.RATING_DESC;
-	 * Collections.sort(spelers, new Comparator<Speler>() {
-	 * 
-	 * @Override public int compare(Speler o1, Speler o2) { if (sortering ==
-	 * Sortering.RATING_ASC) { return o2.getRating() - o1.getRating(); } else {
-	 * return o1.getRating() - o2.getRating(); } } }); }
-	 */
     
     /**
      * Reset de punten en afwezigheidspunten van alle spelers in deze groep
@@ -391,7 +368,6 @@ public class Groep {
      * Reset de KEI punten en afwezigheidspunten van alle spelers in deze groep
      */
 	public void resetKEIPunten() {
-		int punten = IJCController.c().startPunten[niveau];
 		for (Speler s : spelers) {
 			s.setKeikansen(0);
 			s.setKeipunten(0);

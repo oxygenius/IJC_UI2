@@ -71,7 +71,6 @@ import nl.amity.ijc_ui.ui.model.SpelersModel;
 import nl.amity.ijc_ui.ui.model.WedstrijdModel;
 import nl.amity.ijc_ui.ui.model.WedstrijdSpelersModel;
 import nl.amity.ijc_ui.ui.util.Utils;
-import sun.rmi.runtime.Log;
 
 /**
  * Structure of the GUI:
@@ -104,7 +103,7 @@ public class Hoofdscherm extends JFrame {
 	private static final long serialVersionUID = -2154845989579570030L;
 	private final static Logger logger = Logger.getLogger(Hoofdscherm.class.getName());
 
-	private String appVersion = "2.0.1.2";
+	private String appVersion = "2.0.1.3";
 	private JPanel hoofdPanel;
 	private JTabbedPane tabs;
 	private JPanel[] panels;
@@ -171,9 +170,9 @@ public class Hoofdscherm extends JFrame {
 		 * "Gegevens van  " + Groep.geefNaam(i)); }
 		 */
 		int i =0;
-		//Groepen groepen = controller.sorteeropNiveau();
-//		for (Groep g : controller.getStatus().groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC)) {
-		for (Groep g : controller.getStatus().groepen.getGroepen()) {
+//		Groepen groepen = controller.sorteeropNiveau();
+		for (Groep g : controller.getStatus().groepen.getGroepen(Groepen.Sortering.NIVEAU_DESC)) {
+//		for (Groep g : controller.getStatus().groepen.getGroepen()) {
 			panels[i] = makePanel();
 		    fillGroupPanel(panels[i], i);
 		    tabs.addTab(g.getNaam(), null, panels[i],"Gegevens van " + g.getNaam()+ " (" + g.getNiveau() + ")");

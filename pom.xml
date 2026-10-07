@@ -1,113 +1,201 @@
-<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>nl.amity</groupId>
   <artifactId>ijc_ui</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>2.0.1.3</version>
   <packaging>jar</packaging>
+
   <name>IJC_UI</name>
-  <description>Interne Jeugd Competitie UI	</description> 
+  <description>Interne Jeugd Competitie UI</description> 
+
   <repositories>
-  	<repository>
-    	<id>objectdb</id>
-        <name>ObjectDB Repository</name>
-		<url>https://m2.objectdb.com</url>
-	</repository>
+    <repository>
+      <id>objectdb</id>
+      <name>ObjectDB Repository</name>
+      <url>https://m2.objectdb.com</url>
+    </repository>
   </repositories>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.apache.groovy</groupId>
       <artifactId>groovy</artifactId>
-      <version>4.0.18</version>
-      <type>jar</type>
-      <scope>provided</scope>
-      <optional>false</optional>
+      <version>4.0.24</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.10.1</version>
-      <type>jar</type>
-      <scope>provided</scope>
-      <optional>false</optional>
+      <version>2.11.0</version>
     </dependency>
     <dependency>
       <groupId>org.jfree</groupId>
       <artifactId>jfreechart</artifactId>
-      <version>1.5.4</version>
-      <type>jar</type>
-      <scope>provided</scope>
-      <optional>false</optional>
+      <version>1.5.6</version>
     </dependency>
     <dependency>
       <groupId>org.jfree</groupId>
       <artifactId>jcommon</artifactId>
       <version>1.0.24</version>
-      <type>jar</type>
-      <scope>provided</scope>
-      <optional>false</optional>
     </dependency>
     <dependency>
       <groupId>nz.ac.waikato.cms.weka</groupId>
       <artifactId>weka-stable</artifactId>
       <version>3.8.6</version>
-      <type>jar</type>
-      <scope>provided</scope>
-      <optional>false</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
       <version>5.4.1</version>
-      <type>jar</type>
-      <scope>provided</scope>
-      <optional>false</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-ooxml</artifactId>
       <version>5.4.1</version>
-      <type>jar</type>
-      <scope>provided</scope>
-      <optional>false</optional>
     </dependency>
-<!--    <dependency>
-      <groupId>jakarta.persistence</groupId>
-      <artifactId>jakarta.persistence-api</artifactId>
-      <version>3.1.0</version>
-      <type>jar</type>
-      <scope>provided</scope>
-      <optional>false</optional>
-    </dependency>    
--->
     <dependency>
-    	<groupId>com.objectdb</groupId>
-        <artifactId>objectdb</artifactId>
-        <version>2.9.0</version>
-   	</dependency>
+      <groupId>com.objectdb</groupId>
+      <artifactId>objectdb</artifactId>
+      <version>2.9.0</version>
+    </dependency>
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20231013</version>
-      <type>jar</type>
-      <scope>provided</scope>
-      <optional>false</optional>
+      <version>20240303</version>
     </dependency>
-<!--    <dependency>
-        <groupId>org.apache.httpcomponents.client5</groupId>
-        <artifactId>httpclient5</artifactId>
-        <version>5.3</version>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.httpcomponents.core5</groupId>
-        <artifactId>httpcore5</artifactId>
-        <version>5.2.4</version>
-    </dependency>
-    -->
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>nl.amity.ijc_ui.IJC_Wedstrijden</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>nl.amity.ijc_ui.IJC_Wedstrijden</mainClass>
+                </transformer>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>create-release-bundle</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <!-- Ensure Release directory exists -->
+                    <mkdir dir="${project.basedir}/Release"/>
+
+                    <!-- Copy the shaded executable JAR -->
+                    <copy file="${project.build.directory}/${project.build.finalName}.jar" 
+                          tofile="${project.basedir}/Release/${project.artifactId}-${project.version}.jar"/>
+
+                    <!-- Copy template document if present -->
+                    <copy file="${project.basedir}/Leeg.docx" 
+                          todir="${project.basedir}/Release" 
+                          failonerror="false"/>
+
+                    <!-- Generate release metadata file with Java & version details -->
+                    <echo file="${project.basedir}/Release/release-info.txt" append="false">Release Version: ${project.version}
+Artifact: ${project.artifactId}-${project.version}.jar
+Target Java Version: Java ${maven.compiler.target} (Minimum required JRE: ${maven.compiler.target}+)
+Build Date: ${maven.build.timestamp}
+Main Class: nl.amity.ijc_ui.IJC_Wedstrijden
+</echo>
+
+                    <!-- Generate Windows launcher script -->
+                    <echo file="${project.basedir}/Release/run.cmd" append="false">@echo off
+rem Launcher for ${project.name} v${project.version} (Requires Java ${maven.compiler.target}+)
+start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"
+</echo>
+
+                    <!-- Create distribution zip archive with all release artifacts -->
+                    <zip destfile="${project.basedir}/Release/${project.artifactId}-${project.version}.zip">
+                      <fileset dir="${project.basedir}/Release">
+                        <include name="${project.artifactId}-${project.version}.jar"/>
+                        <include name="release-info.txt"/>
+                        <include name="run.cmd"/>
+                        <include name="Leeg.docx"/>
+                      </fileset>
+                      <fileset dir="${project.basedir}">
+                        <include name="configuratie.json"/>
+                        <include name="status.json"/>
+                        <include name="logging.properties"/>
+                        <include name="README.md"/>
+                      </fileset>
+                    </zip>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>nl.amity</groupId>
+  <artifactId>ijc_ui</artifactId>
+  <name>IJC_UI</name>
+  <version>2.0.1.3</version>
+  <description>Interne Jeugd Competitie UI</description>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>nl.amity.ijc_ui.IJC_Wedstrijden</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer>
+                  <mainClass>nl.amity.ijc_ui.IJC_Wedstrijden</mainClass>
+                </transformer>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>create-release-bundle</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <mkdir />
+                    <copy />
+                    <copy />
+                    <echo>Release Version: ${project.version}
+Artifact: ${project.artifactId}-${project.version}.jar
+Target Java Version: Java ${maven.compiler.target} (Minimum required JRE: ${maven.compiler.target}+)
+Build Date: ${maven.build.timestamp}
+Main Class: nl.amity.ijc_ui.IJC_Wedstrijden</echo>
+                    <echo>@echo off
+rem Launcher for ${project.name} v${project.version} (Requires Java ${maven.compiler.target}+)
+start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"</echo>
+                    <zip>
+                      <fileset>
+                        <include />
+                        <include />
+                        <include />
+                        <include />
+                      </fileset>
+                      <fileset>
+                        <include />
+                        <include />
+                        <include />
+                        <include />
+                      </fileset>
+                    </zip>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  <repositories>
+    <repository>
+      <id>objectdb</id>
+      <name>ObjectDB Repository</name>
+      <url>https://m2.objectdb.com</url>
+    </repository>
+  </repositories>
+  <properties>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+</project>

@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import nl.amity.ijc_ui.ui.control.IJCController;
 import nl.amity.ijc_ui.ui.view.Hoofdscherm;
+import nl.amity.ijc_ui.util.LoggingConfig;
 
 /**
  * Main class of the application.
@@ -44,6 +45,8 @@ public class IJC_Wedstrijden {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        LoggingConfig.initialize("IJC_UI.log", true);
+
     	logger.log(Level.INFO, "Opstarten controller");
         IJCController.getInstance().start();
 

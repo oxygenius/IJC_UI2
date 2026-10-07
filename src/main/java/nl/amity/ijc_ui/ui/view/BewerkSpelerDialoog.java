@@ -66,7 +66,7 @@ public class BewerkSpelerDialoog extends JDialog {
         panel.setLayout(new GridLayout(18, 2));
         //ID
         panel.add(new JLabel("ID"));
-        final JTextField tfID = new JTextField((new Integer(speler.getId())).toString());
+        final JTextField tfID = new JTextField(String.valueOf(speler.getId()));
         tfID.setEditable(false);
         panel.add(tfID);
         //Naam
@@ -79,7 +79,7 @@ public class BewerkSpelerDialoog extends JDialog {
 //        panel.add(tfInit);
         // Wit voorkeur
         panel.add(new JLabel("Witvoorkeur"));
-        final JTextField tfWit = new JTextField((new Integer((int)speler.getWitvoorkeur())).toString());
+        final JTextField tfWit = new JTextField(String.valueOf((int) speler.getWitvoorkeur()));
         panel.add(tfWit);
         // Groep
         panel.add(new JLabel("Groep"));
@@ -88,23 +88,23 @@ public class BewerkSpelerDialoog extends JDialog {
         panel.add(tfGroep);
         // Rating
         panel.add(new JLabel("Rating"));
-        final JTextField tfRating = new JTextField((new Integer(speler.getRating())).toString());
+        final JTextField tfRating = new JTextField(String.valueOf(speler.getRating()));
         panel.add(tfRating);
         // Punten
         panel.add(new JLabel("Punten"));
-        final JTextField tfPunten = new JTextField((new Integer(speler.getPunten())).toString());
+        final JTextField tfPunten = new JTextField(String.valueOf(speler.getPunten()));
         panel.add(tfPunten);
         // KEIPunten
         panel.add(new JLabel("KEI Punten"));
-        final JTextField tfKeiPunten = new JTextField((new Integer(speler.getKeipunten())).toString());
+        final JTextField tfKeiPunten = new JTextField(String.valueOf(speler.getKeipunten()));
         panel.add(tfKeiPunten);
         // Punten
         panel.add(new JLabel("KEI Kansen"));
-        final JTextField tfKeiKansen = new JTextField((new Integer(speler.getKeikansen())).toString());
+        final JTextField tfKeiKansen = new JTextField(String.valueOf(speler.getKeikansen()));
         panel.add(tfKeiKansen);
         // KNSB
         panel.add(new JLabel("KNSB Nummer"));
-        final JTextField tfKNSB = new JTextField((new Integer(speler.getKNSBnummer())).toString());
+        final JTextField tfKNSB = new JTextField(String.valueOf(speler.getKNSBnummer()));
         panel.add(tfKNSB);
         // Tegenstanders
         panel.add(new JLabel("Tegenstanders"));

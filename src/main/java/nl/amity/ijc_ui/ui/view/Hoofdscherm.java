@@ -415,7 +415,7 @@ public class Hoofdscherm extends JFrame {
 		JMenu filemenu = new JMenu("Bestand");
 		// File menu
 		JMenuItem item = new JMenuItem("Openen...");
-		item.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+		item.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		Hoofdscherm hs = this;
 		item.addActionListener(new ActionListener() {
 			@Override
@@ -440,7 +440,7 @@ public class Hoofdscherm extends JFrame {
 		});
 		filemenu.add(item);
 		item = new JMenuItem("Opslaan");
-		item.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+		item.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -456,11 +456,11 @@ public class Hoofdscherm extends JFrame {
 				actieInstellingen();
 			}
 		});
-		item.setAccelerator(KeyStroke.getKeyStroke('I', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+		item.setAccelerator(KeyStroke.getKeyStroke('I', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		filemenu.add(item);
 		filemenu.addSeparator();
 		item = new JMenuItem("Afsluiten");
-		item.setAccelerator(KeyStroke.getKeyStroke('Q', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+		item.setAccelerator(KeyStroke.getKeyStroke('Q', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -474,7 +474,7 @@ public class Hoofdscherm extends JFrame {
 		JMenu spelermenu = new JMenu("Speler");
 
 		item = new JMenuItem("Nieuwe speler");
-		item.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+		item.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

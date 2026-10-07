@@ -105,12 +105,17 @@ public class Groepen {
 	 * @return printable string van alle groepen
 	 */
     public String toPrintableString() {
-    	return toPrintableString(false);
+    	return toPrintableString(false, false);
     }
-    public String toPrintableString(boolean lang) {
+    public String toPrintableString(boolean lang, boolean reversed) {
         StringBuilder result = new StringBuilder();
-        for (int index = 0; index < groepen.size(); ++index) {
-    		logger.log(Level.INFO, "index = " + index);        	
+		int rev = 0 ;
+		if (reversed) rev = groepen.size() - 1;
+		int index;
+		logger.log(Level.INFO, "rev = " + rev);
+		for (int i = 0; i < groepen.size(); ++i) {
+			if (reversed) index = (rev-i); else index=(rev+i);
+    		logger.log(Level.INFO, "index = " + index);
         	Groep groep = groepen.get(index);
 			logger.log(Level.INFO, "groep = " + groep.getNaam());
 //        	groep.sorteerPunten(false,true);
@@ -128,12 +133,10 @@ public class Groepen {
 			if (IJCController.c().exportDoorschuivers) {
 				// Bepaal doorschuivers
 				int ndoor = IJCController.c().bepaalAantalDoorschuiversVolgendeRonde(groep.getNiveau(), periode, ronde);
-				if ((index > 0) && (index + 1 < groepen.size())) {
+				if ((reversed && index > 0) || (!reversed && index + 1 < groepen.size())) {
 					Groep lager;
 					logger.log(Level.INFO, "index = " + index + "van groep" + groep.getNaam());
-					logger.log(Level.INFO, "groep met index - 1 is " + groepen.get(index - 1).getNaam());
-					logger.log(Level.INFO, "groep met index + 1 is " + groepen.get(index + 1).getNaam());
-					lager = groepen.get(index + 1);
+					if (reversed) lager = groepen.get(index - 1); else lager = groepen.get(index + 1);
 //					lager.sorteerPunten(false,true);
 					lager.renumber();
 					if (ndoor > 1) {

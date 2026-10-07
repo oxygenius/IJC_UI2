@@ -34,7 +34,7 @@ public class SpelerDatabase extends ObjectDatabase {
 	/**
 	 * Haal speler op met het opgegeven KNSB nummer
 	 *
-	 * @param knsb
+	 * @param naam
 	 * @return
 	 */
 	public DBSpeler getSpelerByName(String naam) {
@@ -64,7 +64,6 @@ public class SpelerDatabase extends ObjectDatabase {
 	 * ronde
 	 *
 	 * @param groep
-	 * @param ronde
 	 * @return
 	 */
 	public List<DBSpeler> getSpelers(int groep) {
@@ -93,8 +92,6 @@ public class SpelerDatabase extends ObjectDatabase {
 	 * Retourneer lijst die spelen in de betreffende ronde (onafhankelijk van
 	 * wel/niet aanwezig) ronde.
 	 *
-	 * @param groep
-	 * @param ronde
 	 * @return
 	 */
 	public List<DBSpeler> getSpelers(DBRonde ronde) {
@@ -139,7 +136,7 @@ public class SpelerDatabase extends ObjectDatabase {
 	/**
 	 * Geef alle wedstrijden uit een ronde
 	 *
-	 * @param s
+	 * @param ronde
 	 * @return
 	 */
 	public List<DBWedstrijd> getWedstrijdenVoorRonde(DBRonde ronde) {
@@ -151,7 +148,6 @@ public class SpelerDatabase extends ObjectDatabase {
 	/**
 	 * Geef alle wedstrijden van een speler
 	 *
-	 * @param s
 	 * @return
 	 */
 	public List<DBWedstrijd> getWedstrijden() {

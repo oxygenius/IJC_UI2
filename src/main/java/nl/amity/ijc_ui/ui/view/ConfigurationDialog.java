@@ -210,11 +210,11 @@ public class ConfigurationDialog extends JDialog {
 		panel.setLayout(new ExtendedGridLayout(20, 2));
 		// public int perioden = 4;
 		panel.add(new JLabel("Aantal periodes"));
-		tfPerioden = new JTextField((new Integer(config.perioden)).toString());
+		tfPerioden = new JTextField(String.valueOf(config.perioden));
 		panel.add(tfPerioden);
 		// public int rondes = 8
 		panel.add(new JLabel("Aantal rondes per periode"));
-		tfRondes = new JTextField((new Integer(config.rondes)).toString(), 20);
+		tfRondes = new JTextField(String.valueOf(config.rondes), 20);
 		panel.add(tfRondes);
 		// private String grAantalSeries =
 		panel.add(new JLabel("Aantal series per ronde"));
@@ -224,7 +224,7 @@ public class ConfigurationDialog extends JDialog {
 		panel.add(tfGrSeries);
 		// public int aantalGroepen = 7;
 		panel.add(new JLabel("Aantal speelgroepen"));
-		tfSpeelgroepen = new JTextField((new Integer(config.aantalGroepen)).toString());
+		tfSpeelgroepen = new JTextField(String.valueOf(config.aantalGroepen));
 		panel.add(tfSpeelgroepen);
 		for (int i = 0; i < 16; i++) {
 			panel.add(new JLabel(" "));
@@ -250,8 +250,8 @@ public class ConfigurationDialog extends JDialog {
 		for (int i = 0; i < 10; ++i) {
 			if (i < config.groepsnamen.length) {
 				tfGroepsnamens[i] = new JTextField(config.groepsnamen[i], 20);
-				tfStartPuntens[i] = new JTextField(new Integer(config.startPunten[i]).toString(), 10);
-				tfStartRatings[i] = new JTextField(new Integer(config.startRating[i]).toString(), 10);
+				tfStartPuntens[i] = new JTextField(String.valueOf(config.startPunten[i]), 10);
+				tfStartRatings[i] = new JTextField(String.valueOf(config.startRating[i]), 10);
 			} else {
 				tfGroepsnamens[i] = new JTextField("");
 				tfStartPuntens[i] = new JTextField("");
@@ -315,7 +315,7 @@ public class ConfigurationDialog extends JDialog {
 		panel.add(tfGrBegintrio);
 		// public int indelingMaximumVerschil = 3;
 		panel.add(new JLabel("Max verschil tussenspelers"));
-		tfMaxVerschil = new JTextField((new Integer(config.indelingMaximumVerschil)).toString());
+		tfMaxVerschil = new JTextField(String.valueOf(config.indelingMaximumVerschil));
 		panel.add(tfMaxVerschil);
 
 		panel.add(new JLabel(" "));
@@ -332,23 +332,23 @@ public class ConfigurationDialog extends JDialog {
 		panel.add(new JLabel(" "));
 		// public double fuzzyWegingAndereTegenstander = 1.0;
 		panel.add(new JLabel("Weging nieuwe tegenstander"));
-		tfFuzzyAndereTgn = new JTextField((new Double(config.fuzzyWegingAndereTegenstander)).toString());
+		tfFuzzyAndereTgn = new JTextField(String.valueOf(config.fuzzyWegingAndereTegenstander));
 		panel.add(tfFuzzyAndereTgn);
 		// public double fuzzyWegingAfstandRanglijst = 1.0;
 		panel.add(new JLabel("Weging Afstand op ranglijst"));
-		tfFuzzyRanglijst = new JTextField((new Double(config.fuzzyWegingAfstandRanglijst)).toString());
+		tfFuzzyRanglijst = new JTextField(String.valueOf(config.fuzzyWegingAfstandRanglijst));
 		panel.add(tfFuzzyRanglijst);
 		// public double fuzzyWegingAfstandRanglijstpunten = 1.0;
 		panel.add(new JLabel("Weging Verschil op ranglijst in punten"));
-		tfFuzzyRanglijstpunten = new JTextField((new Double(config.fuzzyWegingAfstandRanglijstpunten)).toString());
+		tfFuzzyRanglijstpunten = new JTextField(String.valueOf(config.fuzzyWegingAfstandRanglijstpunten));
 		panel.add(tfFuzzyRanglijstpunten);
 		// public double fuzzyWegingZwartWitVerdeling = 1.0;
 		panel.add(new JLabel("Weging Zwart/Wit verdeling"));
-		tfFuzzyZwartWit = new JTextField((new Double(config.fuzzyWegingZwartWitVerdeling)).toString());
+		tfFuzzyZwartWit = new JTextField(String.valueOf(config.fuzzyWegingZwartWitVerdeling));
 		panel.add(tfFuzzyZwartWit);
 		// public double fuzzyWegingDoorschuiverEigenGroep = 1.0;
 		panel.add(new JLabel("Weging doorschuiver tegen eigen groeper"));
-		tfFuzzyDoorschuiver = new JTextField((new Double(config.fuzzyWegingDoorschuiverEigenGroep)).toString());
+		tfFuzzyDoorschuiver = new JTextField(String.valueOf(config.fuzzyWegingDoorschuiverEigenGroep));
 		panel.add(tfFuzzyDoorschuiver);
 
 		for (int i = 0; i < 3; ++i) {

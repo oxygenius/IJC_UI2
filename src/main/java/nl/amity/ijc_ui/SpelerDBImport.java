@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gson.Gson;
 
@@ -55,10 +58,11 @@ public class SpelerDBImport {
 			spelerDB.startTransaction();
 
 			// Bepaal ronde
-			int jaar = status.wedstrijden.getSpeeldatum().getYear();
-			int month = status.wedstrijden.getSpeeldatum().getMonth();
-			if (month<8) jaar--;
-			DBRonde ronde = new DBRonde(status.wedstrijden.getSpeeldatum(), jaar, status.wedstrijden.getPeriode(),
+			Date speeldatum = status.wedstrijden.getSpeeldatum();
+			LocalDate datum = speeldatum.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			int jaar = datum.getYear();
+			if (datum.getMonthValue() < 9) jaar--;
+			DBRonde ronde = new DBRonde(speeldatum, jaar, status.wedstrijden.getPeriode(),
 					status.wedstrijden.getRonde());
 			// check of ronde al bestaat
 			if (spelerDB.rondeExists(ronde)) {
@@ -275,7 +279,7 @@ public class SpelerDBImport {
 //							+ s + "\"");
 //			for (int i = 0; i < result.size(); ++i) {
 //				Object o[] = (Object[]) result.get(i);
-//				Double val = new Double(((Integer) o[1]).intValue());
+//				Double val = Double.valueOf(((Number) o[1]).doubleValue());
 //				cat.addValue((Number) val, s, ((Integer) o[0]).intValue());
 //			}
 //		}

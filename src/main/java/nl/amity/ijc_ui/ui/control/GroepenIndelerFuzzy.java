@@ -283,8 +283,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 		// Samenvoegen 3 series naar 1 voor originele trioindeling en aantalspelers is 5
 		if (!IJCController.c().fuzzyOneven && groep.getAantalSpelers() == 5) {
 			gws=Samenvoegenseries(gws);
-		} else
-
+		}
 		logger.log(Level.INFO, "ZW balans voor groep " + wedstrijdgroep.getNaam() + " voor deze ronde is " +wedstrijdgroep.getZWbalansvoor());
 		groep.setZWbalansna();
 		// Overdragen tijdelijke data naar reguliere data voor deze waarde.
@@ -838,7 +837,7 @@ public class GroepenIndelerFuzzy extends GroepenIndeler implements GroepenIndele
 								matrix4[i - 1][j] = 0;
 							}
 						}
-						if (!spelersuitanderegroep.contains(s2)
+						if (!spelersuitanderegroep.contains(s1)
 								&& spelersuitanderegroep
 										.contains(s2)) {
 							matrix4[i - 1][j] = 0;

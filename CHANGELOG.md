@@ -1,7 +1,7 @@
 # Wijzigingen
 
 Alle belangrijke wijzigingen in IJC_UI2, per versie.
-Het versienummer is `appVersion` in `src/main/java/nl/amity/ijc_ui/ui/view/Hoofdscherm.java`.
+Het versienummer is `<version>` in `pom.xml`.
 De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 
 ## [Nog niet uitgebracht]
@@ -9,8 +9,13 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sectie bij een release naar het nieuwe versienummer met de datum.
 
 ### Toegevoegd
+- De release-build controleert dat de zip en de jar geen club- of spelersgegevens bevatten (`configuratie.json`, `status.json`, keystore, spelersdatabase, rondemappen). Anders wordt de release afgebroken.
+- `CHANGELOG.md` zit nu in de release-zip.
+- Test `VersieTest`: controleert dat de changelog een sectie heeft voor de huidige versie.
+- Test `FixturesAnoniemTest`: controleert dat alle testfixtures geanonimiseerd zijn.
 
 ### Gewijzigd
+- Het versienummer staat nog maar op één plek: `<version>` in `pom.xml`. Het programma leest het via `version.properties` (klasse `Versie`). `appVersion` in `Hoofdscherm.java` hoeft niet meer met de hand te worden bijgewerkt.
 - README herschreven, met installatie, gebruik op de clubavond, problemen melden en ontwikkeling.
 - Changelog vertaald naar het Nederlands.
 

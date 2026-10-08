@@ -96,7 +96,7 @@ Alle code staat onder `src/main/java/nl/amity/ijc_ui/`.
 
 ### Een nieuwe versie uitbrengen
 
-1. Verhoog het versienummer op twee plaatsen: `appVersion` in `ui/view/Hoofdscherm.java` en `<version>` in `pom.xml`.
+1. Verhoog het versienummer in `pom.xml` (`<version>`). Dat is de enige plek: het programma leest de versie via `version.properties`, dat Maven bij het bouwen vult.
 2. Werk [CHANGELOG.md](CHANGELOG.md) bij: hernoem de sectie *Nog niet uitgebracht* naar het nieuwe versienummer met de datum.
 3. Bouw met `mvn -Prelease package`.
 4. Commit, maak een tag `v<versie>` en push de commit en de tag.
@@ -106,6 +106,14 @@ Alle code staat onder `src/main/java/nl/amity/ijc_ui/`.
    ```
 
 Release-zips worden niet in git opgenomen; ze staan alleen bij Releases.
+
+De build bewaakt een paar regels automatisch:
+
+| Controle | Wanneer | Wat gebeurt er bij een fout |
+|---|---|---|
+| Release-zip en jar bevatten geen `configuratie.json`, `status.json`, keystore, spelersdatabase of rondemap | `mvn -Prelease package` | De release wordt afgebroken |
+| `CHANGELOG.md` heeft een sectie voor de versie uit `pom.xml` | `mvn test` (`VersieTest`) | De test faalt |
+| Alle fixtures zijn geanonimiseerd: spelers heten `Speler NN` en hebben KNSB-nummer 0 | `mvn test` (`FixturesAnoniemTest`) | De test faalt |
 
 ## Licentie
 

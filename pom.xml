@@ -80,6 +80,23 @@
   </dependencies>
 
   <build>
+    <resources>
+      <!-- version.properties krijgt het versienummer uit deze pom (enige bron voor de versie) -->
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>version.properties</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>version.properties</exclude>
+        </excludes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -197,8 +214,25 @@ start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"
                       <fileset dir="${project.basedir}">
                         <include name="logging.properties"/>
                         <include name="README.md"/>
+                        <include name="CHANGELOG.md"/>
                       </fileset>
                     </zip>
+
+                    <!-- Controle: release mag nooit club- of spelersgegevens bevatten (de repository is openbaar) -->
+                    <fail message="Release bevat club- of spelersgegevens (configuratie.json, status.json, keystore, spelersdatabase of rondemap). Release afgebroken.">
+                      <condition>
+                        <or>
+                          <resourcecount when="greater" count="0">
+                            <zipfileset src="${project.basedir}/Release/${project.artifactId}-${project.version}.zip"
+                                        includes="**/configuratie*.json **/status*.json **/*.ks **/*.odb **/db/** **/R*-*/**"/>
+                          </resourcecount>
+                          <resourcecount when="greater" count="0">
+                            <zipfileset src="${project.build.directory}/${project.build.finalName}.jar"
+                                        includes="configuratie*.json status*.json **/*.ks **/*.odb db/**"/>
+                          </resourcecount>
+                        </or>
+                      </condition>
+                    </fail>
                   </target>
                 </configuration>
               </execution>

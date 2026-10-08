@@ -71,6 +71,7 @@ import nl.amity.ijc_ui.ui.model.SpelersModel;
 import nl.amity.ijc_ui.ui.model.WedstrijdModel;
 import nl.amity.ijc_ui.ui.model.WedstrijdSpelersModel;
 import nl.amity.ijc_ui.ui.util.Utils;
+import nl.amity.ijc_ui.util.Versie;
 
 /**
  * Structure of the GUI:
@@ -103,7 +104,7 @@ public class Hoofdscherm extends JFrame {
 	private static final long serialVersionUID = -2154845989579570030L;
 	private final static Logger logger = Logger.getLogger(Hoofdscherm.class.getName());
 
-	private String appVersion = "2.0.1.7";
+	private String appVersion = Versie.get();
 	private JPanel hoofdPanel;
 	private JTabbedPane tabs;
 	private JPanel[] panels;

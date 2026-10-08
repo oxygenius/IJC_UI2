@@ -61,5 +61,6 @@ db-oud/
 # Debug round snapshots (e.g. R1-4, R2-1)
 R[0-9]*-[0-9]*/
 
-# Release archives are published as GitHub Releases, not committed
-Release/*.zip
+# Release/ contains only build output (mvn -Prelease package) and local data;
+# release archives are published as GitHub Releases, not committed
+/Release/

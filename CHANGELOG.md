@@ -11,11 +11,14 @@ Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sect
 ### Toegevoegd
 - De release-build controleert dat de zip en de jar geen club- of spelersgegevens bevatten (`configuratie.json`, `status.json`, keystore, spelersdatabase, rondemappen). Anders wordt de release afgebroken.
 - `CHANGELOG.md` zit nu in de release-zip.
+- `Template.xlsx` (sjabloon voor de Excel-export) gaat mee in de release-zip als het in de projectmap staat.
+- De release-build ruimt jars en zips van eerdere versies op in `Release/`. Lokale gegevens zoals `configuratie.json`, `status.json` en `keystore.ks` blijven staan.
 - Test `VersieTest`: controleert dat de changelog een sectie heeft voor de huidige versie.
 - Test `FixturesAnoniemTest`: controleert dat alle testfixtures geanonimiseerd zijn.
 
 ### Gewijzigd
 - Het versienummer staat nog maar op één plek: `<version>` in `pom.xml`. Het programma leest het via `version.properties` (klasse `Versie`). `appVersion` in `Hoofdscherm.java` hoeft niet meer met de hand te worden bijgewerkt.
+- De map `Release/` staat niet meer in git: `release-info.txt`, `IJC_UI.cmd` en `Leeg.docx` daarin worden bij elke release-build opnieuw gemaakt.
 - README herschreven, met installatie, gebruik op de clubavond, problemen melden en ontwikkeling.
 - Changelog vertaald naar het Nederlands.
 

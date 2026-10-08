@@ -35,7 +35,7 @@ De zip bevat geen club- of spelersgegevens. Bij de eerste start stel je via **Be
 | `R<periode>-<ronde>/` | Uitvoer per ronde (uitslagen, stand, statusbestanden) |
 | `IJC_UI.log` | Logbestand |
 | `Leeg.docx` | Sjabloon voor de intekenlijst |
-| `Template.xlsx` | Sjabloon voor de Excel-export. Dit sjabloon zit niet in de zip; zet je eigen sjabloon in de programmamap. |
+| `Template.xlsx` | Sjabloon voor de Excel-export, met één werkblad per groep. Zit alleen in de zip als het bij het bouwen in de projectmap stond; zet anders je eigen sjabloon in de programmamap. |
 
 > **Let op:** `configuratie.json`, `status.json`, `keystore.ks`, `db/` en de rondemappen bevatten persoonsgegevens van (jeugd)leden. Deel ze niet en zet ze nooit in git. Maak wel regelmatig een back-up van de programmamap.
 
@@ -105,7 +105,7 @@ Alle code staat onder `src/main/java/nl/amity/ijc_ui/`.
    gh release create v<versie> Release/ijc_ui-<versie>.zip --title "IJC_UI <versie>" --notes-file <notities.md>
    ```
 
-Release-zips worden niet in git opgenomen; ze staan alleen bij Releases.
+De map `Release/` staat niet in git; ze bevat alleen bouwresultaten en eventueel je eigen gegevens als je het programma daar draait. Bij elke release-build worden jars en zips van eerdere versies uit `Release/` verwijderd (die staan bij Releases); `configuratie.json`, `status.json`, `keystore.ks`, `db/` en logbestanden blijven staan. `Leeg.docx` en `Template.xlsx` worden meegenomen als ze in de projectmap staan.
 
 De build bewaakt een paar regels automatisch:
 

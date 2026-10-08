@@ -179,14 +179,28 @@
                     <!-- Ensure Release directory exists -->
                     <mkdir dir="${project.basedir}/Release"/>
 
+                    <!-- Remove jars/zips of previous versions (published on GitHub Releases).
+                         Only build output is removed: configuratie.json, status.json, keystore.ks,
+                         db/ and log files in Release/ are left alone. A jar that is in use is skipped. -->
+                    <delete failonerror="false" quiet="true">
+                      <fileset dir="${project.basedir}/Release">
+                        <include name="${project.artifactId}-*.jar"/>
+                        <include name="${project.artifactId}-*.zip"/>
+                        <include name="run.cmd"/>
+                      </fileset>
+                    </delete>
+
                     <!-- Copy the shaded executable JAR -->
                     <copy file="${project.build.directory}/${project.build.finalName}.jar" 
                           tofile="${project.basedir}/Release/${project.artifactId}-${project.version}.jar"/>
 
-                    <!-- Copy template document if present -->
-                    <copy file="${project.basedir}/Leeg.docx" 
-                          todir="${project.basedir}/Release" 
+                    <!-- Copy templates if present: Leeg.docx (intekenlijst) and Template.xlsx (Excel-export) -->
+                    <copy file="${project.basedir}/Leeg.docx"
+                          todir="${project.basedir}/Release"
                           failonerror="false"/>
+                    <copy file="${project.basedir}/Template.xlsx"
+                          todir="${project.basedir}/Release"
+                          failonerror="false" quiet="true"/>
 
                     <!-- Generate release metadata file with Java & version details -->
                     <echo file="${project.basedir}/Release/release-info.txt" append="false">Release Version: ${project.version}
@@ -209,6 +223,7 @@ start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"
                         <include name="release-info.txt"/>
                         <include name="IJC_UI.cmd"/>
                         <include name="Leeg.docx"/>
+                        <include name="Template.xlsx"/>
                       </fileset>
                       <!-- configuratie.json en status.json bevatten clubgegevens en worden niet meegeleverd -->
                       <fileset dir="${project.basedir}">

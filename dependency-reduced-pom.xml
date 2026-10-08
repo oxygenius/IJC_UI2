@@ -96,6 +96,14 @@
                 <configuration>
                   <target>
                     <mkdir />
+                    <delete>
+                      <fileset>
+                        <include />
+                        <include />
+                        <include />
+                      </fileset>
+                    </delete>
+                    <copy />
                     <copy />
                     <copy />
                     <echo>Release Version: ${project.version}
@@ -108,6 +116,7 @@ rem Launcher for ${project.name} v${project.version} (Requires Java ${maven.comp
 start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"</echo>
                     <zip>
                       <fileset>
+                        <include />
                         <include />
                         <include />
                         <include />

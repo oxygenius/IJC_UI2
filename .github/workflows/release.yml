@@ -116,6 +116,9 @@ jobs:
         run: |
           versie=${{ steps.versie.outputs.versie }}
           python .github/scripts/release_notes.py "$versie" > notes.md
+          # Kopie met vaste naam voor de directe downloadlink
+          # https://github.com/oxygenius/IJC_UI2/releases/latest/download/IJC_UI2-setup.exe
+          cp "Release/IJC_UI2-setup-$versie.exe" Release/IJC_UI2-setup.exe
           gh release create "$GITHUB_REF_NAME" \
-            "Release/IJC_UI2-setup-$versie.exe" "Release/ijc_ui-$versie.zip" \
+            "Release/IJC_UI2-setup-$versie.exe" Release/IJC_UI2-setup.exe "Release/ijc_ui-$versie.zip" \
             --title "IJC_UI $versie" --notes-file notes.md --verify-tag --latest

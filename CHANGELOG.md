@@ -13,6 +13,8 @@ Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sect
   - Installeert zonder beheerdersrechten, met een Nederlandstalige wizard en snelkoppelingen in het Startmenu en (optioneel) op het bureaublad.
   - Gegevens komen in `Documenten\IJC_UI2` en blijven bewaard bij een update of verwijdering. Aangepaste sjablonen worden niet overschreven.
   - Bouwen met `mvn -Prelease,installer package`.
+  - Elke release bevat de installer ook onder de vaste naam `IJC_UI2-setup.exe`, zodat [deze downloadlink](https://github.com/oxygenius/IJC_UI2/releases/latest/download/IJC_UI2-setup.exe) altijd de nieuwste versie geeft.
+  - De installer van 2.0.1.8 is achteraf (ongetekend) aan die release toegevoegd.
 - Releases worden automatisch gebouwd en gepubliceerd door GitHub Actions bij het pushen van een tag `v<versie>`, met ondertekening via SignPath zodra die is ingesteld.
 - `CODE_SIGNING.md` met het beleid voor ondertekening en het privacybeleid.
 - `LICENSE` met de volledige tekst van de GPL v3.

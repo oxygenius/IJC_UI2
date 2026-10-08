@@ -20,7 +20,7 @@ IJC_UI2 ondersteunt de competitieleider of trainer op de clubavond bij het indel
 
 ### Met de installer (aanbevolen)
 
-1. Download de nieuwste `IJC_UI2-setup-<versie>.exe` bij [Releases](https://github.com/oxygenius/IJC_UI2/releases).
+1. Download de nieuwste installer: **[IJC_UI2-setup.exe](https://github.com/oxygenius/IJC_UI2/releases/latest/download/IJC_UI2-setup.exe)**. Oudere versies staan bij [Releases](https://github.com/oxygenius/IJC_UI2/releases).
 2. Start de installer en volg de stappen. Beheerdersrechten zijn niet nodig, en Java hoeft niet apart geïnstalleerd te worden: dat zit erin.
 3. Start het programma via het Startmenu of de snelkoppeling op het bureaublad.
 
@@ -77,9 +77,17 @@ Zie [CHANGELOG.md](CHANGELOG.md) voor de wijzigingen per versie.
 
 ## Ondertekening
 
-De Windows-bestanden worden ondertekend via SignPath, zodra die aanvraag is goedgekeurd. Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org). Zie het [Code signing policy](CODE_SIGNING.md) voor wat er ondertekend wordt, door wie, en het privacybeleid.
+Ondertekening via SignPath is aangevraagd; tot de aanvraag is goedgekeurd zijn de installer en `IJC_UI2.exe` niet ondertekend. Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org). Zie het [Code signing policy](CODE_SIGNING.md) voor wat er ondertekend wordt, door wie, en het privacybeleid.
 
 Ook een ondertekend programma kan de eerste tijd nog een SmartScreen-waarschuwing geven, totdat het genoeg gedownload is.
+
+### Links voor de verenigingswebsite
+
+| Doel | Link |
+|---|---|
+| Directe download van de installer (altijd de nieuwste versie) | https://github.com/oxygenius/IJC_UI2/releases/latest/download/IJC_UI2-setup.exe |
+| Pagina van de nieuwste release (installer, zip en wijzigingen) | https://github.com/oxygenius/IJC_UI2/releases/latest |
+| Code signing policy (verplicht te vermelden bij de download) | https://github.com/oxygenius/IJC_UI2/blob/main/CODE_SIGNING.md |
 
 ## Ontwikkeling
 

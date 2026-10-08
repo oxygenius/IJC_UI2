@@ -4,7 +4,7 @@
   <groupId>nl.amity</groupId>
   <artifactId>ijc_ui</artifactId>
   <name>IJC_UI</name>
-  <version>2.0.1.7</version>
+  <version>2.0.1.8</version>
   <description>Interne Jeugd Competitie UI</description>
   <build>
     <resources>

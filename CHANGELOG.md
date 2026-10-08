@@ -9,6 +9,14 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sectie bij een release naar het nieuwe versienummer met de datum.
 
 ### Toegevoegd
+
+### Gewijzigd
+
+### Opgelost
+
+## [2.0.1.8] - 2026-10-08
+
+### Toegevoegd
 - De release-build controleert dat de zip en de jar geen club- of spelersgegevens bevatten (`configuratie.json`, `status.json`, keystore, spelersdatabase, rondemappen). Anders wordt de release afgebroken.
 - `CHANGELOG.md` zit nu in de release-zip.
 - `Template.xlsx` (sjabloon voor de Excel-export) gaat mee in de release-zip als het in de projectmap staat.
@@ -21,8 +29,7 @@ Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sect
 - De map `Release/` staat niet meer in git: `release-info.txt`, `IJC_UI.cmd` en `Leeg.docx` daarin worden bij elke release-build opnieuw gemaakt.
 - README herschreven, met installatie, gebruik op de clubavond, problemen melden en ontwikkeling.
 - Changelog vertaald naar het Nederlands.
-
-### Opgelost
+- Releases worden gepubliceerd bij [GitHub Releases](https://github.com/oxygenius/IJC_UI2/releases). De zips staan niet meer in de repository.
 
 ## [2.0.1.7] - 2026-10-08
 

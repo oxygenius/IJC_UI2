@@ -148,6 +148,83 @@ start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"</echo>
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>installer</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>create-windows-installer</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <delete />
+                    <exec>
+                      <arg />
+                      <arg />
+                    </exec>
+                    <fail>
+                      <condition>
+                        <available />
+                      </condition>
+                    </fail>
+                    <copy />
+                    <exec>
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                    </exec>
+                    <mkdir />
+                    <delete>
+                      <fileset />
+                    </delete>
+                    <exec>
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                      <arg />
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <jpackage.modules>java.base,java.compiler,java.desktop,java.instrument,java.management,java.naming,java.net.http,java.prefs,java.rmi,java.scripting,java.security.jgss,java.sql,java.xml.crypto,jdk.accessibility,jdk.charsets,jdk.crypto.ec,jdk.localedata,jdk.unsupported,jdk.zipfs</jpackage.modules>
+        <iscc.exe>C:/Program Files (x86)/Inno Setup 6/ISCC.exe</iscc.exe>
+      </properties>
+    </profile>
   </profiles>
   <repositories>
     <repository>

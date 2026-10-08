@@ -9,6 +9,13 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sectie bij een release naar het nieuwe versienummer met de datum.
 
 ### Toegevoegd
+- **Windows-installer** `IJC_UI2-setup-<versie>.exe`, met Java ingebouwd: Java hoeft niet meer apart geïnstalleerd te worden.
+  - Installeert zonder beheerdersrechten, met een Nederlandstalige wizard en snelkoppelingen in het Startmenu en (optioneel) op het bureaublad.
+  - Gegevens komen in `Documenten\IJC_UI2` en blijven bewaard bij een update of verwijdering. Aangepaste sjablonen worden niet overschreven.
+  - Bouwen met `mvn -Prelease,installer package`.
+- Releases worden automatisch gebouwd en gepubliceerd door GitHub Actions bij het pushen van een tag `v<versie>`, met ondertekening via SignPath zodra die is ingesteld.
+- `CODE_SIGNING.md` met het beleid voor ondertekening en het privacybeleid.
+- `LICENSE` met de volledige tekst van de GPL v3.
 
 ### Gewijzigd
 

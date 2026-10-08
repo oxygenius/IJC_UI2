@@ -256,5 +256,83 @@ start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"
         </plugins>
       </build>
     </profile>
+
+    <!-- Windows-installer: mvn -Prelease,installer package
+         1. jpackage maakt target/app-image/IJC_UI2 (IJC_UI2.exe met ingebouwde Java-runtime)
+         2. Inno Setup maakt daarvan Release/IJC_UI2-setup-<versie>.exe
+         Vereist een JDK 17+ (jpackage) en Inno Setup 6 (pad via -Discc.exe=...). -->
+    <profile>
+      <id>installer</id>
+      <properties>
+        <iscc.exe>C:/Program Files (x86)/Inno Setup 6/ISCC.exe</iscc.exe>
+        <jpackage.modules>java.base,java.compiler,java.desktop,java.instrument,java.management,java.naming,java.net.http,java.prefs,java.rmi,java.scripting,java.security.jgss,java.sql,java.xml.crypto,jdk.accessibility,jdk.charsets,jdk.crypto.ec,jdk.localedata,jdk.unsupported,jdk.zipfs</jpackage.modules>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>create-windows-installer</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <!-- jpackage wil een invoermap met alleen de jar -->
+                    <delete dir="${project.build.directory}/jpackage-input" quiet="true"/>
+                    <!-- jlink maakt bestanden in de runtime alleen-lezen; Ant's delete kan die op Windows niet verwijderen -->
+                    <exec executable="cmd" osfamily="windows" failonerror="false">
+                      <arg value="/c"/>
+                      <arg value="if exist &quot;${project.build.directory}\app-image&quot; rmdir /s /q &quot;${project.build.directory}\app-image&quot;"/>
+                    </exec>
+                    <fail message="Kan ${project.build.directory}/app-image niet verwijderen. Is IJC_UI2.exe uit die map nog gestart?">
+                      <condition>
+                        <available file="${project.build.directory}/app-image"/>
+                      </condition>
+                    </fail>
+                    <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                          todir="${project.build.directory}/jpackage-input"/>
+
+                    <exec executable="${java.home}/bin/jpackage" failonerror="true">
+                      <arg value="--type"/><arg value="app-image"/>
+                      <arg value="--name"/><arg value="IJC_UI2"/>
+                      <arg value="--app-version"/><arg value="${project.version}"/>
+                      <arg value="--vendor"/><arg value="Lars Dam"/>
+                      <arg value="--description"/><arg value="IJC Indeling Interne Jeugd Competitie"/>
+                      <arg value="--copyright"/><arg value="GPL v3 - Leo van der Meulen en Lars Dam"/>
+                      <arg value="--input"/><arg value="${project.build.directory}/jpackage-input"/>
+                      <arg value="--main-jar"/><arg value="${project.build.finalName}.jar"/>
+                      <arg value="--main-class"/><arg value="nl.amity.ijc_ui.IJC_Wedstrijden"/>
+                      <arg value="--add-modules"/><arg value="${jpackage.modules}"/>
+                      <arg value="--jlink-options"/><arg value="--strip-debug --no-header-files --no-man-pages --strip-native-commands --include-locales=nl,en"/>
+                      <arg value="--dest"/><arg value="${project.build.directory}/app-image"/>
+                    </exec>
+
+                    <!-- Installers van eerdere versies opruimen (die staan bij GitHub Releases) -->
+                    <mkdir dir="${project.basedir}/Release"/>
+                    <delete failonerror="false" quiet="true">
+                      <fileset dir="${project.basedir}/Release" includes="IJC_UI2-setup-*.exe"/>
+                    </delete>
+
+                    <exec executable="${iscc.exe}" failonerror="true">
+                      <arg value="/Q"/>
+                      <arg value="/DAppVersion=${project.version}"/>
+                      <arg value="/DAppImage=${project.build.directory}/app-image/IJC_UI2"/>
+                      <arg value="/DOutputDir=${project.basedir}/Release"/>
+                      <arg value="/DProjectDir=${project.basedir}"/>
+                      <arg value="${project.basedir}/installer/IJC_UI2.iss"/>
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>

@@ -78,18 +78,18 @@ import nl.amity.ijc_ui.ui.util.Utils;
 import nl.amity.ijc_ui.util.Versie;
 
 /**
- * Structure of the GUI:
- * JFrame Hoofdscherm (this)
- * 		JPanel ButtonPane
- * 		JPanel hoofdPanel
- * 			JTabbedPane tabs
- * 				JPanel panels[i]
- * 					JScrollPane leftScrollPane[i]
- * 						JTable aanwezigheidsTabel[i]
- * 					JScrollPane centerScrollPane[i]
- * 						JTable centerScrollPane[i]
- * 					JScrollPane rightScrollPane[i]
- * 						JTable rightScrollPane[i]
+ * Structuur van de GUI: JFrame Hoofdscherm (this) met hoofdPanel (BorderLayout):
+ * - Noord (BorderLayout.NORTH): bovenbalk met de knoppenbalk (knoppen in een
+ *   BoxLayout) en het ronde-label, in een FlowLayout.
+ * - Midden (BorderLayout.CENTER): JTabbedPane tabs, per groep tabs[i]:
+ *   JPanel panels[i] met GridLayout(1, 3) — drie even brede kolommen
+ *   (aanwezigheid, spelers, wedstrijden). Elke kolom heeft twee kopregels
+ *   (JTextField, niet bewerkbaar/focusbaar) en een JScrollPane met een JTable
+ *   die de volledige hoogte vult (setFillsViewportHeight).
+ * Tabellenkolommen: smalle kolommen (codes, rating, punten) hebben een vaste
+ * breedte; alleen de naamkolommen groeien mee (flexibleColumSize) tot een maximum
+ * zodat namen en getallen bij elkaar blijven. Het venster kan niet kleiner worden
+ * dan MINIMALE_GROOTTE (1150x670) en schaalt mee in alle richtingen.
  *
  * @author Leo van der Meulen
  * @author Lars Dam
@@ -732,15 +732,6 @@ public class Hoofdscherm extends JFrame {
 		}
 	}
 
-	/**
-	 * Structuur van de GUI: JFrame Hoofdscherm (this) met hoofdPanel (BorderLayout):
-	 * bovenaan de knoppenbalk, daaronder JTabbedPane tabs met per groep panels[i]:
-	 * drie even brede kolommen (aanwezigheid, spelers, wedstrijden) met elk een tabel
-	 * in een JScrollPane. Alles groeit mee met het venster; het venster kan niet kleiner
-	 * worden dan MINIMALE_GROOTTE, zodat alles leesbaar blijft.
-	 * In de tabellen hebben de smalle kolommen een vaste breedte; alleen de naamkolommen groeien
-	 * mee, tot een maximum zodat namen en getallen bij elkaar blijven.
-	 */
 	public void initSizes() {
 		logger.log(Level.FINEST, "Maak alle componenten van het juiste formaat");
 		setMinimumSize(MINIMALE_GROOTTE);

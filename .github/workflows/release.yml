@@ -37,7 +37,9 @@ jobs:
           if (-not (Test-Path "C:\Program Files (x86)\Inno Setup 6\ISCC.exe")) { choco install innosetup -y --no-progress }
 
       # Bouwt Release/ijc_ui-<versie>.zip, target/app-image/IJC_UI2 en Release/IJC_UI2-setup-<versie>.exe
+      # bash: in PowerShell (standaard op Windows) is de komma in -Prelease,installer een lijst-operator
       - name: Bouwen en testen
+        shell: bash
         run: mvn -B -Prelease,installer package
 
       # --- Publiceren ---

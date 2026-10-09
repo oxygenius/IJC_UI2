@@ -624,7 +624,7 @@ public class Hoofdscherm extends JFrame {
 				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(4), 40);
 				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(5), 47);
 
-				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(0), 17);
+				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(0), 25);
 				flexibleColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(1), 125, 220);
 				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(2), 33);
 				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(3), 20);
@@ -668,6 +668,18 @@ public class Hoofdscherm extends JFrame {
 	 * later via setText worden bijgewerkt; niet bewerkbaar en niet focusbaar.
 	 */
 	private JTextField maakKopregel(String tekst) {
+		JTextField kop = new JTextField(tekst);
+		kop.setEditable(false);
+		kop.setFocusable(false);
+		kop.setOpaque(false);
+		kop.setBorder(BorderFactory.createEmptyBorder(4, 2, 4, 2));
+		kop.setFont(kop.getFont().deriveFont(Font.BOLD, 13f));
+		kop.setHorizontalAlignment(SwingConstants.CENTER);
+		return kop;
+	}
+
+	/** ZW-balansregel met oorspronkelijke instellingen — geen vetgedrukte of vergrote lettertype. */
+	private JTextField maakZWbalansregel(String tekst) {
 		JTextField kop = new JTextField(tekst);
 		kop.setEditable(false);
 		kop.setFocusable(false);
@@ -1025,15 +1037,15 @@ public class Hoofdscherm extends JFrame {
 
 		// Drie kolommen met elk twee kopregels en een tabel die de rest van de hoogte vult
 		JTextField jTFaanwezigheid = maakKopregel("Aanwezigheid in de " + Groep.geefNaam(index));
-		jTFZWbalansvoor[index] = maakKopregel("ZW Balans");
+		jTFZWbalansvoor[index] = maakZWbalansregel("ZW Balans");
 		panel.add(maakKolom(jTFaanwezigheid, jTFZWbalansvoor[index], leftScrollPane[index]));
 		updateZWbalansvoor(index);
 
 		JTextField jTFwedstrijdgroep = maakKopregel("Spelers die spelen in de " + Groep.geefNaam(index));
 		panel.add(maakKolom(jTFwedstrijdgroep, maakKopregel(""), centerLeftScrollPane[index]));
 
-		JTextField jTFwedstrijden = maakKopregel("Wedstrijden in de " + Groep.geefNaam(index));
-		jTFZWbalansna[index] = maakKopregel("ZW Balans");
+		JTextField jTFwedstrijden = maakKopregel("Indeling van wedstrijden in de " + Groep.geefNaam(index));
+		jTFZWbalansna[index] = maakZWbalansregel("ZW Balans");
 		panel.add(maakKolom(jTFwedstrijden, jTFZWbalansna[index], centerRightScrollPane[index]));
 		updateZWbalansna(index);
 

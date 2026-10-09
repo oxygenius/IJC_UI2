@@ -5,7 +5,7 @@
 
   <groupId>nl.amity</groupId>
   <artifactId>ijc_ui</artifactId>
-  <version>2.0.1.8</version>
+  <version>2.0.1.9</version>
   <packaging>jar</packaging>
 
   <name>IJC_UI</name>
@@ -310,6 +310,13 @@ start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"
                       <arg value="--add-modules"/><arg value="${jpackage.modules}"/>
                       <arg value="--jlink-options"/><arg value="--strip-debug --no-header-files --no-man-pages --strip-native-commands --include-locales=nl,en"/>
                       <arg value="--dest"/><arg value="${project.build.directory}/app-image"/>
+                    </exec>
+
+                    <!-- jpackage/jlink maken bestanden alleen-lezen. Dat kenmerk weghalen, anders faalt
+                         'mvn clean' en komen er alleen-lezen bestanden in de installatie (lastig bij updates). -->
+                    <exec executable="cmd" osfamily="windows" failonerror="true">
+                      <arg value="/c"/>
+                      <arg value="attrib -R &quot;${project.build.directory}\app-image\*&quot; /S /D"/>
                     </exec>
 
                     <!-- Installers van eerdere versies opruimen (die staan bij GitHub Releases) -->

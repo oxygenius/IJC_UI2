@@ -63,7 +63,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "{userdocs}\{#AppName}"; Flags: uninsneveruninstall
 
 [Files]
-Source: "{#AppImage}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+; overwritereadonly: installaties van 2.0.1.8 bevatten nog alleen-lezen bestanden
+Source: "{#AppImage}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs overwritereadonly
 ; Sjablonen alleen neerzetten als ze er nog niet zijn: een aangepast sjabloon wordt niet overschreven
 Source: "{#ProjectDir}\Leeg.docx"; DestDir: "{userdocs}\{#AppName}"; Flags: onlyifdoesntexist uninsneveruninstall skipifsourcedoesntexist
 Source: "{#ProjectDir}\Template.xlsx"; DestDir: "{userdocs}\{#AppName}"; Flags: onlyifdoesntexist uninsneveruninstall skipifsourcedoesntexist

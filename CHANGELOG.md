@@ -9,6 +9,14 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sectie bij een release naar het nieuwe versienummer met de datum.
 
 ### Toegevoegd
+
+### Gewijzigd
+
+### Opgelost
+
+## [2.0.1.9] - 2026-10-09
+
+### Toegevoegd
 - **Windows-installer** `IJC_UI2-setup-<versie>.exe`, met Java ingebouwd: Java hoeft niet meer apart geïnstalleerd te worden.
   - Installeert zonder beheerdersrechten, met een Nederlandstalige wizard en snelkoppelingen in het Startmenu en (optioneel) op het bureaublad.
   - Gegevens komen in `Documenten\IJC_UI2` en blijven bewaard bij een update of verwijdering. Aangepaste sjablonen worden niet overschreven.
@@ -20,8 +28,10 @@ Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sect
 - `LICENSE` met de volledige tekst van de GPL v3.
 
 ### Gewijzigd
+- De installer en `IJC_UI2.exe` zijn niet ondertekend; de README legt uit hoe je de SmartScreen-waarschuwing van Windows wegklikt.
 
 ### Opgelost
+- Build: `mvn clean` faalde na het bouwen van de installer, omdat `jpackage` alleen-lezen bestanden maakt. Dat kenmerk wordt nu direct na `jpackage` verwijderd.
 
 ## [2.0.1.8] - 2026-10-08
 

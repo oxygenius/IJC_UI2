@@ -26,7 +26,7 @@ IJC_UI2 ondersteunt de competitieleider of trainer op de clubavond bij het indel
 
 De installer zet het programma in `%LOCALAPPDATA%\Programs\IJC_UI2`. Je gegevens komen in **`Documenten\IJC_UI2`**; het Startmenu heeft daar een snelkoppeling *Gegevensmap IJC_UI2* naartoe. Voor een nieuwe versie start je gewoon de nieuwe installer: je gegevens blijven staan, ook als je het programma verwijdert.
 
-Ziet Windows een waarschuwing van SmartScreen ("Windows heeft uw pc beschermd")? Kies dan *Meer informatie → Toch uitvoeren*. Zie [Ondertekening](#ondertekening).
+Ziet Windows een waarschuwing van SmartScreen ("Windows heeft uw pc beschermd")? Kies dan *Meer informatie → Toch uitvoeren*. Zie [Windows-waarschuwing](#windows-waarschuwing).
 
 ### Met de zip
 
@@ -75,11 +75,18 @@ Zet het niveau daarna terug op `INFO`. Controleer het logbestand eerst op namen 
 
 Zie [CHANGELOG.md](CHANGELOG.md) voor de wijzigingen per versie.
 
-## Ondertekening
+## Windows-waarschuwing
 
-Ondertekening via SignPath is aangevraagd; tot de aanvraag is goedgekeurd zijn de installer en `IJC_UI2.exe` niet ondertekend. Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org). Zie het [Code signing policy](CODE_SIGNING.md) voor wat er ondertekend wordt, door wie, en het privacybeleid.
+De installer en `IJC_UI2.exe` zijn niet ondertekend met een certificaat. Windows SmartScreen kan daarom bij het starten waarschuwen met "Windows heeft uw pc beschermd". Kies dan *Meer informatie → Toch uitvoeren*. Download het programma alleen via de links hieronder of via [Releases](https://github.com/oxygenius/IJC_UI2/releases) van deze repository.
 
-Ook een ondertekend programma kan de eerste tijd nog een SmartScreen-waarschuwing geven, totdat het genoeg gedownload is.
+## Privacy
+
+Het programma stuurt alleen gegevens via internet als je daar zelf een menuopdracht voor kiest:
+
+- het publiceren van uitslagen en stand op de verenigingswebsite die je instelt onder *Instellingen → ExportAPI*;
+- de beheerfuncties *Test request* en *Delete users API* onder *Overig*, die contact maken met de website van schaakvereniging De Stelling (`www.svdestelling.nl`).
+
+Er is geen telemetrie, geen automatische updatecontrole en geen ander verkeer op de achtergrond. Alle competitiegegevens (spelers, uitslagen, instellingen) blijven op je eigen computer.
 
 ### Links voor de verenigingswebsite
 
@@ -87,7 +94,6 @@ Ook een ondertekend programma kan de eerste tijd nog een SmartScreen-waarschuwin
 |---|---|
 | Directe download van de installer (altijd de nieuwste versie) | https://github.com/oxygenius/IJC_UI2/releases/latest/download/IJC_UI2-setup.exe |
 | Pagina van de nieuwste release (installer, zip en wijzigingen) | https://github.com/oxygenius/IJC_UI2/releases/latest |
-| Code signing policy (verplicht te vermelden bij de download) | https://github.com/oxygenius/IJC_UI2/blob/main/CODE_SIGNING.md |
 
 ## Ontwikkeling
 
@@ -133,9 +139,9 @@ Alle code staat onder `src/main/java/nl/amity/ijc_ui/`.
    git tag -a v<versie> -m "IJC_UI <versie>"
    git push origin main v<versie>
    ```
-5. De workflow [`release.yml`](.github/workflows/release.yml) doet de rest op GitHub: bouwen en testen, de installer laten ondertekenen via SignPath (als dat is ingesteld) en de GitHub-release maken met de installer, de zip en de tekst uit de changelog. Bij SignPath moet je het ondertekenen nog wel goedkeuren.
+5. De workflow [`release.yml`](.github/workflows/release.yml) doet de rest op GitHub: bouwen en testen, en de GitHub-release maken met de installer, de zip en de tekst uit de changelog.
 
-Alleen in een noodgeval maak je de release met de hand. Die is dan niet ondertekend:
+Alleen in een noodgeval maak je de release met de hand:
 ```sh
 python .github/scripts/release_notes.py <versie> > notes.md
 gh release create v<versie> Release/IJC_UI2-setup-<versie>.exe Release/ijc_ui-<versie>.zip --title "IJC_UI <versie>" --notes-file notes.md

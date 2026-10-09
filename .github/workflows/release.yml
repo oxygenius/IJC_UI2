@@ -1,9 +1,5 @@
 # Bouwt een release bij het pushen van een tag v<versie>:
-#   zip (jar) + Windows-installer, optioneel ondertekend via SignPath, en publiceert ze als GitHub-release.
-#
-# Ondertekenen staat aan zodra de repository-variabele SIGNPATH_ORGANIZATION_ID is ingesteld
-# en het secret SIGNPATH_API_TOKEN bestaat (zie CODE_SIGNING.md). Zonder die instellingen wordt
-# de release ongetekend gepubliceerd.
+#   zip (jar) + Windows-installer, en publiceert ze als GitHub-release.
 name: Release
 
 on:
@@ -12,13 +8,10 @@ on:
 
 permissions:
   contents: write
-  actions: read
 
 jobs:
   release:
     runs-on: windows-latest
-    env:
-      SIGNING: ${{ vars.SIGNPATH_ORGANIZATION_ID != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -43,70 +36,9 @@ jobs:
         run: |
           if (-not (Test-Path "C:\Program Files (x86)\Inno Setup 6\ISCC.exe")) { choco install innosetup -y --no-progress }
 
-      # Bouwt Release/ijc_ui-<versie>.zip, target/app-image/IJC_UI2 en Release/IJC_UI2-setup-<versie>.exe (ongetekend)
+      # Bouwt Release/ijc_ui-<versie>.zip, target/app-image/IJC_UI2 en Release/IJC_UI2-setup-<versie>.exe
       - name: Bouwen en testen
         run: mvn -B -Prelease,installer package
-
-      # --- Ondertekenen via SignPath (alleen als het is ingesteld) ---
-      # Stap 1: IJC_UI2.exe in de app-image ondertekenen
-      - name: App-image uploaden voor ondertekening
-        if: env.SIGNING == 'true'
-        id: upload-app
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-image-unsigned
-          path: target/app-image/IJC_UI2
-
-      - name: App-image ondertekenen
-        if: env.SIGNING == 'true'
-        uses: signpath/github-action-submit-signing-request@v1
-        with:
-          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
-          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
-          project-slug: IJC_UI2
-          signing-policy-slug: release-signing
-          artifact-configuration-slug: app-image
-          github-artifact-id: ${{ steps.upload-app.outputs.artifact-id }}
-          wait-for-completion: true
-          output-artifact-directory: target/app-image-signed
-
-      # Stap 2: installer opnieuw bouwen met de ondertekende exe, en de installer zelf ondertekenen
-      - name: Installer bouwen met ondertekende exe
-        if: env.SIGNING == 'true'
-        shell: pwsh
-        run: |
-          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /Q `
-            "/DAppVersion=${{ steps.versie.outputs.versie }}" `
-            "/DAppImage=$PWD\target\app-image-signed" `
-            "/DOutputDir=$PWD\target\installer-unsigned" `
-            "/DProjectDir=$PWD" installer\IJC_UI2.iss
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-      - name: Installer uploaden voor ondertekening
-        if: env.SIGNING == 'true'
-        id: upload-setup
-        uses: actions/upload-artifact@v4
-        with:
-          name: installer-unsigned
-          path: target/installer-unsigned/IJC_UI2-setup-${{ steps.versie.outputs.versie }}.exe
-
-      - name: Installer ondertekenen
-        if: env.SIGNING == 'true'
-        uses: signpath/github-action-submit-signing-request@v1
-        with:
-          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
-          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
-          project-slug: IJC_UI2
-          signing-policy-slug: release-signing
-          artifact-configuration-slug: installer
-          github-artifact-id: ${{ steps.upload-setup.outputs.artifact-id }}
-          wait-for-completion: true
-          output-artifact-directory: target/installer-signed
-
-      - name: Ondertekende installer klaarzetten
-        if: env.SIGNING == 'true'
-        shell: pwsh
-        run: Copy-Item target\installer-signed\*.exe Release\ -Force
 
       # --- Publiceren ---
       - name: GitHub-release maken

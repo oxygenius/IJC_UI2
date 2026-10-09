@@ -15,8 +15,8 @@ Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sect
   - Bouwen met `mvn -Prelease,installer package`.
   - Elke release bevat de installer ook onder de vaste naam `IJC_UI2-setup.exe`, zodat [deze downloadlink](https://github.com/oxygenius/IJC_UI2/releases/latest/download/IJC_UI2-setup.exe) altijd de nieuwste versie geeft.
   - De installer van 2.0.1.8 is achteraf (ongetekend) aan die release toegevoegd.
-- Releases worden automatisch gebouwd en gepubliceerd door GitHub Actions bij het pushen van een tag `v<versie>`, met ondertekening via SignPath zodra die is ingesteld.
-- `CODE_SIGNING.md` met het beleid voor ondertekening en het privacybeleid.
+- Releases worden automatisch gebouwd en gepubliceerd door GitHub Actions bij het pushen van een tag `v<versie>`.
+- Privacyverklaring in de README: welke menuopdrachten gegevens via internet versturen.
 - `LICENSE` met de volledige tekst van de GPL v3.
 
 ### Gewijzigd

@@ -28,6 +28,7 @@ Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sect
 - Uitslagen invoeren: een ongeldige toets (letter, of 3 t/m 6) kon het programma laten vastlopen of wiste stilletjes de uitslag. Alleen 0, 1, 2 en 7, 8, 9 worden nog geaccepteerd, ook in de uitslagkolom van de wedstrijdtabel.
 - Tabbladen: titel en tooltip hoorden niet altijd bij de groep die op het tabblad getoond wordt.
 - Foutmeldingen toonden het pictogram van een mededeling in plaats van een fout.
+- Java 24 en nieuwer gaven bij het starten de waarschuwing *"A restricted method in java.lang.System has been called"*, omdat FlatLaf een native bibliotheek laadt. De jar (`Enable-Native-Access` in het manifest) en de installer (`--enable-native-access=ALL-UNNAMED`) staan dit nu expliciet toe.
 
 ## [2.0.1.9] - 2026-10-09
 

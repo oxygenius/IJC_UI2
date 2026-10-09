@@ -60,6 +60,9 @@
               <transformers>
                 <transformer>
                   <mainClass>nl.amity.ijc_ui.IJC_Wedstrijden</mainClass>
+                  <manifestEntries>
+                    <Enable-Native-Access>ALL-UNNAMED</Enable-Native-Access>
+                  </manifestEntries>
                 </transformer>
               </transformers>
               <filters>
@@ -176,6 +179,8 @@ start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"</echo>
                     </fail>
                     <copy />
                     <exec>
+                      <arg />
+                      <arg />
                       <arg />
                       <arg />
                       <arg />

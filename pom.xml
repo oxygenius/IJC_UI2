@@ -145,6 +145,11 @@
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>nl.amity.ijc_ui.IJC_Wedstrijden</mainClass>
+                  <manifestEntries>
+                    <!-- FlatLaf laadt een native bibliotheek (Windows-titelbalk). Zonder dit geeft
+                         Java 24+ bij 'java -jar' een waarschuwing, en blokkeert het in de toekomst. -->
+                    <Enable-Native-Access>ALL-UNNAMED</Enable-Native-Access>
+                  </manifestEntries>
                 </transformer>
               </transformers>
               <filters>
@@ -315,6 +320,8 @@ start javaw -jar "%~dp0${project.artifactId}-${project.version}.jar"
                       <arg value="--main-class"/><arg value="nl.amity.ijc_ui.IJC_Wedstrijden"/>
                       <arg value="--add-modules"/><arg value="${jpackage.modules}"/>
                       <arg value="--jlink-options"/><arg value="--strip-debug --no-header-files --no-man-pages --strip-native-commands --include-locales=nl,en"/>
+                      <!-- De launcher start niet via -jar en leest het manifest niet; zie Enable-Native-Access hierboven -->
+                      <arg value="--java-options"/><arg value="--enable-native-access=ALL-UNNAMED"/>
                       <arg value="--dest"/><arg value="${project.build.directory}/app-image"/>
                     </exec>
 

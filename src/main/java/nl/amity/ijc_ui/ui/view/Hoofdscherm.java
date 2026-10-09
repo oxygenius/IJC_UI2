@@ -22,8 +22,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -216,42 +214,22 @@ public class Hoofdscherm extends JFrame {
 
 		// Button voor automatisch doorvoeren wijzigingen ja/nee
 		automatischButton = new JButton("Auto");
-		automatischButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				actieAutomatisch();
-			}
-		});
+		automatischButton.addActionListener(e -> actieAutomatisch());
 		buttonPane.add(automatischButton);
 
 		// Button voor bepalen wedstrijdgroepen
 		wedstrijdgroepButton = new JButton("1a. Maak wedstrijdgroep");
-		wedstrijdgroepButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actieMaakWedstrijdgroep();
-			}
-		});
+		wedstrijdgroepButton.addActionListener(e -> actieMaakWedstrijdgroep());
 		buttonPane.add(wedstrijdgroepButton);
 
 		// Button voor maken speelschema
 		speelschemaButton = new JButton("1b. Maak speelschema");
-		speelschemaButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent evetn) {
-				actieMaakSpeelschema();
-			}
-		});
+		speelschemaButton.addActionListener(e -> actieMaakSpeelschema());
 		buttonPane.add(speelschemaButton);
 
 		// Button voor bewerken speelschema
 		bewerkspeelschemaButton = new JButton("1c. Bewerk speelschema");
-		bewerkspeelschemaButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				actieBewerkSchema();
-			}
-		});
+		bewerkspeelschemaButton.addActionListener(e -> actieBewerkSchema());
 		buttonPane.add(bewerkspeelschemaButton);
 
 		buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
@@ -259,12 +237,7 @@ public class Hoofdscherm extends JFrame {
 		buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
 
 		exportButton = new JButton("2. Export");
-		exportButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				actieExport();
-			}
-		});
+		exportButton.addActionListener(e -> actieExport());
 		buttonPane.add(exportButton);
 
 		buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
@@ -272,21 +245,11 @@ public class Hoofdscherm extends JFrame {
 		buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
 
 		uitslagButton = new JButton("3a. Uitslagen");
-		uitslagButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				actieVoerUitslagenIn();
-			}
-		});
+		uitslagButton.addActionListener(e -> actieVoerUitslagenIn());
 		buttonPane.add(uitslagButton);
 
 		externenButton = new JButton("3b. Extern");
-		externenButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actieExterneSpelers();
-			}
-		});
+		externenButton.addActionListener(e -> actieExterneSpelers());
 		buttonPane.add(externenButton);
 
 		buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
@@ -294,12 +257,7 @@ public class Hoofdscherm extends JFrame {
 		buttonPane.add(new JSeparator(SwingConstants.VERTICAL));
 
 		updatestandButton = new JButton("4. Update stand");
-		updatestandButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actieUpdateStand();
-			}
-		});
+		updatestandButton.addActionListener(e -> actieUpdateStand());
 		buttonPane.add(updatestandButton);
 
 		updateUpdateStandButton();
@@ -428,56 +386,40 @@ public class Hoofdscherm extends JFrame {
 		JMenuItem item = new JMenuItem("Openen...");
 		item.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		Hoofdscherm hs = this;
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// Create a file chooser
-				final JFileChooser fc = new JFileChooser();
-				fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				// In response to a button click:
-				int returnVal = fc.showOpenDialog(hs);
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					File file = fc.getSelectedFile();
-					logger.log(Level.INFO, "Opening: " + file.getAbsolutePath() + ".");
-					controller.leesBestand(file.getAbsolutePath());
-					//updateAutomatisch(true);
-					//controller.maakGroepsindeling();
-					updateRondeLabel();
-					updateUpdateStandButton();
-					updateAutomatisch(controller.isAutomatisch());
-					hs.repaint();
-				}
+		item.addActionListener(e -> {
+			// Create a file chooser
+			final JFileChooser fc = new JFileChooser();
+			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+			// In response to a button click:
+			int returnVal = fc.showOpenDialog(hs);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				File file = fc.getSelectedFile();
+				logger.log(Level.INFO, "Opening: " + file.getAbsolutePath() + ".");
+				controller.leesBestand(file.getAbsolutePath());
+				//updateAutomatisch(true);
+				//controller.maakGroepsindeling();
+				updateRondeLabel();
+				updateUpdateStandButton();
+				updateAutomatisch(controller.isAutomatisch());
+				hs.repaint();
 			}
 		});
 		filemenu.add(item);
 		item = new JMenuItem("Opslaan");
 		item.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveState(true, "save");
-			}
-		});
+		item.addActionListener(e -> controller.saveState(true, "save"));
 		filemenu.add(item);
 		filemenu.addSeparator();
 		item = new JMenuItem("Instellingen...");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actieInstellingen();
-			}
-		});
+		item.addActionListener(e -> actieInstellingen());
 		item.setAccelerator(KeyStroke.getKeyStroke('I', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		filemenu.add(item);
 		filemenu.addSeparator();
 		item = new JMenuItem("Afsluiten");
 		item.setAccelerator(KeyStroke.getKeyStroke('Q', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveState(false, null);
-				System.exit(EXIT_ON_CLOSE);
-			}
+		item.addActionListener(e -> {
+			controller.saveState(false, null);
+			System.exit(EXIT_ON_CLOSE);
 		});
 		filemenu.add(item);
 		menubar.add(filemenu);
@@ -486,52 +428,38 @@ public class Hoofdscherm extends JFrame {
 
 		item = new JMenuItem("Nieuwe speler");
 		item.setAccelerator(KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actieNieuweSpeler(null, null);
-				hoofdPanel.repaint();
-			}
+		item.addActionListener(e -> {
+			actieNieuweSpeler(null, null);
+			hoofdPanel.repaint();
 		});
 		spelermenu.add(item);
 		menubar.add(spelermenu);
 
 		item = new JMenuItem("Importeer spelers");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// Create a file chooser
-				final JFileChooser fc = new JFileChooser();
-				fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				// In response to a button click:
-				if (fc.showOpenDialog(hs) == JFileChooser.APPROVE_OPTION) {
-					File file = fc.getSelectedFile();
-					logger.log(Level.INFO, "Opening: " + file.getAbsolutePath() + ".");
-					controller.importeerSpelers(file.getAbsolutePath());
-					hs.repaint();
-				}
+		item.addActionListener(e -> {
+			// Create a file chooser
+			final JFileChooser fc = new JFileChooser();
+			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+			// In response to a button click:
+			if (fc.showOpenDialog(hs) == JFileChooser.APPROVE_OPTION) {
+				File file = fc.getSelectedFile();
+				logger.log(Level.INFO, "Opening: " + file.getAbsolutePath() + ".");
+				controller.importeerSpelers(file.getAbsolutePath());
+				hs.repaint();
 			}
 		});
 		spelermenu.add(item);
 
 		item = new JMenuItem("Speler geschiedenis");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				new SpelersScherm().setVisible(true);
-			}
-		});
+		item.addActionListener(e -> new SpelersScherm().setVisible(true));
 		spelermenu.add(item);
 
 		spelermenu.addSeparator();
 		item = new JMenuItem("Wis Zwart/Wit voorkeur");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (Bevesting.bevestig(hs, "Weet u zeker dat de zwart/wit-voorkeur van alle spelers gewist moet worden?")) {
-					controller.wisZwartWitVoorkeur();
-					hoofdPanel.repaint();
-				}
+		item.addActionListener(e -> {
+			if (Bevesting.bevestig(hs, "Weet u zeker dat de zwart/wit-voorkeur van alle spelers gewist moet worden?")) {
+				controller.wisZwartWitVoorkeur();
+				hoofdPanel.repaint();
 			}
 		});
 		spelermenu.add(item);
@@ -540,143 +468,87 @@ public class Hoofdscherm extends JFrame {
 
 		JMenu indelingMenu = new JMenu("Indeling");
 		item = new JMenuItem("Automatisch aan/uit");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				actieAutomatisch();
-			}
-		});
-
+		item.addActionListener(e -> actieAutomatisch());
 		indelingMenu.add(item);
 		item = new JMenuItem("Maak wedstrijdgroep");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actieMaakWedstrijdgroep();
-			}
-		});
+		item.addActionListener(e -> actieMaakWedstrijdgroep());
 
 		indelingMenu.add(item);
 		item = new JMenuItem("Maak speelschema");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent evetn) {
-				actieMaakSpeelschema();
-			}
-		});
+		item.addActionListener(e -> actieMaakSpeelschema());
 		indelingMenu.add(item);
 		item = new JMenuItem("Bewerk speelschema");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				updateAutomatisch(false);
-				// ResultaatDialoog
-				actieBewerkSchema();
-			}
+		item.addActionListener(e -> {
+			updateAutomatisch(false);
+			// ResultaatDialoog
+			actieBewerkSchema();
 		});
 
 		indelingMenu.add(item);
 		indelingMenu.addSeparator();
 		item = new JMenuItem("Export");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				actieExport();
-			}
-		});
+		item.addActionListener(e -> actieExport());
 		indelingMenu.add(item);
 		indelingMenu.addSeparator();
 		item = new JMenuItem("Vul uitslagen in");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actieVoerUitslagenIn();
-			}
-		});
+		item.addActionListener(e -> actieVoerUitslagenIn());
 		indelingMenu.add(item);
 		item = new JMenuItem("Externe spelers");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actieExterneSpelers();
-			}
-		});
+		item.addActionListener(e -> actieExterneSpelers());
 		indelingMenu.add(item);
 		item = new JMenuItem("Maak nieuwe stand");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actieUpdateStand();
-			}
-		});
+		item.addActionListener(e -> actieUpdateStand());
 		indelingMenu.add(item);
 		indelingMenu.addSeparator();
 		item = new JMenuItem("Volgende ronde");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actieVolgendeRonde();
-			}
-		});
+		item.addActionListener(e -> actieVolgendeRonde());
 		indelingMenu.add(item);
 		menubar.add(indelingMenu);
 
 		JMenu overigmenu = new JMenu("Overig");
 
 		item = new JMenuItem("Reset punten");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (Bevesting.bevestig(hs, "Weet u zeker dat de punten van alle spelers op de startwaarde gezet moeten worden?\nDit kan niet ongedaan gemaakt worden.")) {
-					controller.resetPunten();
-					hoofdPanel.repaint();
-				}
+		item.addActionListener(e -> {
+			if (Bevesting.bevestig(hs, "Weet u zeker dat de punten van alle spelers op de startwaarde gezet moeten worden?\nDit kan niet ongedaan gemaakt worden.")) {
+				controller.resetPunten();
+				hoofdPanel.repaint();
 			}
 		});
 		overigmenu.add(item);
 
 		item = new JMenuItem("Reset KEI punten");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (Bevesting.bevestig(hs, "Weet u zeker dat de KEI-punten van alle spelers op nul gezet moeten worden?\nDit kan niet ongedaan gemaakt worden.")) {
-					controller.resetKEIPunten();
-					hoofdPanel.repaint();
-				}
+		item.addActionListener(e -> {
+			if (Bevesting.bevestig(hs, "Weet u zeker dat de KEI-punten van alle spelers op nul gezet moeten worden?\nDit kan niet ongedaan gemaakt worden.")) {
+				controller.resetKEIPunten();
+				hoofdPanel.repaint();
 			}
 		});
 		overigmenu.add(item);
 
 		item = new JMenuItem("Exporteer actieve API's");
-		item.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (APIConfig config : IJCController.c().externalAPIConfigs.apiconfigs){
-					// Edit template tekst
-///					String txtLes = config.getTemplate();
-///					logger.log(Level.INFO, "Template = " + txtLes);
-//					Window parentWindow = SwingUtilities.getWindowAncestor(this.getClass());
-///					LesTekstDialoog lt  = new LesTekstDialoog("Edit template voor Lestekst");
-///					lt.setLesTekst(txtLes);
-///					lt.setVisible(true);
-///					txtLes = lt.getLesTekst();
-///					logger.log(Level.INFO, "Aangepaste txtLes : " + txtLes);				
-				}				
-				controller.exporteerNaarExternalAPI();
-				hoofdPanel.repaint();
-			}
+		item.addActionListener(e -> {
+			for (APIConfig config : IJCController.c().externalAPIConfigs.apiconfigs){
+				// Edit template tekst
+///				String txtLes = config.getTemplate();
+///				logger.log(Level.INFO, "Template = " + txtLes);
+//				Window parentWindow = SwingUtilities.getWindowAncestor(this.getClass());
+///				LesTekstDialoog lt  = new LesTekstDialoog("Edit template voor Lestekst");
+///				lt.setLesTekst(txtLes);
+///				lt.setVisible(true);
+///				txtLes = lt.getLesTekst();
+///				logger.log(Level.INFO, "Aangepaste txtLes : " + txtLes);				
+			}				
+			controller.exporteerNaarExternalAPI();
+			hoofdPanel.repaint();
 		});
 		overigmenu.add(item);
 
 		// Ontwikkelaarsfunctie: alleen zichtbaar als het logniveau op FINE of gedetailleerder staat
 		// (Instellingen > Debug). "Admin - Delete users API" is verwijderd: de functie was uitgeschakeld.
 		final JMenuItem testRequestItem = new JMenuItem("Test request");
-		testRequestItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.getRequest();
-				hoofdPanel.repaint();
-			}
+		testRequestItem.addActionListener(e -> {
+			controller.getRequest();
+			hoofdPanel.repaint();
 		});
 		overigmenu.add(testRequestItem);
 		overigmenu.addMenuListener(new MenuListener() {
@@ -933,80 +805,56 @@ public class Hoofdscherm extends JFrame {
 				if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
 					JPopupMenu popup = new JPopupMenu();
 					JMenuItem menuItem = new JMenuItem("Bewerk speler");
-					menuItem.addActionListener(new ActionListener() {
+					menuItem.addActionListener(evt -> {
+						BewerkSpelerDialoog rd = new BewerkSpelerDialoog(new JFrame(), "Bewerk Speler", s, true,
+								s.getId());
+						rd.addWindowListener(new WindowAdapter() {
+							@Override
+							public void windowClosed(WindowEvent e) {
+								hoofdPanel.repaint();
+								// do something...
+							}
 
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							BewerkSpelerDialoog rd = new BewerkSpelerDialoog(new JFrame(), "Bewerk Speler", s, true,
-									s.getId());
-							rd.addWindowListener(new WindowAdapter() {
-								@Override
-								public void windowClosed(WindowEvent e) {
-									hoofdPanel.repaint();
-									// do something...
-								}
-
-							});
-							rd.setVisible(true);
-						}
-
+						});
+						rd.setVisible(true);
 					});
 					popup.add(menuItem);
 
 					menuItem = new JMenuItem("Voeg speler toe, na ...");
-					menuItem.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							actieNieuweSpeler(s, s2);
-						}
-
-					});
+					menuItem.addActionListener(evt -> actieNieuweSpeler(s, s2));
 					popup.add(menuItem);
 
 					menuItem = new JMenuItem("Verwijder Speler");
 					popup.add(menuItem);
-					menuItem.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							// JDialog.setDefaultLookAndFeelDecorated(true);
-							String tekst = "Weet u zeker dat \"" + s.getNaam() + "\" verwijderd moet worden?";
-							String[] options = { "Ja", "Nee" };
-							int response = JOptionPane.showOptionDialog(null, tekst, "Bevestig", 0,
-									JOptionPane.WARNING_MESSAGE, null, options, null);
-							if (response == JOptionPane.YES_OPTION) {
-								controller.verwijderSpeler(groepID, s, s.getId() - 1);
-							}
-							hoofdPanel.repaint();
+					menuItem.addActionListener(evt -> {
+						// JDialog.setDefaultLookAndFeelDecorated(true);
+						String tekst = "Weet u zeker dat \"" + s.getNaam() + "\" verwijderd moet worden?";
+						String[] options = { "Ja", "Nee" };
+						int response = JOptionPane.showOptionDialog(null, tekst, "Bevestig", 0,
+								JOptionPane.WARNING_MESSAGE, null, options, null);
+						if (response == JOptionPane.YES_OPTION) {
+							controller.verwijderSpeler(groepID, s, s.getId() - 1);
 						}
+						hoofdPanel.repaint();
 					});
 
 					popup.addSeparator();
 					menuItem = new JMenuItem("Doorschuiven Speler");
 					popup.add(menuItem);
-					menuItem.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							if (Bevesting.bevestig(hoofdPanel, "Weet u zeker dat \"" + s.getNaam() + "\" doorgeschoven moet worden naar een hogere groep?")) {
-								controller.doorschuiven(groepID, s.getId()-1);
-							}
-							hoofdPanel.repaint();
+					menuItem.addActionListener(evt -> {
+						if (Bevesting.bevestig(hoofdPanel, "Weet u zeker dat \"" + s.getNaam() + "\" doorgeschoven moet worden naar een hogere groep?")) {
+							controller.doorschuiven(groepID, s.getId()-1);
 						}
+						hoofdPanel.repaint();
 					});
 
 					menuItem = new JMenuItem("Terugschuiven Speler");
 					popup.add(menuItem);
-					menuItem.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							if (Bevesting.bevestig(hoofdPanel, "Weet u zeker dat \"" + s.getNaam() + "\" teruggeschoven moet worden naar een lagere groep?")) {
-								controller.terugschuiven(groepID, s.getId()-1);
-							}
-							hoofdPanel.repaint();
+					menuItem.addActionListener(evt -> {
+						if (Bevesting.bevestig(hoofdPanel, "Weet u zeker dat \"" + s.getNaam() + "\" teruggeschoven moet worden naar een lagere groep?")) {
+							controller.terugschuiven(groepID, s.getId()-1);
 						}
+						hoofdPanel.repaint();
 					});
 
 					popup.show(e.getComponent(), e.getX(), e.getY());
@@ -1074,46 +922,34 @@ public class Hoofdscherm extends JFrame {
 					JPopupMenu popup = new JPopupMenu();
 					JMenuItem menuItem = new JMenuItem("Verwijder Speler");
 					popup.add(menuItem);
-					menuItem.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							// JDialog.setDefaultLookAndFeelDecorated(true);
-							String tekst = "Weet u zeker dat \"" + s.getNaam() + "\" verwijderd moet worden?";
-							String[] options = { "Ja", "Nee" };
-							int response = JOptionPane.showOptionDialog(null, tekst, "Bevestig", 0,
-									JOptionPane.WARNING_MESSAGE, null, options, null);
-							if (response == JOptionPane.YES_OPTION) {
-								controller.verwijderWedstrijdSpeler(groepID, s, s.getId() - 1);
-							}
-							updateZWbalansvoor(index);
-							updateZWbalansna(index);
-							hoofdPanel.repaint();
+					menuItem.addActionListener(evt -> {
+						// JDialog.setDefaultLookAndFeelDecorated(true);
+						String tekst = "Weet u zeker dat \"" + s.getNaam() + "\" verwijderd moet worden?";
+						String[] options = { "Ja", "Nee" };
+						int response = JOptionPane.showOptionDialog(null, tekst, "Bevestig", 0,
+								JOptionPane.WARNING_MESSAGE, null, options, null);
+						if (response == JOptionPane.YES_OPTION) {
+							controller.verwijderWedstrijdSpeler(groepID, s, s.getId() - 1);
 						}
+						updateZWbalansvoor(index);
+						updateZWbalansna(index);
+						hoofdPanel.repaint();
 					});
 					menuItem = new JMenuItem("Speler naar hogere groep");
 					popup.add(menuItem);
-					menuItem.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							controller.spelerNaarHogereGroep(groepID, s, s.getId() - 1);
-							updateZWbalansvoor(index);
-							updateZWbalansna(index);
-							hoofdPanel.repaint();
-						}
+					menuItem.addActionListener(evt -> {
+						controller.spelerNaarHogereGroep(groepID, s, s.getId() - 1);
+						updateZWbalansvoor(index);
+						updateZWbalansna(index);
+						hoofdPanel.repaint();
 					});
 					menuItem = new JMenuItem("Speler naar lagere groep");
 					popup.add(menuItem);
-					menuItem.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							controller.spelerNaarLagereGroep(groepID, s, s.getId() - 1);
-							updateZWbalansvoor(index);
-							updateZWbalansna(index);
-							hoofdPanel.repaint();
-						}
+					menuItem.addActionListener(evt -> {
+						controller.spelerNaarLagereGroep(groepID, s, s.getId() - 1);
+						updateZWbalansvoor(index);
+						updateZWbalansna(index);
+						hoofdPanel.repaint();
 					});
 					popup.show(e.getComponent(), e.getX(), e.getY());
 				}

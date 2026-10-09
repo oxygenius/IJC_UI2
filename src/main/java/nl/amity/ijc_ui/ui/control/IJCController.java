@@ -342,7 +342,8 @@ public class IJCController {
 //			for (Groep g : s_groepen.getGroepen(Groepen.Sortering.NIVEAU_ASC))
 			for (Groep g : s_groepen.getGroepen())
 				g.setNaam(c.groepsnamen[g.getNiveau()]);
-			for (int i=s_groepen.getAantalGroepen(); i<=c_groepenaantal;i++) {
+			// Niveaus lopen van 0 t/m c_groepenaantal-1 (was <=: maakte één groep te veel aan)
+			for (int i=s_groepen.getAantalGroepen(); i<c_groepenaantal;i++) {
 				s_groepen.addGroep(new Groep(i));						
 			}
 		}

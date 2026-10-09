@@ -57,7 +57,8 @@ public class BewerkSpelerDialoog extends JDialog {
         setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().add(createPanel());
-        setSize(300, 15 * 23);
+        pack();
+        setSize(Math.max(getWidth(), 320), getHeight());
         setLocationRelativeTo(frame);
     }
 
@@ -137,30 +138,33 @@ public class BewerkSpelerDialoog extends JDialog {
 
             @Override
             public void actionPerformed(ActionEvent event) {
-                // Do actions
+                // Eerst alle getallen controleren, zodat de speler niet half bijgewerkt wordt
+                if (tfNaam.getText().trim().isEmpty()) {
+                    FoutMelding.info(BewerkSpelerDialoog.this, "Vul een naam in.");
+                    tfNaam.requestFocusInWindow();
+                    return;
+                }
+                Integer rating = leesGetal(tfRating, "Rating");
+                Integer punten = rating == null ? null : leesGetal(tfPunten, "Punten");
+                Integer wit = punten == null ? null : leesGetal(tfWit, "Witvoorkeur");
+                Integer keipunten = wit == null ? null : leesGetal(tfKeiPunten, "KEI Punten");
+                Integer keikansen = keipunten == null ? null : leesGetal(tfKeiKansen, "KEI Kansen");
+                Integer knsb = keikansen == null ? null : leesGetal(tfKNSB, "KNSB Nummer");
+                if (knsb == null) {
+                    return;
+                }
                 // Naam
-                speler.setNaam(tfNaam.getText());
+                speler.setNaam(tfNaam.getText().trim());
                 // Initialen
                 if (speler.getInitialen().length() == 0) {
                 	speler.setInitialen();
                 }
                  // OUD: speler.setInitialen(tfInit.getText());
-                // Rating
-                int rating = Integer.parseInt(tfRating.getText());
                 speler.setRating(rating);
-                // Punten
-                int punten = Integer.parseInt(tfPunten.getText());
                 speler.setPunten(punten);
-                // Wit voorkeur
-                speler.setWitvoorkeur(Integer.parseInt(tfWit.getText()));
-                // KEI Punten
-                int keipunten = Integer.parseInt(tfKeiPunten.getText());
+                speler.setWitvoorkeur(wit);
                 speler.setKeipunten(keipunten);
-                // Kei kansen
-                int keikansen = Integer.parseInt(tfKeiKansen.getText());
                 speler.setKeikansen(keikansen);
-                // KNSB
-                int knsb = Integer.parseInt(tfKNSB.getText());
                 speler.setKNSBnummer(knsb);
                 // Tegenstanders
                 String[] tgn = new String[4];
@@ -169,7 +173,13 @@ public class BewerkSpelerDialoog extends JDialog {
                 tgn[2] = tfTegenstander3.getText();
                 tgn[3] = tfTegenstander4.getText();
                 speler.setTegenstanders(tgn);
+                // Tegenstanders historie (alleen bij wijziging, zodat 'geen historie' (null) niet "" wordt)
+                String oudeGeschiedenis = speler.getSpeelgeschiedenis() == null ? "" : speler.getSpeelgeschiedenis();
+                if (!tfGeschiedenis.getText().equals(oudeGeschiedenis)) {
+                    speler.setSpeelgeschiedenis(tfGeschiedenis.getText());
+                }
                 // Afwezigheidspunt
+                speler.setAfwezigheidspunt(cbAfwezigPunt.isSelected());
                 setVisible(false);
                 // Als nieuwe speler, dan invoegen.
                 if (!bestaandeSpeler) {
@@ -178,7 +188,7 @@ public class BewerkSpelerDialoog extends JDialog {
                 dispose();
             }
         });
-        JButton cancelButton = new JButton("Cancel");
+        JButton cancelButton = new JButton("Annuleren");
         cancelButton.addActionListener(new ActionListener() {
 
             @Override
@@ -190,6 +200,24 @@ public class BewerkSpelerDialoog extends JDialog {
         );
         panel.add(okButton);
         panel.add(cancelButton);
+        getRootPane().setDefaultButton(okButton);
         return panel;
+    }
+
+    /**
+     * Lees een geheel getal uit een invoerveld. Bij ongeldige invoer verschijnt een melding
+     * en krijgt het veld de focus.
+     *
+     * @return het getal, of null als de invoer ongeldig is
+     */
+    private Integer leesGetal(JTextField veld, String naam) {
+        try {
+            return Integer.valueOf(veld.getText().trim());
+        } catch (NumberFormatException e) {
+            FoutMelding.info(this, "\"" + veld.getText() + "\" is geen geldig getal voor " + naam + ".");
+            veld.requestFocusInWindow();
+            veld.selectAll();
+            return null;
+        }
     }
 }

@@ -9,10 +9,23 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sectie bij een release naar het nieuwe versienummer met de datum.
 
 ### Toegevoegd
+- Bevestiging gevraagd bij acties die niet ongedaan gemaakt kunnen worden: *Volgende ronde*, *Reset punten*, *Reset KEI punten*, *Wis Zwart/Wit voorkeur*, *Doorschuiven* en *Terugschuiven* van een speler, *Wis alles* in het speelschema en het verwijderen van een API-koppeling. "Nee" is steeds de standaardknop.
+- *Volgende ronde* meldt nu wat er moet gebeuren als de uitslagen nog niet verwerkt zijn, in plaats van niets te doen.
 
 ### Gewijzigd
+- Modern uiterlijk met [FlatLaf](https://www.formdev.com/flatlaf/) 3.7.2, inclusief betere weergave op schermen met vergroting.
+- Rustiger tabellen: lichtere streepkleur, en de kolommen *Punten*, *Afk* en *Uitslag* zijn breed genoeg voor hun inhoud.
+- *Test request* in het menu *Overig* is alleen zichtbaar als het logniveau op FINE of gedetailleerder staat (Instellingen → Debug). *!!! Admin - Delete users API* is verwijderd; die functie deed niets.
+- Foutmeldingen tonen een begrijpelijke tekst met een foutpictogram; de technische details staan in `IJC_UI.log` in plaats van een Java-stacktrace in beeld.
+- *Bewerk speler*: de dialoog past zijn grootte aan de inhoud aan, heeft de titel "Nieuwe speler" bij het toevoegen, en de knop heet *Annuleren*. Enter bevestigt.
 
 ### Opgelost
+- Het programma crashte bij het opstarten (zonder melding) als de configuratie precies zoveel groepsnamen had als groepen en de status minder groepen had: er werd één groep te veel aangemaakt.
+- *Bewerk speler*: een letter in een getalveld (rating, punten, witvoorkeur, KEI, KNSB) liet het programma vastlopen. Nu verschijnt een melding en blijft de dialoog open.
+- *Bewerk speler*: wijzigingen in *Tegenstanders historie* en *Afwezigheidspunt* werden niet opgeslagen.
+- Uitslagen invoeren: een ongeldige toets (letter, of 3 t/m 6) kon het programma laten vastlopen of wiste stilletjes de uitslag. Alleen 0, 1, 2 en 7, 8, 9 worden nog geaccepteerd, ook in de uitslagkolom van de wedstrijdtabel.
+- Tabbladen: titel en tooltip hoorden niet altijd bij de groep die op het tabblad getoond wordt.
+- Foutmeldingen toonden het pictogram van een mededeling in plaats van een fout.
 
 ## [2.0.1.9] - 2026-10-09
 

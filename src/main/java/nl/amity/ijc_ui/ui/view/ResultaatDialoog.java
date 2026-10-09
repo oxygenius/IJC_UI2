@@ -79,12 +79,15 @@ class ResultaatDialoog extends JDialog {
                 @Override
                 public void keyTyped(KeyEvent e) {
                     JTextField jtf = (JTextField) e.getComponent();
-                    if (e.getKeyChar() >= '0' && e.getKeyChar() <= '9') {
+                    char c = e.getKeyChar();
+                    if (c >= '0' && c <= '9' && Wedstrijd.isGeldigeUitslagcode(c - '0')) {
                         jtf.setText("");
                         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
                         manager.focusNextComponent();
                     } else {
+                        // Ongeldige toets (bijv. letter of 3-6): veld leegmaken en de toets niet invoegen
                         jtf.setText("");
+                        e.consume();
                     }
                 }
             }
@@ -104,9 +107,18 @@ class ResultaatDialoog extends JDialog {
                 ArrayList<Wedstrijd> wedstrijden = controller.getWedstrijden().getGroepswedstrijdenNiveau(groep).getWedstrijden();
                 int i = 0;
                 for (JTextField jtf : uitslagVelden) {
-                    if (jtf != null && jtf.getText() != null && !jtf.getText().equals("")) {
-                        logger.log(Level.FINER, "Veld " + i + " Waarde " + Integer.parseInt(jtf.getText()));
-                        wedstrijden.get(i).setUitslag012(Integer.parseInt(jtf.getText()));
+                    if (jtf != null && jtf.getText() != null && !jtf.getText().trim().equals("")) {
+                        try {
+                            int code = Integer.parseInt(jtf.getText().trim());
+                            if (Wedstrijd.isGeldigeUitslagcode(code)) {
+                                logger.log(Level.FINER, "Veld " + i + " Waarde " + code);
+                                wedstrijden.get(i).setUitslag012(code);
+                            } else {
+                                logger.log(Level.WARNING, "Ongeldige uitslagcode " + code + " in veld " + i + " genegeerd");
+                            }
+                        } catch (NumberFormatException ex) {
+                            logger.log(Level.WARNING, "Ongeldige uitslag '" + jtf.getText() + "' in veld " + i + " genegeerd");
+                        }
                     }
                     ++i;
                 }

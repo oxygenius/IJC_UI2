@@ -16,6 +16,13 @@ package nl.amity.ijc_ui;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import java.awt.Insets;
+
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import com.formdev.flatlaf.FlatLightLaf;
+
 import nl.amity.ijc_ui.ui.control.IJCController;
 import nl.amity.ijc_ui.ui.view.Hoofdscherm;
 import nl.amity.ijc_ui.util.LoggingConfig;
@@ -51,7 +58,17 @@ public class IJC_Wedstrijden {
         IJCController.getInstance().start();
 
         logger.log(Level.INFO, "Opstarten user interface");
-        new Hoofdscherm().setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            if (FlatLightLaf.setup()) {
+                // Veel schermen hebben vaste afmetingen in pixels; met minder verticale ruimte
+                // in invoervelden blijven de letters (g, p, j) daarin volledig zichtbaar.
+                UIManager.put("TextComponent.margin", new Insets(0, 4, 0, 4));
+                UIManager.put("TextField.margin", new Insets(0, 4, 0, 4));
+            } else {
+                logger.log(Level.WARNING, "FlatLaf kon niet worden ingesteld; standaard uiterlijk wordt gebruikt.");
+            }
+            new Hoofdscherm().setVisible(true);
+        });
 
     }
 

@@ -24,6 +24,7 @@ import nl.amity.ijc_ui.data.wedstrijden.Groepswedstrijden;
 import nl.amity.ijc_ui.data.wedstrijden.Wedstrijd;
 import nl.amity.ijc_ui.data.wedstrijden.Wedstrijden;
 import nl.amity.ijc_ui.ui.control.IJCController;
+import nl.amity.ijc_ui.ui.view.FoutMelding;
 
 /**
  *
@@ -158,7 +159,22 @@ public class WedstrijdModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object value, int row, int col) {
         Wedstrijd ws = controller.getWedstrijden().getGroepswedstrijdenNiveau(groepID).getWedstrijden().get(row);
-        ws.setUitslag012(Integer.valueOf((String)value));
+        String invoer = value == null ? "" : value.toString().trim();
+        if (invoer.isEmpty()) {
+            return;
+        }
+        int code;
+        try {
+            code = Integer.parseInt(invoer);
+        } catch (NumberFormatException e) {
+            code = -1;
+        }
+        if (!Wedstrijd.isGeldigeUitslagcode(code)) {
+            FoutMelding.info(component, "\"" + invoer + "\" is geen geldige uitslag.\n"
+                    + "Gebruik 1 = wit wint, 0 = zwart wint, 2 = remise, of 7/8/9 voor een reglementaire uitslag.");
+            return;
+        }
+        ws.setUitslag012(code);
         fireTableCellUpdated(row, col);
         component.repaint();
     }

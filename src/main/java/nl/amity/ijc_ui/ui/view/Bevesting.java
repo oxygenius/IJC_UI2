@@ -15,10 +15,27 @@
 
 package nl.amity.ijc_ui.ui.view;
 
+import java.awt.Component;
+
 //import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class Bevesting {
+
+	/**
+	 * Vraag bevestiging voor een actie die niet ongedaan gemaakt kan worden.
+	 * De knoppen zijn "Ja" en "Nee"; "Nee" is de standaardknop, zodat Enter niets kapotmaakt.
+	 *
+	 * @param parent  venster waarboven de vraag verschijnt (mag null zijn)
+	 * @param vraag   de vraag, bijvoorbeeld "Weet u zeker dat ...?"
+	 * @return true als de gebruiker "Ja" kiest
+	 */
+	public static boolean bevestig(Component parent, String vraag) {
+		String[] opties = { "Ja", "Nee" };
+		int keuze = JOptionPane.showOptionDialog(parent, vraag, "Bevestiging", JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE, null, opties, opties[1]);
+		return keuze == 0;
+	}
 
 	public static int YesNoCancel(String infoMessage) {
 		// ImageIcon icon = new ImageIcon("Bevestiging.png");

@@ -14,20 +14,47 @@
  */
 package nl.amity.ijc_ui.ui.view;
 
+import java.awt.Component;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 
 /**
- * Genereer popup met foutmelding. Deze moet geaccepteerd worden voordat
+ * Genereer popup met foutmelding of mededeling. Deze moet geaccepteerd worden voordat
  * de applicatie verder kan.
  * Gebruik:
  *         FoutMelding.melding("Melding");
+ *         FoutMelding.fout(this, "Volgende ronde is mislukt.", ex);
+ *         FoutMelding.info(this, "Verwerk eerst de uitslagen.");
  * @author Lars.Dam
  *
  */
 public class FoutMelding {
 
+	private final static Logger logger = Logger.getLogger(FoutMelding.class.getName());
+
 	public static void melding(String infoMessage)
     {
-        JOptionPane.showMessageDialog(null, infoMessage, "Foutmelding", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, infoMessage, "Foutmelding", JOptionPane.ERROR_MESSAGE);
     }
+
+	/**
+	 * Toon een begrijpelijke foutmelding. De technische details (stacktrace) gaan naar het logbestand.
+	 */
+	public static void fout(Component parent, String tekst, Throwable oorzaak) {
+		logger.log(Level.WARNING, tekst, oorzaak);
+		String bericht = tekst;
+		if (oorzaak != null) {
+			bericht += "\n\nDetails staan in het logbestand IJC_UI.log.";
+		}
+		JOptionPane.showMessageDialog(parent, bericht, "Foutmelding", JOptionPane.ERROR_MESSAGE);
+	}
+
+	/**
+	 * Toon een mededeling, bijvoorbeeld waarom een actie nu niet kan.
+	 */
+	public static void info(Component parent, String tekst) {
+		JOptionPane.showMessageDialog(parent, tekst, "Mededeling", JOptionPane.INFORMATION_MESSAGE);
+	}
 }

@@ -18,6 +18,7 @@ package nl.amity.ijc_ui.ui.util;
 
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.BufferedReader;
@@ -44,6 +45,9 @@ import javax.swing.table.TableColumn;
 public class Utils {
 
 	private final static Logger logger = Logger.getLogger(Utils.class.getName());
+
+	/** Achtergrondkleur van de oneven rijen in tabellen (licht, past bij het FlatLaf-thema). */
+	public static final Color RIJKLEUR_ONEVEN = new Color(236, 239, 243);
 
 	public static void fixedComponentSize(Component c, int width, int height) {
 		c.setMinimumSize(new Dimension(width, height));

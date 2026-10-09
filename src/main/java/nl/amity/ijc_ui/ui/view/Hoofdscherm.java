@@ -55,6 +55,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -172,11 +174,14 @@ public class Hoofdscherm extends JFrame {
 		 */
 		int i =0;
 //		Groepen groepen = controller.sorteeropNiveau();
+		// getGroepen(...) sorteert de groepen en spelers (bijwerking); de inhoud van tab i is
+		// altijd groep i (fillGroupPanel en getGroepByID werken op niveau), dus titel en
+		// tooltip moeten ook bij groep i horen en niet bij de i-de groep in deze lijst.
 		for (Groep g : controller.getStatus().groepen.getGroepen(Groepen.Sortering.NIVEAU_DESC)) {
 //		for (Groep g : controller.getStatus().groepen.getGroepen()) {
 			panels[i] = makePanel();
 		    fillGroupPanel(panels[i], i);
-		    tabs.addTab(g.getNaam(), null, panels[i],"Gegevens van " + g.getNaam()+ " (" + g.getNiveau() + ")");
+		    tabs.addTab(Groep.geefNaam(i), null, panels[i], "Gegevens van " + Groep.geefNaam(i) + " (" + i + ")");
 		    //tabs.addTab(g.getNaam(), null, panels[i]);
 		    logger.log(Level.FINEST, () -> g.getNaam() + " (" + g.getNiveau() + ")");
 		    i++;
@@ -515,7 +520,10 @@ public class Hoofdscherm extends JFrame {
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				controller.wisZwartWitVoorkeur();
+				if (Bevesting.bevestig(hs, "Weet u zeker dat de zwart/wit-voorkeur van alle spelers gewist moet worden?")) {
+					controller.wisZwartWitVoorkeur();
+					hoofdPanel.repaint();
+				}
 			}
 		});
 		spelermenu.add(item);
@@ -611,8 +619,10 @@ public class Hoofdscherm extends JFrame {
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.resetPunten();
-				hoofdPanel.repaint();
+				if (Bevesting.bevestig(hs, "Weet u zeker dat de punten van alle spelers op de startwaarde gezet moeten worden?\nDit kan niet ongedaan gemaakt worden.")) {
+					controller.resetPunten();
+					hoofdPanel.repaint();
+				}
 			}
 		});
 		overigmenu.add(item);
@@ -621,8 +631,10 @@ public class Hoofdscherm extends JFrame {
 		item.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.resetKEIPunten();
-				hoofdPanel.repaint();
+				if (Bevesting.bevestig(hs, "Weet u zeker dat de KEI-punten van alle spelers op nul gezet moeten worden?\nDit kan niet ongedaan gemaakt worden.")) {
+					controller.resetKEIPunten();
+					hoofdPanel.repaint();
+				}
 			}
 		});
 		overigmenu.add(item);
@@ -648,29 +660,44 @@ public class Hoofdscherm extends JFrame {
 		});
 		overigmenu.add(item);
 
-		item = new JMenuItem("Test request");
-		item.addActionListener(new ActionListener() {
+		// Ontwikkelaarsfunctie: alleen zichtbaar als het logniveau op FINE of gedetailleerder staat
+		// (Instellingen > Debug). "Admin - Delete users API" is verwijderd: de functie was uitgeschakeld.
+		final JMenuItem testRequestItem = new JMenuItem("Test request");
+		testRequestItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.getRequest();
 				hoofdPanel.repaint();
 			}
 		});
-		overigmenu.add(item);
-				
-		item = new JMenuItem("!!! Admin - Delete users API");
-		item.addActionListener(new ActionListener() {
+		overigmenu.add(testRequestItem);
+		overigmenu.addMenuListener(new MenuListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.externalAPIDeleteUsers();
-				hoofdPanel.repaint();
+			public void menuSelected(MenuEvent e) {
+				testRequestItem.setVisible(isOntwikkelaarsmodus());
+			}
+			@Override
+			public void menuDeselected(MenuEvent e) {
+			}
+			@Override
+			public void menuCanceled(MenuEvent e) {
 			}
 		});
-		overigmenu.add(item);
 
 		menubar.add(overigmenu);
 
 		this.setJMenuBar(menubar);
+	}
+
+	/**
+	 * @return true als het ingestelde logniveau FINE of gedetailleerder is (Instellingen > Debug)
+	 */
+	private static boolean isOntwikkelaarsmodus() {
+		try {
+			return Level.parse(IJCController.c().debugLevel.toUpperCase()).intValue() <= Level.FINE.intValue();
+		} catch (RuntimeException e) {
+			return false;
+		}
 	}
 
 	public JTable getAanwezigheidsTabel(int index) {
@@ -726,10 +753,10 @@ public class Hoofdscherm extends JFrame {
 				// Fix the size of the displayed tables
 				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(0), 38);
 				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(1), 22);
-				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(2), 130);
-				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(3), 27);
+				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(2), 122);
+				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(3), 30);
 				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(4), 40);
-				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(5), 42);
+				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(5), 47);
 
 				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(0), 17);
 				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(1), 125);
@@ -739,10 +766,10 @@ public class Hoofdscherm extends JFrame {
 				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(5), 90);
 
 				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(0), 25);
-				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(1), 120);
+				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(1), 115);
 				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(2), 10);
-				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(3), 120);
-				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(4), 33);
+				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(3), 115);
+				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(4), 50);
 			}
 		} catch (NullPointerException npe) {
 			logger.log(Level.WARNING, "Null Pointer Exception probably in one of the Tables. Error: " + npe.getMessage() + ". i = " + ii);
@@ -817,7 +844,7 @@ public class Hoofdscherm extends JFrame {
 
 				// Alternate row color
 				if (!isRowSelected(row)) {
-					c.setBackground(row % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY);
+					c.setBackground(row % 2 == 0 ? Color.WHITE : Utils.RIJKLEUR_ONEVEN);
 				}
 				return c;
 			}
@@ -940,7 +967,9 @@ public class Hoofdscherm extends JFrame {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							controller.doorschuiven(groepID, s.getId()-1);
+							if (Bevesting.bevestig(hoofdPanel, "Weet u zeker dat \"" + s.getNaam() + "\" doorgeschoven moet worden naar een hogere groep?")) {
+								controller.doorschuiven(groepID, s.getId()-1);
+							}
 							hoofdPanel.repaint();
 						}
 					});
@@ -951,7 +980,9 @@ public class Hoofdscherm extends JFrame {
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							controller.terugschuiven(groepID, s.getId()-1);
+							if (Bevesting.bevestig(hoofdPanel, "Weet u zeker dat \"" + s.getNaam() + "\" teruggeschoven moet worden naar een lagere groep?")) {
+								controller.terugschuiven(groepID, s.getId()-1);
+							}
 							hoofdPanel.repaint();
 						}
 					});
@@ -982,7 +1013,7 @@ public class Hoofdscherm extends JFrame {
 
 				// Alternate row color
 				if (!isRowSelected(row)) {
-					c.setBackground(row % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY);
+					c.setBackground(row % 2 == 0 ? Color.WHITE : Utils.RIJKLEUR_ONEVEN);
 				}
 				// Alternative font
 				if (column > 1) {
@@ -1079,7 +1110,7 @@ public class Hoofdscherm extends JFrame {
 				WedstrijdModel model = (WedstrijdModel) getModel();
 				// Alternate row color
 				if (!isRowSelected(row)) {
-					c.setBackground(row % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY);
+					c.setBackground(row % 2 == 0 ? Color.WHITE : Utils.RIJKLEUR_ONEVEN);
 				}
 				// Alternatief font bij dubbele wedstrijden
 				if (model.isDubbeleWedstrijd(row)) {
@@ -1224,7 +1255,7 @@ public class Hoofdscherm extends JFrame {
 			nieuw.setPunten(IJCController.c().startPunten[groepID]);
 		}
 		int locatie = (s != null) ? s.getId() : 0;
-		BewerkSpelerDialoog rd = new BewerkSpelerDialoog(new JFrame(), "Bewerk Speler", nieuw,
+		BewerkSpelerDialoog rd = new BewerkSpelerDialoog(new JFrame(), "Nieuwe speler", nieuw,
 				false, locatie);
 		rd.addWindowListener(new WindowAdapter() {
 			@Override
@@ -1289,28 +1320,35 @@ public class Hoofdscherm extends JFrame {
 
 	public void actieVolgendeRonde() {
 		Status s = controller.getStatus();
-		if (s.resultaatVerwerkt != null) {
-//			try {
-//				SpelerDBImport dbi = new SpelerDBImport();
-//				dbi.importStatusObjectWithDBSession(s);
-//			}
-//			catch (Exception ex) {
-//				logger.log(Level.INFO, "Exception: " +  ex.getMessage());
-//				//Utils.stacktrace(ex);
-//			}
-			try {
-				controller.volgendeRonde();
-				updateAutomatisch(true);
-				updateRondeLabel();
-				updateZWbalansvoor();
-				updateZWbalansna();
-				updateUpdateStandButton();
-			} catch (Exception ex) {
-	             logger.log(Level.WARNING, "Exception: " +  ex.getMessage());
-	             Utils.stacktrace(ex);
-			}
-			hoofdPanel.repaint();
+		if (s.resultaatVerwerkt == null) {
+			FoutMelding.info(this, "De uitslagen van deze ronde zijn nog niet verwerkt.\n"
+					+ "Voer eerst de uitslagen in (3a) en kies daarna \"4. Update stand\".");
+			return;
 		}
+		Groepen g = controller.getGroepen();
+		if (!Bevesting.bevestig(this, "Weet u zeker dat u naar de volgende ronde wilt gaan?\n"
+				+ "Periode " + g.getPeriode() + ", ronde " + g.getRonde() + " wordt dan afgesloten.")) {
+			return;
+		}
+//		try {
+//			SpelerDBImport dbi = new SpelerDBImport();
+//			dbi.importStatusObjectWithDBSession(s);
+//		}
+//		catch (Exception ex) {
+//			logger.log(Level.INFO, "Exception: " +  ex.getMessage());
+//			//Utils.stacktrace(ex);
+//		}
+		try {
+			controller.volgendeRonde();
+			updateAutomatisch(true);
+			updateRondeLabel();
+			updateZWbalansvoor();
+			updateZWbalansna();
+			updateUpdateStandButton();
+		} catch (Exception ex) {
+			FoutMelding.fout(this, "Naar de volgende ronde gaan is mislukt.", ex);
+		}
+		hoofdPanel.repaint();
 	}
 
 	public void actieInstellingen() {

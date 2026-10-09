@@ -95,7 +95,7 @@ public class WedstrijdschemaDialoog extends JDialog {
 
                 //  Alternate row color
                 if (!isRowSelected(row)) {
-                    c.setBackground(row % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY);
+                    c.setBackground(row % 2 == 0 ? Color.WHITE : Utils.RIJKLEUR_ONEVEN);
                 }
                 return c;
             }
@@ -157,6 +157,9 @@ public class WedstrijdschemaDialoog extends JDialog {
 		wisButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (!Bevesting.bevestig(WedstrijdschemaDialoog.this, "Weet u zeker dat alle wedstrijden van serie 1 gewist moeten worden?")) {
+					return;
+				}
 				SerieModel model = (SerieModel) serieTabel[0].getModel();
 				model.wisSerie(0);
 				model.forceRepaint();
@@ -173,6 +176,9 @@ public class WedstrijdschemaDialoog extends JDialog {
 		wisButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (!Bevesting.bevestig(WedstrijdschemaDialoog.this, "Weet u zeker dat alle wedstrijden van serie 2 gewist moeten worden?")) {
+					return;
+				}
 				SerieModel model = (SerieModel) serieTabel[1].getModel();
 				model.wisSerie(1);
 				model.forceRepaint();
@@ -193,6 +199,9 @@ public class WedstrijdschemaDialoog extends JDialog {
 		wisButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (!Bevesting.bevestig(WedstrijdschemaDialoog.this, "Weet u zeker dat alle wedstrijden van serie 3 gewist moeten worden?")) {
+					return;
+				}
 				SerieModel model = (SerieModel) serieTabel[2].getModel();
 				model.wisSerie(2);
 				model.forceRepaint();
@@ -209,6 +218,9 @@ public class WedstrijdschemaDialoog extends JDialog {
 		wisButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (!Bevesting.bevestig(WedstrijdschemaDialoog.this, "Weet u zeker dat alle triowedstrijden gewist moeten worden?")) {
+					return;
+				}
 				SerieModel model = (SerieModel) serieTabel[3].getModel();
 				model.wisSerie(3);
 				model.forceRepaint();
@@ -237,7 +249,7 @@ public class WedstrijdschemaDialoog extends JDialog {
 
                 //  Alternate row color
                 if (!isRowSelected(row)) {
-                    c.setBackground(row % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY);
+                    c.setBackground(row % 2 == 0 ? Color.WHITE : Utils.RIJKLEUR_ONEVEN);
                 }
                 return c;
             }

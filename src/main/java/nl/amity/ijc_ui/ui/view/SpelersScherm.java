@@ -226,7 +226,7 @@ public class SpelersScherm extends JFrame {
 				}
 				// Alternate row color
 				if (!isRowSelected(row)) {
-					c.setBackground(row % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY);
+					c.setBackground(row % 2 == 0 ? Color.WHITE : Utils.RIJKLEUR_ONEVEN);
 				}
 				if (rondeModel.isSelectedRonde(row)) {
 					c.setForeground(Color.BLUE);
@@ -273,7 +273,7 @@ public class SpelersScherm extends JFrame {
 				}
 				// Alternate row color
 				if (!isRowSelected(row)) {
-					c.setBackground(row % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY);
+					c.setBackground(row % 2 == 0 ? Color.WHITE : Utils.RIJKLEUR_ONEVEN);
 				}
 				return c;
 			}
@@ -313,7 +313,7 @@ public class SpelersScherm extends JFrame {
 				}
 				// Alternate row color
 				if (!isRowSelected(row)) {
-					c.setBackground(row % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY);
+					c.setBackground(row % 2 == 0 ? Color.WHITE : Utils.RIJKLEUR_ONEVEN);
 				}
 				if (column == 6) {
 					String val = (((DBWedstrijdenModel) getModel()).getValueAt(row, column)).toString();

@@ -199,7 +199,7 @@ public class Groep {
      * @return Groepsnaam
      */
     public String getNaam() {
-    	return IJCController.c().groepsnamen[niveau];
+    	return geefNaam(niveau);
     }
 
     /**

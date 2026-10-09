@@ -129,6 +129,14 @@ public class Wedstrijd {
 	 *
 	 * @param uitslag
 	 */
+	/**
+	 * Geldige invoercodes voor {@link #setUitslag012(int)}: 1 = wit wint, 0 = zwart wint,
+	 * 2 = remise; 7, 8 en 9 zijn dezelfde uitslagen, maar reglementair.
+	 */
+	public static boolean isGeldigeUitslagcode(int code) {
+		return (code >= 0 && code <= 2) || (code >= 7 && code <= 9);
+	}
+
 	public void setUitslag012(int uitslag) {
 		nietReglementair = true;
 		if (uitslag > 6 ) {

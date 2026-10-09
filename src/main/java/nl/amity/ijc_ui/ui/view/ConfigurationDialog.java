@@ -522,6 +522,9 @@ public class ConfigurationDialog extends JDialog {
 			btDelete.addActionListener(new ActionListener() {
 			@Override
 				public void actionPerformed(ActionEvent event) {
+					if (!Bevesting.bevestig(ConfigurationDialog.this, "Weet u zeker dat deze API-koppeling verwijderd moet worden?")) {
+						return;
+					}
 					if (removeconfig(event)) {
 						removeTab(event);
 					}

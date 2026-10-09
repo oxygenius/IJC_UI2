@@ -16,6 +16,7 @@ package nl.amity.ijc_ui.ui.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -27,6 +28,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.net.URI;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +44,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -60,6 +63,9 @@ import javax.swing.event.MenuListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+import javax.swing.JDialog;
 
 import nl.amity.ijc_ui.Configuratie;
 //import nl.amity.ijc_ui.SpelerDBImport;
@@ -74,6 +80,7 @@ import nl.amity.ijc_ui.ui.model.WedstrijdModel;
 import nl.amity.ijc_ui.ui.model.WedstrijdSpelersModel;
 import nl.amity.ijc_ui.ui.util.Utils;
 import nl.amity.ijc_ui.util.Versie;
+import nl.amity.ijc_ui.util.VersieChecker;
 
 /**
  * Structuur van de GUI: JFrame Hoofdscherm (this) met hoofdPanel (BorderLayout):
@@ -565,6 +572,27 @@ public class Hoofdscherm extends JFrame {
 		});
 
 		menubar.add(overigmenu);
+
+		JMenu helpmenu = new JMenu("Help");
+
+		item = new JMenuItem("Over IJC_UI");
+		item.addActionListener(e -> actieOver());
+		helpmenu.add(item);
+
+		item = new JMenuItem("Gebruiksaanwijzing");
+		item.addActionListener(e -> openUrl("https://github.com/oxygenius/IJC_UI2"));
+		helpmenu.add(item);
+
+		item = new JMenuItem("Contact");
+		item.addActionListener(e -> openUrl("https://github.com/oxygenius/IJC_UI2/issues"));
+		helpmenu.add(item);
+
+		helpmenu.addSeparator();
+		item = new JMenuItem("Controleer op updates...");
+		item.addActionListener(e -> actieControleerUpdates());
+		helpmenu.add(item);
+
+		menubar.add(helpmenu);
 
 		this.setJMenuBar(menubar);
 	}
@@ -1221,5 +1249,110 @@ public class Hoofdscherm extends JFrame {
 
 		});
 		dialoog.setVisible(true);
+	}
+
+	/** Toont het Over-dialoog met versie- en auteursinformatie. */
+	private void actieOver() {
+		String text = "IJC_UI2 – Indelingsprogramma voor interne jeugdcompetitie\n"
+				+ "\n"
+				+ "Versie: " + appVersion + "\n"
+				+ "Copyright © 2016–2026 Leo van der Meulen en Lars Dam\n"
+				+ "\n"
+				+ "Dit programma valt onder de GNU General Public License versie 3.\n"
+				+ "\n"
+				+ "Broncode: https://github.com/oxygenius/IJC_UI2";
+		JOptionPane.showMessageDialog(this, text, "Over IJC_UI", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	/** Opent de opgegeven URL in de standaardwebbrowser. */
+	private void openUrl(String url) {
+		try {
+			if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+				Desktop.getDesktop().browse(new URI(url));
+			} else {
+				JOptionPane.showMessageDialog(this, "Kan de browser niet starten.\n"
+						+ "Open de link handmatig:\n\n" + url, "Fout", JOptionPane.WARNING_MESSAGE);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Fout bij het openen van de browser:\n"
+					+ e.getMessage() + "\n\nLink: " + url, "Fout", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	/** Controleert of er een nieuwere versie beschikbaar is op GitHub. */
+	private void actieControleerUpdates() {
+		String currentVersion = appVersion;
+		if (currentVersion == null || currentVersion.equals("onbekend")) {
+			JOptionPane.showMessageDialog(this, "De huidige versie kan niet bepaald worden.",
+					"Updates", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		// Toon een wacht-dialoog tijdens het ophalen van de nieuwste versie
+		JProgressBar progressBar = new JProgressBar(0, 100);
+		progressBar.setIndeterminate(true);
+		progressBar.setStringPainted(true);
+		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panel.add(new JLabel("Controleren op updates..."));
+		panel.add(progressBar);
+
+		JDialog waitDialog = new JDialog(this, "Updates", true);
+		waitDialog.add(panel);
+		waitDialog.pack();
+		waitDialog.setLocationRelativeTo(this);
+
+		SwingWorker<String, ?> worker = new SwingWorker<>() {
+			@Override
+			protected String doInBackground() {
+				return VersieChecker.haalNieuwsteVersie();
+			}
+
+			@Override
+			protected void done() {
+				SwingUtilities.invokeLater(() -> waitDialog.dispose());
+				try {
+					String latestVersion = get();
+					if (latestVersion == null) {
+						JOptionPane.showMessageDialog(Hoofdscherm.this,
+								"Kan de nieuwste versie niet ophalen van GitHub.\n"
+								+ "Controleer uw internetverbinding en probeer het opnieuw.\n\n"
+								+ "Huidige versie: " + currentVersion,
+								"Updates", JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
+
+					int cmp = VersieChecker.compareVersions(currentVersion, latestVersion);
+					if (cmp < 0) {
+						int response = JOptionPane.showConfirmDialog(Hoofdscherm.this,
+								"Er is een nieuwere versie beschikbaar:\n\n"
+								+ "Huidige versie:  " + currentVersion + "\n"
+								+ "Nieuwste versie: " + latestVersion + "\n\n"
+								+ "Wil u de downloadpagina openen?",
+								"Nieuwe versie beschikbaar",
+								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+						if (response == JOptionPane.YES_OPTION) {
+							openUrl("https://github.com/oxygenius/IJC_UI2/releases/latest");
+						}
+					} else if (cmp == 0) {
+						JOptionPane.showMessageDialog(Hoofdscherm.this,
+								"U heeft de nieuwste versie geïnstalleerd.\n\n"
+								+ "Versie: " + currentVersion,
+								"Updates", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(Hoofdscherm.this,
+								"U heeft een nieuwere versie dan de laatste release.\n\n"
+								+ "Huidige versie: " + currentVersion,
+								"Updates", JOptionPane.INFORMATION_MESSAGE);
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(Hoofdscherm.this,
+							"Fout bij het controleren op updates:\n" + e.getMessage(),
+							"Updates", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		};
+
+		worker.execute();
+		waitDialog.setVisible(true);
 	}
 }

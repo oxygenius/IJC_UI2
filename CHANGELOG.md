@@ -12,6 +12,17 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 
 ### Opgelost
 
+## [2.0.2.3] - 2026-10-09
+
+### Toegevoegd
+- Help-menu met drie onderdelen: *Over IJC_UI* toont een dialoog met versie- en auteursinformatie, *Gebruiksaanwijzing* opent de GitHub-repository in de browser, en *Contact* opent de GitHub Issues-pagina.
+- *Controleer op updates...* in het Help-menu: haalt het nieuwste versienummer op via de GitHub Releases API en vergelijkt het met de lokale versie. Bij een beschikbare update wordt gevraagd of de downloadpagina geopend moet worden. Het controleren gebeurt op de achtergrond met een voortgangsbalk, en alleen op verzoek van de gebruiker (geen achtergrondverkeer).
+- `.github/SECURITY.md` met het beveiligingsbeleid: meldingsprocedure voor kwetsbaarheden, ondersteunde versies, en beveiligingsaspecten van de applicatie (lokale opslag van spelersgegevens, versleutelde wachtwoorden, geen telemetrie).
+
+### Gewijzigd
+
+### Opgelost
+
 ## [2.0.2.2] - 2026-10-09
 
 ### Gewijzigd

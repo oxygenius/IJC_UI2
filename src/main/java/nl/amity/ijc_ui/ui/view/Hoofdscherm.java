@@ -17,6 +17,8 @@ package nl.amity.ijc_ui.ui.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -107,6 +109,8 @@ public class Hoofdscherm extends JFrame {
 	private final static Logger logger = Logger.getLogger(Hoofdscherm.class.getName());
 
 	private String appVersion = Versie.get();
+	/** Kleinste venstergrootte waarbij alle kolommen en knoppen leesbaar zijn. */
+	private static final Dimension MINIMALE_GROOTTE = new Dimension(1150, 670);
 	private JPanel hoofdPanel;
 	private JTabbedPane tabs;
 	private JPanel[] panels;
@@ -147,7 +151,8 @@ public class Hoofdscherm extends JFrame {
 		setTitle(IJCController.c().verenigingNaam + " - " + IJCController.c().appTitle + " - versie " + this.appVersion);
 		logger.log(Level.CONFIG, "Java version: " + System.getProperty("java.runtime.version"));
 		logger.log(Level.INFO, IJCController.c().verenigingNaam + " - " + IJCController.c().appTitle + " - versie " + this.appVersion);
-		hoofdPanel = new javax.swing.JPanel();
+		// Knoppenbalk boven, tabbladen vullen de rest en groeien mee met het venster
+		hoofdPanel = new javax.swing.JPanel(new BorderLayout());
 		addButtons();
 		addMenubar();
 
@@ -189,7 +194,8 @@ public class Hoofdscherm extends JFrame {
 		logger.log(Level.FINEST, "i = " + i);
 		
 		
-		hoofdPanel.add(tabs);
+		hoofdPanel.add(tabs, BorderLayout.CENTER);
+		hoofdPanel.setBorder(new EmptyBorder(0, 8, 8, 8));
 		this.add(hoofdPanel);
 
 		updateUpdateStandButton();
@@ -304,8 +310,10 @@ public class Hoofdscherm extends JFrame {
 		rondeLabel = new JLabel();
 		updateRondeLabel();
 		updateAutomatisch(controller.isAutomatisch());
-		hoofdPanel.add(buttonPane);
-		hoofdPanel.add(rondeLabel);
+		JPanel bovenbalk = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 4));
+		bovenbalk.add(buttonPane);
+		bovenbalk.add(rondeLabel);
+		hoofdPanel.add(bovenbalk, BorderLayout.NORTH);
 	}
 
 	/**
@@ -725,55 +733,60 @@ public class Hoofdscherm extends JFrame {
 	}
 
 	/**
-	 * Structure of the GUI: JFrame Hoofdscherm (this) 1050 x 650 * buttonpane *
-	 * JPanel hoofdPanel 1040 x 565 * JTabbedPane tabs 1020 x 560 * JPanel
-	 * panels[i] 1020 x 600 * JScrollPane leftScrollPane[i] 338 x 600 * JTable
-	 * aanwezigheidsTabel[i] 338 x 500 * JScrollPane centerScrollPane[i] 338 x
-	 * 500 * JTable centerScrollPane[i] 338 x 600 * JScrollPane
-	 * rightScrollPane[i] 338 x 500 * JTable rightScrollPane[i] 338 x 600 *
+	 * Structuur van de GUI: JFrame Hoofdscherm (this) met hoofdPanel (BorderLayout):
+	 * bovenaan de knoppenbalk, daaronder JTabbedPane tabs met per groep panels[i]:
+	 * drie even brede kolommen (aanwezigheid, spelers, wedstrijden) met elk een tabel
+	 * in een JScrollPane. Alles groeit mee met het venster; het venster kan niet kleiner
+	 * worden dan MINIMALE_GROOTTE, zodat alles leesbaar blijft.
+	 * In de tabellen hebben de smalle kolommen een vaste breedte; alleen de naamkolommen groeien
+	 * mee, tot een maximum zodat namen en getallen bij elkaar blijven.
 	 */
 	public void initSizes() {
 		logger.log(Level.FINEST, "Maak alle componenten van het juiste formaat");
-		// Fix the layout of the components on the screen.
-//		fixedComponentSize(this, 1320, 670);
-		fixedComponentSize(this, 1150, 670);
-		fixedComponentSize(hoofdPanel, 1040, 580);
-		fixedComponentSize(tabs, 1020, 560);
+		setMinimumSize(MINIMALE_GROOTTE);
+		setSize(MINIMALE_GROOTTE);
+		setLocationRelativeTo(null);
 		int ii =0;
 		try {
 			for (int i = 0; i < aantal; ++i) {
 				ii = i;
-				fixedComponentSize(panels[i], 1020, 500);
-				fixedComponentSize(leftScrollPane[i], 320, 485);
-				fixedComponentSize(centerLeftScrollPane[i], 320, 485);
-				fixedComponentSize(centerRightScrollPane[i], 330, 485);
-				fixedComponentSize(aanwezigheidsTabel[i], 320, 675);
-				fixedComponentSize(wedstrijdspelersTabel[i], 320, 675);
-				fixedComponentSize(wedstrijdenTabel[i], 320, 475);
-				// Fix the size of the displayed tables
+				aanwezigheidsTabel[i].setFillsViewportHeight(true);
+				wedstrijdspelersTabel[i].setFillsViewportHeight(true);
+				wedstrijdenTabel[i].setFillsViewportHeight(true);
+				// Kolombreedtes: vast voor getallen en codes, meegroeiend voor namen
 				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(0), 38);
 				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(1), 22);
-				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(2), 122);
+				flexibleColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(2), 122, 220);
 				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(3), 30);
 				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(4), 40);
 				fixedColumSize(aanwezigheidsTabel[i].getColumnModel().getColumn(5), 47);
 
 				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(0), 17);
-				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(1), 125);
+				flexibleColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(1), 125, 220);
 				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(2), 33);
 				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(3), 20);
 				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(4), 20);
-				fixedColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(5), 90);
+				flexibleColumSize(wedstrijdspelersTabel[i].getColumnModel().getColumn(5), 90, 200);
 
 				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(0), 25);
-				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(1), 115);
+				flexibleColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(1), 115, 220);
 				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(2), 10);
-				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(3), 115);
+				flexibleColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(3), 115, 220);
 				fixedColumSize(wedstrijdenTabel[i].getColumnModel().getColumn(4), 50);
 			}
 		} catch (NullPointerException npe) {
 			logger.log(Level.WARNING, "Null Pointer Exception probably in one of the Tables. Error: " + npe.getMessage() + ". i = " + ii);
 		}
+	}
+
+	/**
+	 * Kolom die meegroeit als er ruimte is, maar niet verder dan maximaal: anders komt
+	 * een naam bij een breed venster te ver van zijn getallen (rating, punten) te staan.
+	 */
+	private void flexibleColumSize(TableColumn c, int minimaal, int maximaal) {
+		c.setMinWidth(minimaal);
+		c.setPreferredWidth(minimaal);
+		c.setMaxWidth(maximaal);
 	}
 
 	private void fixedComponentSize(Component c, int width, int height) {
@@ -790,8 +803,34 @@ public class Hoofdscherm extends JFrame {
 
 	protected JPanel makePanel() {
 		JPanel panel = new JPanel(false);
-		panel.setLayout(new GridLayout(1, 4));
+		// Drie even brede kolommen die meegroeien met het venster
+		panel.setLayout(new GridLayout(1, 3));
 		return panel;
+	}
+
+	/**
+	 * Kopregel boven een tabel. Een JTextField (geen JLabel), omdat de ZW-balansregels
+	 * later via setText worden bijgewerkt; niet bewerkbaar en niet focusbaar.
+	 */
+	private JTextField maakKopregel(String tekst) {
+		JTextField kop = new JTextField(tekst);
+		kop.setEditable(false);
+		kop.setFocusable(false);
+		kop.setOpaque(false);
+		kop.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+		return kop;
+	}
+
+	/** Kolom met twee kopregels bovenaan en de tabel (in scrollpane) eronder over de volle hoogte. */
+	private JPanel maakKolom(JTextField kop1, JTextField kop2, JScrollPane tabel) {
+		JPanel koppen = new JPanel(new GridLayout(2, 1));
+		koppen.add(kop1);
+		koppen.add(kop2);
+		JPanel kolom = new JPanel(new BorderLayout());
+		kolom.add(koppen, BorderLayout.NORTH);
+		kolom.add(tabel, BorderLayout.CENTER);
+		kolom.setBorder(new EmptyBorder(5, 5, 5, 5));
+		return kolom;
 	}
 
 	protected void fillGroupPanel(JPanel panel, final int index) {
@@ -1157,48 +1196,18 @@ public class Hoofdscherm extends JFrame {
 		centerLeftScrollPane[index].setViewportView(wedstrijdspelersTabel[index]);
 		centerRightScrollPane[index].setViewportView(wedstrijdenTabel[index]);
 
-		JPanel ibt = new JPanel();
-		ibt.setLayout(new BoxLayout(ibt, BoxLayout.PAGE_AXIS));
-		JTextField jTFaanwezigheid = new JTextField("Aanwezigheid in de " + Groep.geefNaam(index));
-		jTFaanwezigheid.setBackground(ibt.getBackground());
-		jTFaanwezigheid.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-		ibt.add(jTFaanwezigheid, BorderLayout.NORTH);
-		jTFZWbalansvoor[index] = new JTextField("ZW Balans");
-		jTFZWbalansvoor[index].setBackground(ibt.getBackground());
-		jTFZWbalansvoor[index].setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-		ibt.add(jTFZWbalansvoor[index], BorderLayout.NORTH);
-		ibt.add(leftScrollPane[index], BorderLayout.SOUTH);
-		ibt.setBorder(new EmptyBorder(5, 5, 5, 5));
-		panel.add(ibt, BorderLayout.LINE_START);
+		// Drie kolommen met elk twee kopregels en een tabel die de rest van de hoogte vult
+		JTextField jTFaanwezigheid = maakKopregel("Aanwezigheid in de " + Groep.geefNaam(index));
+		jTFZWbalansvoor[index] = maakKopregel("ZW Balans");
+		panel.add(maakKolom(jTFaanwezigheid, jTFZWbalansvoor[index], leftScrollPane[index]));
 		updateZWbalansvoor(index);
 
-		JPanel ibt2 = new JPanel();
-		ibt2.setLayout(new BoxLayout(ibt2, BoxLayout.PAGE_AXIS));
-		JTextField jTFwedstrijdgroep = new JTextField("Spelers die spelen in de " + Groep.geefNaam(index));
-		jTFwedstrijdgroep.setBackground(ibt2.getBackground());
-		jTFwedstrijdgroep.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-		ibt2.add(jTFwedstrijdgroep, BorderLayout.NORTH);
-		JTextField jTFdummy = new JTextField("");
-		jTFdummy.setBackground(ibt2.getBackground());
-		jTFdummy.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-		ibt2.add(jTFdummy, BorderLayout.NORTH);
-		ibt2.add(centerLeftScrollPane[index], BorderLayout.SOUTH);
-		ibt2.setBorder(new EmptyBorder(5, 5, 5, 5));
-		panel.add(ibt2, BorderLayout.LINE_START);
+		JTextField jTFwedstrijdgroep = maakKopregel("Spelers die spelen in de " + Groep.geefNaam(index));
+		panel.add(maakKolom(jTFwedstrijdgroep, maakKopregel(""), centerLeftScrollPane[index]));
 
-		JPanel ibt3 = new JPanel();
-		ibt3.setLayout(new BoxLayout(ibt3, BoxLayout.PAGE_AXIS));
-		JTextField jTFwedstrijden = new JTextField("Wedstrijden in de " + Groep.geefNaam(index));
-		jTFwedstrijden.setBackground(ibt3.getBackground());
-		jTFwedstrijden.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-		ibt3.add(jTFwedstrijden, BorderLayout.NORTH);
-		jTFZWbalansna[index] = new JTextField("ZW Balans");
-		jTFZWbalansna[index].setBackground(ibt3.getBackground());
-		jTFZWbalansna[index].setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-		ibt3.add(jTFZWbalansna[index], BorderLayout.NORTH);
-		ibt3.add(centerRightScrollPane[index], BorderLayout.SOUTH);
-		ibt3.setBorder(new EmptyBorder(5, 5, 5, 5));
-		panel.add(ibt3, BorderLayout.LINE_START);
+		JTextField jTFwedstrijden = maakKopregel("Wedstrijden in de " + Groep.geefNaam(index));
+		jTFZWbalansna[index] = maakKopregel("ZW Balans");
+		panel.add(maakKolom(jTFwedstrijden, jTFZWbalansna[index], centerRightScrollPane[index]));
 		updateZWbalansna(index);
 
 		panel.setBorder(new EmptyBorder(1, 1, 1, 1));

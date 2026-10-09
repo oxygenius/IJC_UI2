@@ -15,6 +15,8 @@ Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sect
 ### Gewijzigd
 - Modern uiterlijk met [FlatLaf](https://www.formdev.com/flatlaf/) 3.7.2, inclusief betere weergave op schermen met vergroting.
 - Rustiger tabellen: lichtere streepkleur, en de kolommen *Punten*, *Afk* en *Uitslag* zijn breed genoeg voor hun inhoud.
+- Het hoofdscherm schaalt mee met het venster, ook gemaximaliseerd. De drie kolommen worden even breed, de tabellen tonen meer rijen, en alleen de naamkolommen groeien mee (tot een maximum, zodat namen dicht bij hun rating en punten blijven). Het venster kan niet kleiner worden dan 1150×670, zodat alles leesbaar blijft.
+- De kopregels boven de tabellen kunnen niet meer per ongeluk bewerkt worden of de focus krijgen.
 - *Test request* in het menu *Overig* is alleen zichtbaar als het logniveau op FINE of gedetailleerder staat (Instellingen → Debug). *!!! Admin - Delete users API* is verwijderd; die functie deed niets.
 - Foutmeldingen tonen een begrijpelijke tekst met een foutpictogram; de technische details staan in `IJC_UI.log` in plaats van een Java-stacktrace in beeld.
 - *Bewerk speler*: de dialoog past zijn grootte aan de inhoud aan, heeft de titel "Nieuwe speler" bij het toevoegen, en de knop heet *Annuleren*. Enter bevestigt.

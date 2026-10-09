@@ -9,6 +9,14 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sectie bij een release naar het nieuwe versienummer met de datum.
 
 ### Toegevoegd
+
+### Gewijzigd
+
+### Opgelost
+
+## [2.0.2.0] - 2026-10-09
+
+### Toegevoegd
 - Bevestiging gevraagd bij acties die niet ongedaan gemaakt kunnen worden: *Volgende ronde*, *Reset punten*, *Reset KEI punten*, *Wis Zwart/Wit voorkeur*, *Doorschuiven* en *Terugschuiven* van een speler, *Wis alles* in het speelschema en het verwijderen van een API-koppeling. "Nee" is steeds de standaardknop.
 - *Volgende ronde* meldt nu wat er moet gebeuren als de uitslagen nog niet verwerkt zijn, in plaats van niets te doen.
 

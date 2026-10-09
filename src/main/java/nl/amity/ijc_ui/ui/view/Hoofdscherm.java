@@ -29,6 +29,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -415,6 +417,12 @@ public class Hoofdscherm extends JFrame {
 		item = new JMenuItem("Opslaan");
 		item.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		item.addActionListener(e -> controller.saveState(true, "save"));
+		filemenu.add(item);
+		item = new JMenuItem("Exporteer systeem...");
+		item.addActionListener(e -> actieExportSysteem());
+		filemenu.add(item);
+		item = new JMenuItem("Importeer systeem...");
+		item.addActionListener(e -> actieImportSysteem());
 		filemenu.add(item);
 		filemenu.addSeparator();
 		item = new JMenuItem("Instellingen...");
@@ -1092,6 +1100,67 @@ public class Hoofdscherm extends JFrame {
 		controller.exportWedstrijdschema();
 		controller.saveState(true, "export");
 		hoofdPanel.repaint();
+	}
+
+	/**
+	 * Exporteer het complete systeem naar een ZIP-bestand
+	 */
+	public void actieExportSysteem() {
+		final JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+		fc.setDialogTitle("Exporteer systeem");
+		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+		fc.setSelectedFile(new File("IJC_UI2_export_" + timestamp + ".zip"));
+		
+		if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			String filePath = file.getAbsolutePath();
+			// Ensure .zip extension
+			if (!filePath.toLowerCase().endsWith(".zip")) {
+				filePath += ".zip";
+			}
+			try {
+				controller.exportSystem(filePath);
+				JOptionPane.showMessageDialog(this, "Systeem geëxporteerd naar:\n" + filePath, "Export voltooid", JOptionPane.INFORMATION_MESSAGE);
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(this, "Export mislukt:\n" + ex.getMessage(), "Fout", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	/**
+	 * Importeer het complete systeem uit een ZIP-bestand
+	 */
+	public void actieImportSysteem() {
+		final JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+		fc.setDialogTitle("Importeer systeem");
+		fc.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("ZIP-bestanden", "zip"));
+		
+		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			String filePath = file.getAbsolutePath();
+			
+			// Ask for confirmation before importing
+			if (!Bevesting.bevestig(this, "Weet u zeker dat u het systeem wilt importeren?\n\n"
+					+ "Alle huidige gegevens worden vervangen door de geïmporteerde gegevens.\n"
+					+ "Dit kan niet ongedaan gemaakt worden.\n\n"
+					+ "Bestand: " + file.getName())) {
+				return;
+			}
+			
+			try {
+				controller.importSystem(filePath);
+				// Refresh the UI after import
+				updateRondeLabel();
+				updateUpdateStandButton();
+				updateAutomatisch(controller.isAutomatisch());
+				hoofdPanel.repaint();
+				JOptionPane.showMessageDialog(this, "Systeem geïmporteerd uit:\n" + filePath, "Import voltooid", JOptionPane.INFORMATION_MESSAGE);
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(this, "Import mislukt:\n" + ex.getMessage(), "Fout", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 
 	/**

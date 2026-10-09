@@ -25,6 +25,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import java.util.zip.ZipInputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -1192,5 +1196,216 @@ public class IJCController {
 			}
 		}
 		return lijst;
+	}
+
+	/**
+	 * Exporteer het complete systeem naar een ZIP-bestand.
+	 * Dit bevat status.json, configuratie.json, keystore.ks en alle rondedirectories.
+	 * @param zipFilePath het pad naar het ZIP-bestand dat aangemaakt moet worden
+	 */
+	public void exportSystem(String zipFilePath) {
+		logger.log(Level.INFO, "Exporteer systeem naar " + zipFilePath);
+		
+		// Save current version into configuratie before exporting
+		c.appVersion = nl.amity.ijc_ui.util.Versie.get();
+		
+		// First save current state (including updated configuratie with version)
+		saveState(false, null);
+		
+		try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFilePath))) {
+			// Add core files
+			addFileToZip(zos, c.statusBestand + ".json");
+			addFileToZip(zos, c.configuratieBestand + ".json");
+			addFileToZip(zos, ksfilename);
+			
+			// Add all round directories (R*-*)
+			File currentDir = new File(".");
+			File[] roundDirs = currentDir.listFiles((dir, name) -> name.matches("R\\d+-\\d+"));
+			if (roundDirs != null) {
+				for (File dir : roundDirs) {
+					if (dir.isDirectory()) {
+						addDirectoryToZip(zos, dir, dir.getName());
+					}
+				}
+			}
+			
+			logger.log(Level.INFO, "Systeem export voltooid: " + zipFilePath);
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Fout bij exporteren van systeem", e);
+			throw new RuntimeException("Export mislukt: " + e.getMessage(), e);
+		}
+	}
+
+	private void addFileToZip(ZipOutputStream zos, String filePath) throws IOException {
+		File file = new File(filePath);
+		if (file.exists()) {
+			logger.log(Level.FINE, "Voeg toe aan ZIP: " + filePath);
+			zos.putNextEntry(new ZipEntry(file.getName()));
+			try (FileInputStream fis = new FileInputStream(file)) {
+				byte[] buffer = new byte[4096];
+				int len;
+				while ((len = fis.read(buffer)) > 0) {
+					zos.write(buffer, 0, len);
+				}
+			}
+			zos.closeEntry();
+		} else {
+			logger.log(Level.WARNING, "Bestand niet gevonden voor export: " + filePath);
+		}
+	}
+
+	private void addDirectoryToZip(ZipOutputStream zos, File dir, String zipPath) throws IOException {
+		File[] files = dir.listFiles();
+		if (files == null) return;
+		
+		for (File file : files) {
+			if (file.isFile()) {
+				String entryName = zipPath + File.separator + file.getName();
+				logger.log(Level.FINE, "Voeg toe aan ZIP: " + entryName);
+				zos.putNextEntry(new ZipEntry(entryName));
+				try (FileInputStream fis = new FileInputStream(file)) {
+					byte[] buffer = new byte[4096];
+					int len;
+					while ((len = fis.read(buffer)) > 0) {
+						zos.write(buffer, 0, len);
+					}
+				}
+				zos.closeEntry();
+			}
+		}
+	}
+
+	/**
+	 * Importeer het complete systeem uit een ZIP-bestand.
+	 * Valideert de versie, extraheert alle bestanden, en laadt de nieuwe data.
+	 * @param zipFilePath het pad naar het ZIP-bestand
+	 * @return true als de import succesvol was
+	 * @throws RuntimeException als de versie niet compatibel is of het ZIP-bestand ongeldig is
+	 */
+	public boolean importSystem(String zipFilePath) {
+		logger.log(Level.INFO, "Importeer systeem uit " + zipFilePath);
+		
+		File zipFile = new File(zipFilePath);
+		if (!zipFile.exists()) {
+			throw new RuntimeException("ZIP-bestand niet gevonden: " + zipFilePath);
+		}
+		
+		// First, extract configuratie.json to check version compatibility
+		String importedVersion = null;
+		try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
+			ZipEntry entry;
+			while ((entry = zis.getNextEntry()) != null) {
+				if (entry.getName().equals(c.configuratieBestand + ".json")) {
+					// Read the configuratie.json content to check version
+					byte[] buffer = new byte[(int) entry.getSize()];
+					int bytesRead = zis.read(buffer, 0, buffer.length);
+					String configContent = new String(buffer, 0, bytesRead);
+					
+					// Parse version from configuratie.json
+					Gson gson = new Gson();
+					Configuratie importedConfig = gson.fromJson(configContent, Configuratie.class);
+					if (importedConfig != null && importedConfig.appVersion != null) {
+						importedVersion = importedConfig.appVersion;
+					}
+					break;
+				}
+				zis.closeEntry();
+			}
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Fout bij lezen van ZIP-bestand", e);
+			throw new RuntimeException("Kan ZIP-bestand niet lezen: " + e.getMessage(), e);
+		}
+		
+		// Check version compatibility
+		String currentVersion = nl.amity.ijc_ui.util.Versie.get();
+		if (importedVersion != null && !importedVersion.equals(currentVersion)) {
+			logger.log(Level.WARNING, "Versie mismatch: geïmporteerd=" + importedVersion + ", huidig=" + currentVersion);
+			throw new RuntimeException(
+				"Versie incompatibiliteit gedetecteerd!\n" +
+				"Geïmporteerde versie: " + importedVersion + "\n" +
+				"Huidige versie: " + currentVersion + "\n\n" +
+				"Importeer alleen exportbestanden van dezelfde versie."
+			);
+		}
+		
+		// Extract all files
+		try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
+			ZipEntry entry;
+			while ((entry = zis.getNextEntry()) != null) {
+				String entryName = entry.getName();
+				logger.log(Level.FINE, "Extraheer: " + entryName);
+				
+				// Skip directory entries
+				if (entry.isDirectory()) {
+					new File(entryName).mkdirs();
+					zis.closeEntry();
+					continue;
+				}
+				
+				// Determine output path
+				File outputFile = new File(entryName);
+				
+				// Create parent directories if needed
+				File parentDir = outputFile.getParentFile();
+				if (parentDir != null && !parentDir.exists()) {
+					parentDir.mkdirs();
+				}
+				
+				// Extract file
+				try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+					byte[] buffer = new byte[4096];
+					int len;
+					while ((len = zis.read(buffer)) > 0) {
+						fos.write(buffer, 0, len);
+					}
+				}
+				zis.closeEntry();
+			}
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Fout bij extractie van ZIP-bestand", e);
+			throw new RuntimeException("Kan ZIP-bestand niet extraheren: " + e.getMessage(), e);
+		}
+		
+		logger.log(Level.INFO, "Bestanden geëxtraheerd, laad nu de nieuwe data");
+		
+		// Reload the system with imported data
+		// Reset configuration
+		c = new Configuratie();
+		leesConfiguratie();
+		
+		// Reset status
+		status = new Status();
+		if (!leesStatus()) {
+			logger.log(Level.WARNING, "Kon statusbestand niet laden na import");
+			throw new RuntimeException("Kan statusbestand niet laden na import");
+		}
+		
+		// Reload keystore
+		try (InputStream data = new FileInputStream(ksfilename)) {
+			ks = KeyStore.getInstance(KeyStore.getDefaultType());
+			ks.load(data, keyStorePassword);
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Fout bij laden van keystore na import", e);
+			try {
+				ks.load(null);
+			} catch (Exception e2) {
+				logger.log(Level.WARNING, "Fout bij laden van lege keystore", e2);
+			}
+		}
+		
+		// Fix groups if needed
+		checkStatus();
+		if (status.groepen != null && status.groepen.getAantalGroepen() != c.aantalGroepen) {
+			fix_groepen(status.groepen, c.aantalGroepen);
+		}
+		if (status.wedstrijdgroepen != null && status.wedstrijdgroepen.getAantalGroepen() != c.aantalGroepen) {
+			fix_groepen(status.wedstrijdgroepen, c.aantalGroepen);
+		}
+		if (status.groepen != null) {
+			status.groepen.sorteerGroepen(true);
+		}
+		
+		logger.log(Level.INFO, "Import voltooid");
+		return true;
 	}
 }

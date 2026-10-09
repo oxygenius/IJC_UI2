@@ -12,6 +12,13 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 
 ### Opgelost
 
+## [2.0.2.4] - 2026-10-09
+
+### Toegevoegd
+- *Exporteer systeem...* in het Bestand-menu: maakt een ZIP-bestand met de volledige systeemstaat (status.json, configuratie.json, keystore.ks, en alle rondemappen). De standaardbestandsnaam bevat datum en tijd, zodat meerdere exports onderscheidbaar zijn.
+- *Importeer systeem...* in het Bestand-menu: importeert een eerder geëxporteerd ZIP-bestand, controleert de versiecompatibiliteit, en vraagt bevestiging voordat alle huidige gegevens worden vervangen. Na een succesvolle import wordt het systeem herladen met de nieuwe gegevens.
+- 13 JUnit-tests voor export en import: testen van ZIP-inhoud, versiecompatibiliteit, onvolledige data, en ongeldige bestanden.
+
 ## [2.0.2.3] - 2026-10-09
 
 ### Toegevoegd

@@ -269,6 +269,11 @@ public class Configuratie {
 	public String appTitle = "Indeling Interne Jeugd Competitie";
 
 	/**
+	 * Applicatie versie (wordt automatisch ingevuld bij export)
+	 */
+	public String appVersion;
+
+	/**
 	 * Naam Vereniging
 	 */
 	public String verenigingNaam = "<Schaakverenigingsnaam>";

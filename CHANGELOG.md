@@ -4,6 +4,15 @@ Alle belangrijke wijzigingen in IJC_UI2, per versie.
 Het versienummer is `<version>` in `pom.xml`.
 De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 
+## [Nog niet uitgebracht]
+
+### Toegevoegd
+- Waarschuwingsmelding in het popupmenu van de spelers-tabel: *Speler naar hogere groep* en *Speler naar lagere groep* tonen een mededeling als de speler al in de laagste respectievelijk hoogste groep zit, in plaats van stilletjes niets te doen.
+
+### Gewijzigd
+
+### Opgelost
+
 ## [2.0.2.2] - 2026-10-09
 
 ### Gewijzigd

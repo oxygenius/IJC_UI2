@@ -938,18 +938,26 @@ public class Hoofdscherm extends JFrame {
 					menuItem = new JMenuItem("Speler naar hogere groep");
 					popup.add(menuItem);
 					menuItem.addActionListener(evt -> {
-						controller.spelerNaarHogereGroep(groepID, s, s.getId() - 1);
-						updateZWbalansvoor(index);
-						updateZWbalansna(index);
-						hoofdPanel.repaint();
+						if (groepID + 1 >= aantal) {
+							FoutMelding.info(hoofdPanel, "Speler is al in de hoogste groep.");
+						} else {
+							controller.spelerNaarHogereGroep(groepID, s, s.getId() - 1);
+							updateZWbalansvoor(index);
+							updateZWbalansna(index);
+							hoofdPanel.repaint();
+						}
 					});
 					menuItem = new JMenuItem("Speler naar lagere groep");
 					popup.add(menuItem);
 					menuItem.addActionListener(evt -> {
-						controller.spelerNaarLagereGroep(groepID, s, s.getId() - 1);
-						updateZWbalansvoor(index);
-						updateZWbalansna(index);
-						hoofdPanel.repaint();
+						if (groepID < 1) {
+							FoutMelding.info(hoofdPanel, "Speler is al in de laagste groep.");
+						} else {
+							controller.spelerNaarLagereGroep(groepID, s, s.getId() - 1);
+							updateZWbalansvoor(index);
+							updateZWbalansna(index);
+							hoofdPanel.repaint();
+						}
 					});
 					popup.show(e.getComponent(), e.getX(), e.getY());
 				}

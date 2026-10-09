@@ -4,13 +4,12 @@ Alle belangrijke wijzigingen in IJC_UI2, per versie.
 Het versienummer is `<version>` in `pom.xml`.
 De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 
-## [Nog niet uitgebracht]
-
-Noteer hier nieuwe functies en bugfixes zodra ze gemaakt zijn. Hernoem deze sectie bij een release naar het nieuwe versienummer met de datum.
-
-### Toegevoegd
+## [2.0.2.1] - 2026-10-09
 
 ### Gewijzigd
+- Code-opschoning: ongebruikte methode `fixedComponentSize` in `Hoofdscherm` verwijderd (relic uit de responsive-layoutaanpassing). `Utils.fixedComponentSize` blijft gebruikt door andere schermen.
+
+### Toegevoegd
 
 ### Opgelost
 

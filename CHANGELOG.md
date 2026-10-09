@@ -7,7 +7,6 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 ## [Nog niet uitgebracht]
 
 ### Toegevoegd
-- Waarschuwingsmelding in het popupmenu van de spelers-tabel: *Speler naar hogere groep* en *Speler naar lagere groep* tonen een mededeling als de speler al in de laagste respectievelijk hoogste groep zit, in plaats van stilletjes niets te doen.
 
 ### Gewijzigd
 
@@ -19,10 +18,14 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 - Code-opschoning: alle 37 `ActionListener`-anonyme klassen in `Hoofdscherm` zijn omgezet naar lambda-expressies (±164 regels korter). Functionaliteit ongewijzig (72 tests slagen). Ongebruikte imports `ActionListener` en `ActionEvent` verwijderd; popup-menu-lambdas gebruiken `evt` om shadowing van de omliggende `MouseEvent e` te vermijden.
 - Klassen-Javadoc van `Hoofdscherm` bijgewerkt: van een verouderde Engelse omschrijving naar een Nederlandse beschrijving van de BorderLayout-structuur.
 - `AGENTS.md` toegevoegd met Maven-build- en testcommando's, inclusief de IntelliJ-bundelde Maven 3.9.16.
+- De kopregels boven de tabellen in het hoofdscherm zijn nu vetgedrukt, gecentreerd en iets groter (13pt), zodat ze beter opvallen. De tekst boven het speelschema luidt nu "Indeling van wedstrijden in de" in plaats van "Wedstrijden in de".
 
 ### Toegevoegd
+- Waarschuwingsmelding in het popupmenu van de spelers-tabel: *Speler naar hogere groep* en *Speler naar lagere groep* tonen een mededeling als de speler al in de laagste respectievelijk hoogste groep zit, in plaats van stilletjes niets te doen.
 
 ### Opgelost
+- De # kolom in de wedstrijdgroep-tabel was te smal voor nummers groter dan 9; de breedte is nu gelijk aan de ID kolom in het speelschema.
+- De "ZW Balans" tekst in de panelen heeft de oorspronkelijke stijl (niet vetgedrukt of vergroot), zodat deze niet verward wordt met de kopregels.
 
 ## [2.0.2.1] - 2026-10-09
 

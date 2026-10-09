@@ -4,6 +4,17 @@ Alle belangrijke wijzigingen in IJC_UI2, per versie.
 Het versienummer is `<version>` in `pom.xml`.
 De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 
+## [2.0.2.2] - 2026-10-09
+
+### Gewijzigd
+- Code-opschoning: alle 37 `ActionListener`-anonyme klassen in `Hoofdscherm` zijn omgezet naar lambda-expressies (±164 regels korter). Functionaliteit ongewijzig (72 tests slagen). Ongebruikte imports `ActionListener` en `ActionEvent` verwijderd; popup-menu-lambdas gebruiken `evt` om shadowing van de omliggende `MouseEvent e` te vermijden.
+- Klassen-Javadoc van `Hoofdscherm` bijgewerkt: van een verouderde Engelse omschrijving naar een Nederlandse beschrijving van de BorderLayout-structuur.
+- `AGENTS.md` toegevoegd met Maven-build- en testcommando's, inclusief de IntelliJ-bundelde Maven 3.9.16.
+
+### Toegevoegd
+
+### Opgelost
+
 ## [2.0.2.1] - 2026-10-09
 
 ### Gewijzigd

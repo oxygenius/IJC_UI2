@@ -789,14 +789,6 @@ public class Hoofdscherm extends JFrame {
 		c.setMaxWidth(maximaal);
 	}
 
-	private void fixedComponentSize(Component c, int width, int height) {
-		try {
-			Utils.fixedComponentSize(c, width, height);
-		} catch (NullPointerException npe) {
-        	logger.log(Level.WARNING, "Component does not exists (is null)");
-		}
-	}
-
 	private void fixedColumSize(TableColumn c, int width) {
 		Utils.fixedColumSize(c, width);
 	}

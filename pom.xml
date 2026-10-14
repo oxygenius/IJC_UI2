@@ -5,7 +5,7 @@
 
   <groupId>nl.amity</groupId>
   <artifactId>ijc_ui</artifactId>
-  <version>2.0.2.4</version>
+  <version>2.0.2.5</version>
   <packaging>jar</packaging>
 
   <name>IJC_UI</name>
@@ -29,12 +29,12 @@
     <dependency>
       <groupId>org.apache.groovy</groupId>
       <artifactId>groovy</artifactId>
-      <version>4.0.24</version>
+      <version>4.0.33</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.11.0</version>
+      <version>2.14.0</version>
     </dependency>
     <dependency>
       <groupId>org.jfree</groupId>
@@ -54,22 +54,32 @@
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
-      <version>5.4.1</version>
+      <version>5.5.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-ooxml</artifactId>
-      <version>5.4.1</version>
+      <version>5.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.20.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.26.1</version>
     </dependency>
     <dependency>
       <groupId>com.objectdb</groupId>
       <artifactId>objectdb</artifactId>
-      <version>2.9.0</version>
+      <version>2.9.5</version>
     </dependency>
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20240303</version>
+      <version>20260814</version>
     </dependency>
     <!-- Modern uiterlijk (FlatLaf). Direct opgenomen zodat niet de oude versie 2.0 via Weka wordt gebruikt. -->
     <dependency>
@@ -80,7 +90,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.11.3</version>
+      <version>5.14.4</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

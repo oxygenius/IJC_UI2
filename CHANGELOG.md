@@ -12,6 +12,12 @@ De opzet volgt [Keep a Changelog](https://keepachangelog.com/nl/).
 
 ### Opgelost
 
+## [2.0.2.5] - 2026-10-14
+
+### Gewijzigd
+
+- Afhankelijkheden bijgewerkt naar nieuwere stabiele versies: Groovy (4.0.24 → 4.0.33), Gson (2.11.0 → 2.14.0), POI & POI-OOXML (5.4.1 → 5.5.1), ObjectDB (2.9.0 → 2.9.5), org.json (20240303 → 20260814, inclusief CVE-2026-59171 fix), JUnit Jupiter (5.11.3 → 5.14.4), commons-lang3 (3.16.0 → 3.20.0), en log4j-api (2.24.3 → 2.26.1).
+
 ## [2.0.2.4] - 2026-10-09
 
 ### Toegevoegd
